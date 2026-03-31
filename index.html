@@ -569,14 +569,41 @@ footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24
 .btn-muestra:hover{background:rgba(255,255,255,.20);border-color:var(--gold-lt);color:var(--white);}
 .btn-muestra svg{width:14px;height:14px;flex-shrink:0;}
 
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .logo-main{font-size:1.2rem;}
+  .promo-bar{font-size:.72rem;padding:7px 12px;}
+  .service-selector-inner{padding:16px 8px 0;gap:2px;}
+  .svc-tab{padding:14px 6px 12px;min-height:80px;gap:6px;}
+  .svc-tab svg{width:26px;height:26px;}
+  .svc-tab-label{font-size:.65rem;letter-spacing:.03em;}
+  .hero{padding:48px 16px;min-height:auto;}
   .hero-grid{grid-template-columns:1fr;}
   .hero-card{display:none;}
+  .hero h1{font-size:clamp(1.5rem,6vw,2.2rem);}
+  .hero-lead{font-size:.9rem;}
   .features-grid{grid-template-columns:1fr;}
-  .disc-grid{grid-template-columns:1fr;}
-  .footer-cols{gap:20px;}
+  .form-section{padding:40px 12px;}
   .field-group.cols-2,.field-group.cols-3{grid-template-columns:1fr;}
   .subtipo-selector{grid-template-columns:1fr;}
-  .nav-links{display:none;}
+  .pago-method-grid{grid-template-columns:1fr;}
+  .progress-step span{display:none;}
+  .btn-row{flex-direction:column;gap:8px;}
+  .btn-row .btn{width:100%;}
+  .disc-grid{grid-template-columns:1fr;}
+  .footer-brand{padding-bottom:24px;}
+  .footer-cols{grid-template-columns:1fr;gap:24px;}
+  .footer-col{width:100%;text-align:center;}
+  .footer-col ul{align-items:center;}
+  .footer-bottom{flex-direction:column;text-align:center;gap:6px;}
+  .suscripcion-inner{grid-template-columns:1fr;}
+  .modal-box{padding:24px 16px;margin:8px;}
+  .success-panel{padding:32px 12px 24px;}
+  .download-btns{flex-direction:column;align-items:stretch;}
+  .btn-download{justify-content:center;}
+  .precio-banner{flex-direction:column;gap:12px;align-items:flex-start;}
+  .faq{padding:48px 16px;}
+  .data-info{padding:0 12px 32px;}
 }
 
 /* ── PRICING CARD ─────────────────────────────── */
