@@ -966,7 +966,7 @@ function switchService(svc){
         </div>
         <div class="field" style="margin-top:12px;">
           <label for="ePretensiones">Pretensiones solicitadas al juzgado <span class="req">*</span></label>
-          <textarea id="ePretensiones" rows="5" required maxlength="5000" oninput="updateCounter(this,'ePretCount',5000)" placeholder="Condena al pago, nulidad de acto, resolución de contrato, absolución…"></textarea>
+          <textarea id="ePretensiones" rows="5" maxlength="5000" oninput="updateCounter(this,'ePretCount',5000)" placeholder="Condena al pago, nulidad de acto, resolución de contrato, absolución…"></textarea>
           <div class="char-counter" id="ePretCount">0 / 5.000</div>
         </div>
         <div class="field" style="margin-top:12px;">
@@ -1144,7 +1144,7 @@ function switchService(svc){
         <div class="field-group cols-2" style="margin-top:4px;">
           <div class="field">
             <label for="cTipoContrato">Tipo de contrato <span class="req">*</span></label>
-            <select id="cTipoContrato" required onchange="actualizarPosiciones()">
+            <select id="cTipoContrato" onchange="actualizarPosiciones()">
               <option value="">— Seleccione —</option>
               <optgroup label="Civil general"><option>Compraventa</option><option>Arrendamiento de vivienda (LAU)</option><option>Arrendamiento de local de negocio</option><option>Arrendamiento de servicios</option><option>Contrato de obra</option><option>Préstamo</option><option>Comodato</option><option>Donación</option><option>Opción de compra</option><option>Permuta</option></optgroup>
               <optgroup label="Mercantil"><option>Compraventa mercantil</option><option>Contrato de distribución</option><option>Contrato de agencia</option><option>Franquicia</option><option>Suministro</option><option>Joint venture</option><option>Leasing / Renting</option><option>Factoring / Confirming</option></optgroup>
@@ -1155,7 +1155,7 @@ function switchService(svc){
           </div>
           <div class="field">
             <label for="cRelacion">Relación entre partes <span class="req">*</span></label>
-            <select id="cRelacion" required>
+            <select id="cRelacion">
               <option value="">— Seleccione —</option>
               <option>B2B — entre empresas o profesionales</option>
               <option>B2C — empresa con consumidor</option>
@@ -1170,7 +1170,7 @@ function switchService(svc){
         <div class="field-group cols-2">
           <div class="field">
             <label for="cPosicion">Posición del cliente en el contrato <span class="req">*</span></label>
-            <select id="cPosicion" required>
+            <select id="cPosicion">
               <option value="">— Seleccione primero el tipo de contrato —</option>
             </select>
             <div style="font-size:.75rem;color:var(--text-lt);margin-top:4px;" id="cPosicionHint">Las opciones se actualizan al elegir el tipo de contrato.</div>
@@ -1417,7 +1417,7 @@ function switchService(svc){
         <div class="field-group cols-2">
           <div class="field">
             <label for="rTipo">Tipo de comunicación <span class="req">*</span></label>
-            <select id="rTipo" required>
+            <select id="rTipo">
               <option value="">— Seleccione —</option>
               <optgroup label="Requerimientos de cumplimiento"><option>Requerimiento de pago</option><option>Requerimiento de cumplimiento contractual</option><option>Requerimiento de resolución contractual</option><option>Requerimiento de entrega de bien o documento</option></optgroup>
               <optgroup label="Reclamaciones"><option>Reclamación de daños y perjuicios</option><option>Reclamación extrajudicial a consumidor o empresa</option><option>Reclamación de cantidad</option></optgroup>
@@ -1428,7 +1428,7 @@ function switchService(svc){
           </div>
           <div class="field">
             <label for="rMateria">Materia jurídica <span class="req">*</span></label>
-            <select id="rMateria" required>
+            <select id="rMateria">
               <option value="">— Seleccione —</option>
               <option>Arrendamiento urbano (LAU)</option><option>Arrendamiento rústico</option><option>Compraventa de inmuebles</option><option>Compraventa de bienes muebles / mercancías</option><option>Contrato de servicios / obra</option><option>Relación laboral</option><option>Préstamo / crédito / hipoteca</option><option>Propiedad horizontal / comunidad de propietarios</option><option>Responsabilidad civil / daños</option><option>Propiedad intelectual / industrial</option><option>Consumo / garantías</option><option>Societario / mercantil</option><option>Administración Pública</option><option>Familia / sucesiones</option><option>Penal (extrajudicial previo)</option><option>Otra materia (indicar en descripción)</option>
             </select>
@@ -1656,7 +1656,7 @@ function switchService(svc){
           <div class="field-group cols-2">
             <div class="field mandatory-field">
               <label for="dRama">Rama del Derecho principal <span style="color:var(--error)">*</span></label>
-              <select id="dRama" required>
+              <select id="dRama">
                 <option value="">— Seleccione —</option>
                 <option>Derecho Civil — Contratos</option>
                 <option>Derecho Civil — Obligaciones y responsabilidad</option>
@@ -1700,7 +1700,7 @@ function switchService(svc){
           </div>
           <div class="field mandatory-field">
             <label for="dObjetoConciso">Título o denominación breve del asunto <span style="color:var(--error)">*</span></label>
-            <input type="text" id="dObjetoConciso" required maxlength="200" placeholder="Ej.: Responsabilidad civil extracontractual por defecto de producto / Nulidad cláusula suelo préstamo hipotecario…" />
+            <input type="text" id="dObjetoConciso" maxlength="200" placeholder="Ej.: Responsabilidad civil extracontractual por defecto de producto / Nulidad cláusula suelo préstamo hipotecario…" />
           </div>
           <div class="field">
             <label for="dPretension">Pretensión u objetivo del dictamen <span class="hint">— indicar qué cuestión concreta debe resolver el dictamen</span></label>
@@ -2611,6 +2611,7 @@ function buildLetradoBlock(svc){
         <span class="evidence-text"><strong>Capa de evidencia:</strong> Al enviar se generará un PDF de acuse identificando al letrado/a con nombre, email y timestamp de la aceptación. Se descarga en su dispositivo y se envía por correo a ambas direcciones.</span>
       </div>
     </div>
+    ${svc==='e'?`
     <div class="section-block">
       <div class="section-block-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Procurador/a<span class="optional-tag">Opcional</span></div>
       <div class="field-group cols-2">
@@ -2621,7 +2622,7 @@ function buildLetradoBlock(svc){
         <div class="field"><label for="${prefix}ProcNum">N.º colegiación</label><input type="text" id="${prefix}ProcNum" placeholder="28/67890"/></div>
         <div class="field"><label for="${prefix}ProcColegio">Colegio de Procuradores</label><input type="text" id="${prefix}ProcColegio" placeholder="ICPM Madrid…"/></div>
       </div>
-    </div>
+    </div>`:''}
     <div class="section-block">
       <div class="section-block-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-4 0v2"/></svg>Parte representada (cliente)</div>
       <div class="field-group cols-2">
@@ -2706,8 +2707,7 @@ function eNext(cur){
     if(!document.getElementById('eHechos')?.value&&cur===1){} // Proceed
   }
   if(cur===2){
-    if((document.getElementById('eHechos')?.value||'').trim().length<100){alert('Describa los hechos (mínimo 100 caracteres).');return;}
-    if(!(document.getElementById('ePretensiones')?.value||'').trim()){alert('Indique las pretensiones.');return;}
+    if(!(document.getElementById('eHechos')?.value||'').trim()){alert('La descripción de los hechos es obligatoria.');return;}
   }
   if(cur===3){
     if(!validateLetrado('e')) return;
@@ -2722,12 +2722,7 @@ function ePrev(cur){ showPanelOf('ep',4,cur-1); }
 /* ── CONTRATOS NAVIGATION ────────────────────────── */
 function cNext(cur){
   if(cur===1){
-    if(!document.getElementById('cTipoContrato').value){alert('Seleccione el tipo de contrato.');return;}
-    if(!document.getElementById('cRelacion').value){alert('Indique la relación entre partes.');return;}
-    if(!document.getElementById('cPosicion').value){alert('Indique la posición del cliente.');return;}
-    if(document.getElementById('cSubtipo').value==='revision'&&!state.c.contratoFile){alert('Adjunte el contrato a revisar.');return;}
     if(!(document.getElementById('cDescripcion')?.value||'').trim()){alert('La descripción del objeto del contrato es obligatoria.');return;}
-    if(!(document.getElementById('cPartANombre')?.value||'').trim()&&cur===1){}// will check on panel 2
   }
   if(cur===2){
     // Parte A y Parte B: opcionales — si vacíos, el sistema los buscará en la documentación aportada o se dejarán en blanco para que el letrado los complete
@@ -2741,10 +2736,7 @@ function cPrev(cur){ showPanelOf('cp',4,cur-1); }
 /* ── REQUERIMIENTOS NAVIGATION ───────────────────── */
 function rNext(cur){
   if(cur===1){
-    if(!document.getElementById('rTipo').value){alert('Seleccione el tipo de comunicación.');return;}
-    if(!document.getElementById('rMateria').value){alert('Seleccione la materia jurídica.');return;}
-    if(document.getElementById('rSubtipo').value==='contestacion'&&!state.r.reqFile){alert('Adjunte el requerimiento recibido.');return;}
-    if((document.getElementById('rHechos')?.value||'').trim().length<50){alert('Describa los hechos con mayor detalle (mínimo 50 caracteres).');return;}
+    if(!(document.getElementById('rHechos')?.value||'').trim()){alert('La descripción de los hechos es obligatoria.');return;}
   }
   if(cur===2){
     // Remitente, destinatario y domicilio: opcionales — el sistema los buscará en la documentación aportada o se dejarán en blanco para que el letrado los complete
@@ -2758,9 +2750,7 @@ function rPrev(cur){ showPanelOf('rp',4,cur-1); }
 /* ── DICTAMEN NAVIGATION ─────────────────────────── */
 function dNext(cur){
   if(cur===1){
-    if(!document.getElementById('dRama').value){alert('Seleccione la rama del Derecho principal.');return;}
-    if(!document.getElementById('dObjetoConciso').value.trim()){alert('Indique el título o denominación del asunto.');return;}
-    if((document.getElementById('dHechos')?.value||'').trim().length<100){alert('La descripción de los hechos es obligatoria y debe tener al menos 100 caracteres.');return;}
+    if(!(document.getElementById('dHechos')?.value||'').trim()){alert('La descripción de los hechos es obligatoria.');return;}
   }
   if(cur===2){
     if(totalBytesFor('d')>MAX_BYTES){alert('El volumen total de los archivos adjuntos supera los 25 MB.');return;}
@@ -3095,7 +3085,8 @@ async function uploadToDrive(svc, d){
   if(d.remitente?.nombre) datos.remitente=d.remitente.nombre;
   if(d.destinatario?.nombre) datos.destinatario=d.destinatario.nombre;
   try{
-    const payloadObj={ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64,datos};
+    // Sin base64 para no superar límite de URL (413) — solo metadatos de archivos
+    const payloadObj={ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64.map(a=>({nombre:a.nombre,mimeType:a.mimeType,tamano:a.tamano,categoria:a.categoria})),datos};
     const payloadStr=encodeURIComponent(JSON.stringify(payloadObj));
     await fetch(DRIVE_WEBAPP_URL+'?payload='+payloadStr,{method:'GET',mode:'no-cors'});
     progressEl.innerHTML='✅ Encargo enviado correctamente. Recibirá el documento y el enlace a Drive por email en 24–48h hábiles.';
