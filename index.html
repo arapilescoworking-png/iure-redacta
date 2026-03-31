@@ -1030,7 +1030,7 @@ function switchService(svc){
         </div>
       </div>
     </form>
-    <div class="success-panel" id="eSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá los documentos Word. El letrado debe revisarlos antes de cualquier presentación.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="eRefNum">IR-E-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Escritos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="eTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('e')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadWordEscrito()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Encargo</button><button class="btn-download" id="eBtnGrafica" style="display:none" onclick="downloadWordGraficaE()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Guía Gráfica</button><button class="btn-download alt" onclick="dlJSON('e')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> JSON</button><a class="btn-download" id="eBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="eBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
+    <div class="success-panel" id="eSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá el documento en Drive. El letrado debe revisarlo antes de cualquier presentación.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="eRefNum">IR-E-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Escritos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="eTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('e')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadPDFEncargo('e')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Encargo</button><button class="btn-download" id="eBtnGrafica" style="display:none" onclick="downloadWordGraficaE()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Guía Gráfica</button><a class="btn-download" id="eBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="eBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
   </div>
 </section>
 
@@ -1321,7 +1321,7 @@ function switchService(svc){
         </div>
       </div>
     </form>
-    <div class="success-panel" id="cSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá los documentos Word.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="cRefNum">IR-C-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Contratos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="cTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('c')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadWordContrato()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Encargo</button><button class="btn-download alt" onclick="dlJSON('c')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> JSON</button><a class="btn-download" id="cBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="cBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
+    <div class="success-panel" id="cSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá el documento en Drive.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="cRefNum">IR-C-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Contratos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="cTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('c')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadPDFEncargo('c')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Encargo</button><a class="btn-download" id="cBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="cBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
   </div>
 </section>
 </div><!-- /service-contratos -->
@@ -1567,7 +1567,7 @@ function switchService(svc){
         </div>
       </div>
     </form>
-    <div class="success-panel" id="rSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá los documentos Word.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="rRefNum">IR-R-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Requerimientos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="rTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('r')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadWordRequerimiento()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Encargo</button><button class="btn-download alt" onclick="dlJSON('r')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> JSON</button><a class="btn-download" id="rBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="rBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
+    <div class="success-panel" id="rSuccess"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h2>Solicitud registrada <em>correctamente</em></h2><p style="color:var(--text-lt);max-width:500px;margin:0 auto 6px;">En 24–48h hábiles recibirá el documento en Drive.</p><p style="color:var(--error);font-size:.82rem;max-width:500px;margin:0 auto 12px;">⚠️ Datos eliminados en máximo <strong>24 horas</strong>.</p><div class="ref-box" id="rRefNum">IR-R-000000</div><div class="local-test-panel"><div class="local-test-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Panel de prueba — Requerimientos</div><p class="local-test-subtitle">Modo local activo. El PDF de acuse ya se ha descargado.</p><div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="rTestData"></div></div><div class="download-btns"><button class="btn-download highlight" onclick="redownloadPDF('r')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button><button class="btn-download" onclick="downloadPDFEncargo('r')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Encargo</button><a class="btn-download" id="rBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a><a class="btn-download" id="rBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Resultado Final</a></div></div></div>
   </div>
 </section>
 </div><!-- /service-requerimientos -->
@@ -1952,8 +1952,8 @@ function switchService(svc){
         <div class="test-section"><div class="test-section-title">Datos del encargo</div><div class="test-data" id="dTestData"></div></div>
         <div class="download-btns">
           <button class="btn-download highlight" onclick="redownloadPDF('d')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Acuse</button>
-          <button class="btn-download" onclick="downloadWordDictamen()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Word Encargo</button>
-          <button class="btn-download alt" onclick="dlJSON('d')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> JSON</button>
+          <button class="btn-download" onclick="downloadPDFEncargo('d')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> PDF Encargo</button>
+          
           <a class="btn-download" id="dBtnDrive" href="#" target="_blank" style="display:none;background:var(--teal);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Expediente Drive</a>
           <a class="btn-download" id="dBtnDriveResult" href="#" target="_blank" style="display:none;background:var(--green);color:#fff;text-decoration:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Dictamen Final</a>
         </div>
@@ -2879,7 +2879,7 @@ document.getElementById('lexForm-d').addEventListener('submit',async function(e)
 
 /* ── DICTAMEN WORD DOWNLOAD ──────────────────────── */
 async function downloadWordDictamen(){
-  const d=state.d.data; if(!d||typeof docx==='undefined') return;
+  const d=state.d.data; if(!d){alert('No hay datos de encargo.');return;} if(typeof docx==='undefined'){alert('La librería de generación Word no está disponible. Compruebe su conexión a internet y recargue la página.');return;}
   const {Document,Packer,Paragraph,TextRun,HeadingLevel}=docx;
   const f=(l,v)=>new Paragraph({children:[new TextRun({text:l+': ',bold:true,size:22}),new TextRun({text:String(v||'—'),size:22})],spacing:{after:80}});
   const doc2=new Document({sections:[{children:[
@@ -3208,7 +3208,7 @@ async function sendEmail(d){
 
 /* ── WORD DOWNLOADS ──────────────────────────────── */
 async function downloadWordEscrito(){
-  const d=state.e.data; if(!d||typeof docx==='undefined') return;
+  const d=state.e.data; if(!d){alert('No hay datos de encargo.');return;} if(typeof docx==='undefined'){alert('La librería de generación Word no está disponible. Compruebe su conexión a internet y recargue la página.');return;}
   const {Document,Packer,Paragraph,TextRun,HeadingLevel}=docx;
   const f=(l,v)=>new Paragraph({children:[new TextRun({text:l+': ',bold:true,size:22}),new TextRun({text:String(v||'—'),size:22})],spacing:{after:80}});
   const doc2=new Document({sections:[{children:[
@@ -3242,7 +3242,7 @@ async function downloadWordGraficaE(){
 }
 
 async function downloadWordContrato(){
-  const d=state.c.data; if(!d||typeof docx==='undefined') return;
+  const d=state.c.data; if(!d){alert('No hay datos de encargo.');return;} if(typeof docx==='undefined'){alert('La librería de generación Word no está disponible. Compruebe su conexión a internet y recargue la página.');return;}
   const {Document,Packer,Paragraph,TextRun,HeadingLevel}=docx;
   const f=(l,v)=>new Paragraph({children:[new TextRun({text:l+': ',bold:true,size:22}),new TextRun({text:String(v||'—'),size:22})],spacing:{after:80}});
   const doc2=new Document({sections:[{children:[
@@ -3266,7 +3266,7 @@ async function downloadWordContrato(){
 }
 
 async function downloadWordRequerimiento(){
-  const d=state.r.data; if(!d||typeof docx==='undefined') return;
+  const d=state.r.data; if(!d){alert('No hay datos de encargo.');return;} if(typeof docx==='undefined'){alert('La librería de generación Word no está disponible. Compruebe su conexión a internet y recargue la página.');return;}
   const {Document,Packer,Paragraph,TextRun,HeadingLevel}=docx;
   const f=(l,v)=>new Paragraph({children:[new TextRun({text:l+': ',bold:true,size:22}),new TextRun({text:String(v||'—'),size:22})],spacing:{after:80}});
   const doc2=new Document({sections:[{children:[
@@ -3289,6 +3289,86 @@ async function downloadWordRequerimiento(){
   dlBlob(await Packer.toBlob(doc2),`IureRedacta_Requerimiento_${d.ref}.docx`);
 }
 
+
+function downloadPDFEncargo(svc){
+  const d=state[svc].data;
+  if(!d){alert('No hay datos de encargo.');return;}
+  if(typeof window.jspdf==='undefined'&&typeof jsPDF==='undefined'){alert('La librería PDF no está disponible. Compruebe su conexión y recargue la página.');return;}
+  const {jsPDF:JSPDF}=window.jspdf||{jsPDF:jsPDF};
+  const doc=new JSPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const navy=[27,45,94], gold=[200,168,75], gray=[100,100,100], dark=[30,30,30];
+  const W=210, margin=20, colW=W-2*margin;
+  let y=20;
+
+  const addLine=(txt,color,size,bold,indent)=>{
+    doc.setTextColor(...(color||dark));
+    doc.setFontSize(size||10);
+    doc.setFont('helvetica',bold?'bold':'normal');
+    const lines=doc.splitTextToSize(txt,colW-(indent||0));
+    lines.forEach(l=>{
+      if(y>275){doc.addPage();y=20;}
+      doc.text(l,margin+(indent||0),y);
+      y+=size?size*0.45:5;
+    });
+  };
+  const addSep=()=>{doc.setDrawColor(...gold);doc.setLineWidth(0.4);doc.line(margin,y,W-margin,y);y+=5;};
+  const addSection=(title)=>{y+=3;doc.setFillColor(...navy);doc.rect(margin,y-4,colW,7,'F');doc.setTextColor(255,255,255);doc.setFontSize(9);doc.setFont('helvetica','bold');doc.text(title,margin+2,y);y+=6;};
+  const addField=(label,value)=>{if(!value||value==='—')return;addLine(label+': ',gray,9,true);y-=4.5;doc.setTextColor(...dark);doc.setFont('helvetica','normal');const lw=doc.getTextWidth(label+': ');const lines=doc.splitTextToSize(String(value),colW-lw-2);doc.text(lines[0],margin+lw,y);y+=4.5;if(lines.length>1){lines.slice(1).forEach(l=>{if(y>275){doc.addPage();y=20;}doc.text(l,margin+4,y);y+=4.5;});}};
+
+  // Cabecera
+  doc.setFillColor(...navy);doc.rect(0,0,W,28,'F');
+  doc.setTextColor(...gold);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('IURE REDACTA',margin,14);
+  doc.setTextColor(255,255,255);doc.setFontSize(9);doc.setFont('helvetica','normal');
+  const svcNames={e:'Escritos Jurídicos',c:'Contratos',r:'Requerimientos y Burofax',d:'Dictamen Jurídico'};
+  doc.text('RESUMEN DE ENCARGO — '+svcNames[svc],margin,21);
+  y=36;
+
+  addLine('Ref.: '+d.ref+'   |   '+new Date(d.timestamp).toLocaleString('es-ES'),gray,9);
+  y+=2; addSep();
+
+  // Letrado
+  addSection('LETRADO RESPONSABLE');
+  addField('Nombre',d.letrado?.nombre);addField('Email',d.letrado?.email);
+  addField('N.º Colegiación',d.letrado?.numColegiacion);addField('Colegio',d.letrado?.colegio);
+  y+=2;
+
+  // Datos según servicio
+  if(svc==='e'){
+    addSection('DATOS DEL ESCRITO');
+    addField('Tipo de escrito',d.tipoEscrito);addField('Posición procesal',d.posicion);addField('Juzgado',d.juzgado);
+    if(d.cliente){addSection('PARTE REPRESENTADA');addField('Nombre',d.cliente.nombre);addField('NIF',d.cliente.nif);addField('Domicilio',d.cliente.domicilio);}
+    if(d.procurador?.nombre){addSection('PROCURADOR');addField('Nombre',d.procurador.nombre);addField('N.º Colegiación',d.procurador.numColegiacion);}
+    if(d.hechos){addSection('RELACIÓN DE HECHOS');addLine(d.hechos,dark,9,false,2);}
+    if(d.pretensiones){addSection('PRETENSIONES');addLine(d.pretensiones,dark,9,false,2);}
+    if(d.jurisprudencia){addSection('JURISPRUDENCIA / NORMATIVA');addLine(d.jurisprudencia,dark,9,false,2);}
+  } else if(svc==='c'){
+    addSection('DATOS DEL CONTRATO');
+    addField('Tipo',d.tipoContrato);addField('Posición cliente',d.posicion);addField('Precio',d.precio);addField('Duración',d.duracion);
+    if(d.parteA){addSection('PARTE A');addField('Nombre',d.parteA.nombre);addField('NIF',d.parteA.nif);addField('Domicilio',d.parteA.domicilio);}
+    if(d.parteB){addSection('PARTE B');addField('Nombre',d.parteB.nombre);addField('NIF',d.parteB.nif);addField('Domicilio',d.parteB.domicilio);}
+    if(d.descripcion){addSection('OBJETO E INSTRUCCIONES');addLine(d.descripcion,dark,9,false,2);}
+  } else if(svc==='r'){
+    addSection('DATOS DEL REQUERIMIENTO');
+    addField('Tipo',d.tipo);addField('Materia',d.materia);addField('Importe',d.importe);addField('Plazo',d.plazo);addField('Tono',d.tono);
+    if(d.remitente){addSection('REMITENTE');addField('Nombre',d.remitente.nombre);addField('NIF',d.remitente.nif);addField('Domicilio',d.remitente.domicilio);}
+    if(d.destinatario){addSection('DESTINATARIO');addField('Nombre',d.destinatario.nombre);addField('NIF',d.destinatario.nif);addField('Domicilio',d.destinatario.domicilio);}
+    if(d.hechos){addSection('DESCRIPCIÓN DE LOS HECHOS');addLine(d.hechos,dark,9,false,2);}
+  } else if(svc==='d'){
+    addSection('OBJETO DEL DICTAMEN');
+    addField('Rama principal',d.ramaPrincipal);addField('Segunda rama',d.ramaSecundaria);
+    addField('Asunto',d.objetoConciso);addField('Posición cliente',d.parte1Cond);addField('Estado',d.estadoAsunto);
+    if(d.parte1){addField('Parte consultante',d.parte1);}
+    if(d.parte2){addField('Parte contraria',d.parte2);}
+    if(d.pretension){addSection('CUESTIÓN SOMETIDA A DICTAMEN');addLine(d.pretension,dark,9,false,2);}
+    if(d.hechos){addSection('RELACIÓN DE HECHOS');addLine(d.hechos,dark,9,false,2);}
+  }
+
+  // Pie
+  y+=4;addSep();
+  addLine('AVISO: Este documento es un resumen del encargo enviado. El documento jurídico generado debe ser revisado, adaptado y suscrito por el letrado antes de cualquier uso. Datos eliminados en 24h.',gray,8,false,0);
+
+  doc.save('IureRedacta_Encargo_'+d.ref+'.pdf');
+}
 function dlJSON(svc){ const d=state[svc].data; if(!d) return; dlBlob(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),`IureRedacta_${d.ref}.json`); }
 function dlBlob(blob,fn){ const url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url; a.download=fn; a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000); }
 function rndRef(){ return String(Math.floor(Math.random()*900000)+100000); }
