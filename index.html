@@ -3068,15 +3068,12 @@ async function uploadToDrive(svc, d){
   if(svc==='e') files=[...state.e.files.map(f=>({file:f.file,categoria:f.category})),...state.e.grafica.map(g=>({file:g.file,categoria:'grafica'}))];
   else if(svc==='c') files=[...state.c.files.map(f=>({file:f.file,categoria:f.category})),...(state.c.contratoFile?[{file:state.c.contratoFile,categoria:'contrato-referencia'}]:[])];
   else if(svc==='r') files=[...state.r.files.map(f=>({file:f.file,categoria:f.category})),...(state.r.reqFile?[{file:state.r.reqFile,categoria:'requerimiento-base'}]:[])];
-  else if(svc==='d') files=[...state.d.files.map(f=>({file:f.file,categoria:f.category}))];  const progressId=svc+'DriveProgress';
+  else if(svc==='d') files=[...state.d.files.map(f=>({file:f.file,categoria:f.category}))];
+
+  const progressId=svc+'DriveProgress';
   let progressEl=document.getElementById(progressId);
   if(!progressEl){progressEl=document.createElement('div');progressEl.id=progressId;progressEl.style.cssText='margin:8px 0;font-size:.82rem;color:var(--navy);text-align:center;';const btn=document.getElementById(svc+'BtnSubmit');if(btn&&btn.parentNode)btn.parentNode.insertBefore(progressEl,btn.nextSibling);}
-  const archivosB64=[];
-  for(let i=0;i<files.length;i++){
-    const {file,categoria}=files[i];
-    try{progressEl.textContent=`📤 Subiendo ${i+1}/${files.length}: ${file.name}…`;const b64=await fileToBase64(file);archivosB64.push({nombre:file.name,base64:b64,mimeType:file.type||'application/octet-stream',tamano:file.size,categoria});}catch(e){console.warn('No se pudo leer:',file.name);}
-  }
-  if(!files.length) progressEl.textContent='📁 Creando carpeta del expediente en Drive…';
+
   const datos={};
   ['tipoEscrito','posicion','juzgado','hechos','pretensiones','jurisprudencia','operacion','tipoContrato','relacion','descripcion','instrucciones','tipo','materia','importe','plazo','tono','canal','idioma'].forEach(c=>{if(d[c])datos[c]=d[c];});
   if(d.cliente?.nombre) datos.cliente=d.cliente.nombre;
@@ -3084,12 +3081,44 @@ async function uploadToDrive(svc, d){
   if(d.parteB?.nombre) datos.parteB=d.parteB.nombre;
   if(d.remitente?.nombre) datos.remitente=d.remitente.nombre;
   if(d.destinatario?.nombre) datos.destinatario=d.destinatario.nombre;
-  try{
-    // Envío via formulario oculto (evita CORS y límite de URL)
-    const payloadObj={ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64.map(a=>({nombre:a.nombre,mimeType:a.mimeType,tamano:a.tamano,categoria:a.categoria})),datos};
-    submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadObj));
-    progressEl.innerHTML='✅ Encargo registrado correctamente. Recibirá el documento por correo electrónico en 24–48 horas hábiles.';
-  }catch(e){progressEl.textContent='⚠️ Drive no disponible. Encargo registrado correctamente.';console.warn('Drive fetch:',e);}
+
+  const metaArchivos=files.map(f=>({nombre:f.file.name,mimeType:f.file.type||'application/octet-stream',tamano:f.file.size,categoria:f.categoria}));
+
+  // PASO 1: Crear expediente SIN enviar emails todavía
+  progressEl.textContent='Creando expediente en Drive…';
+  const payloadPaso1={action:'crearExpediente',ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:metaArchivos,datos};
+  submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadPaso1));
+
+  // PASO 2: Subir archivos uno a uno
+  const archivosOk=[], archivosError=[];
+  if(files.length>0){
+    // Esperar a que el script cree la carpeta (tiempo proporcional a la complejidad)
+    progressEl.textContent='Procesando encargo con IA… esto puede tardar hasta 2 minutos';
+    await new Promise(r=>setTimeout(r,90000)); // 90s: tiempo para crear carpeta + generar borrador con IA
+    for(let i=0;i<files.length;i++){
+      const {file,categoria}=files[i];
+      try{
+        progressEl.textContent=`Subiendo archivo ${i+1} de ${files.length}: ${file.name}…`;
+        const b64=await fileToBase64(file);
+        const filePayload={action:'uploadFile',ref:d.ref,nombre:file.name,mimeType:file.type||'application/octet-stream',tamano:file.size,categoria,base64:b64};
+        submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(filePayload));
+        archivosOk.push(file.name);
+        await new Promise(r=>setTimeout(r,3000)); // pausa entre archivos
+      }catch(e){
+        console.warn('Error subiendo archivo:',file.name,e);
+        archivosError.push(file.name);
+      }
+    }
+    await new Promise(r=>setTimeout(r,3000)); // espera final antes de notificar
+  }
+
+  // PASO 3: Enviar emails ahora que todo está subido
+  progressEl.textContent='Enviando notificaciones…';
+  const payloadPaso3={action:'enviarEmails',ref:d.ref,letrado:d.letrado,servicio:d.servicio,archivosOk,archivosError};
+  submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadPaso3));
+  await new Promise(r=>setTimeout(r,2000));
+
+  progressEl.innerHTML='Encargo registrado correctamente. Recibirá el documento por correo electrónico en 24–48 horas hábiles.';
 }
 function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
 
