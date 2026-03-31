@@ -212,7 +212,7 @@ header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:100;background:r
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-end;
+  justify-content:center;
   gap:11px;
   padding:28px 20px 20px;
   min-height:110px;
@@ -497,17 +497,21 @@ textarea{resize:vertical;min-height:100px;line-height:1.7;}
 /* FOOTER */
 footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24px;border-top:4px solid var(--gold);}
 .footer-inner{max-width:1100px;margin:0 auto;}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:32px;}
+.footer-brand{text-align:center;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:32px;}
+.footer-brand .footer-logo-wrap{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px;}
+.footer-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;justify-items:center;}
 .footer-logo-main{font-family:var(--ff-disp);font-size:1.3rem;font-weight:700;color:var(--white);letter-spacing:.04em;}
 .footer-logo-main span{color:var(--gold-lt);}
-.footer-logo-sub{font-size:.60rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:2px;}
-.footer-about p{font-size:.81rem;line-height:1.8;margin-top:9px;}
-.footer-col h5{font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:10px;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
-.footer-col a{font-size:.81rem;color:rgba(255,255,255,.45);transition:color .2s;}
+.footer-logo-sub{font-size:.60rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:2px;}
+.footer-brand p{font-size:.81rem;line-height:1.8;color:rgba(255,255,255,.80);max-width:640px;margin:0 auto 8px;}
+.footer-brand .footer-email{font-size:.81rem;color:rgba(255,255,255,.70);}
+.footer-brand .footer-email a{color:rgba(255,255,255,.85);}
+.footer-col h5{font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:10px;text-align:center;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:6px;align-items:center;}
+.footer-col a{font-size:.81rem;color:rgba(255,255,255,.80);transition:color .2s;}
 .footer-col a:hover{color:var(--white);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;}
-.footer-bottom p{font-size:.73rem;color:rgba(255,255,255,.28);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;margin-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;}
+.footer-bottom p{font-size:.73rem;color:rgba(255,255,255,.60);}
 
 /* MODALS */
 .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(27,45,94,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -569,7 +573,7 @@ footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24
   .hero-card{display:none;}
   .features-grid{grid-template-columns:1fr;}
   .disc-grid{grid-template-columns:1fr;}
-  .footer-top{grid-template-columns:1fr;}
+  .footer-cols{gap:20px;}
   .field-group.cols-2,.field-group.cols-3{grid-template-columns:1fr;}
   .subtipo-selector{grid-template-columns:1fr;}
   .nav-links{display:none;}
@@ -2041,30 +2045,34 @@ function switchService(svc){
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-top">
-        <div class="footer-about">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-          <svg width="34" height="34" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 3L5 10v14c0 9.5 7.5 17 17 20 9.5-3 17-10.5 17-20V10L22 3z" fill="#1B2D5E" stroke="#C8A84B" stroke-width="0.8"/>
-            <line x1="12" y1="20" x2="32" y2="20" stroke="#C8A84B" stroke-width="1.6"/>
-            <line x1="22" y1="13" x2="22" y2="20" stroke="#C8A84B" stroke-width="1.6"/>
-            <line x1="14" y1="20" x2="12" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
-            <line x1="12" y1="20" x2="10" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
-            <path d="M9.5 26.5 Q11 29 12.5 26.5" stroke="#C8A84B" stroke-width="1.4" fill="none"/>
-            <line x1="30" y1="20" x2="32" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
-            <line x1="32" y1="20" x2="34" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
-            <path d="M31.5 26.5 Q33 29 34.5 26.5" stroke="#C8A84B" stroke-width="1.4" fill="none"/>
-            <line x1="22" y1="13" x2="22" y2="32" stroke="#C8A84B" stroke-width="1.6"/>
-            <line x1="18" y1="32" x2="26" y2="32" stroke="#C8A84B" stroke-width="1.6"/>
-          </svg>
-          <div>
-            <div class="footer-logo-main">IURE <span>REDACTA</span></div>
-            <div class="footer-logo-sub">Redacción jurídica asistida por IA</div>
-          </div>
+
+    <!-- BLOQUE SUPERIOR: logo + descripción + email centrados -->
+    <div class="footer-brand">
+      <div class="footer-logo-wrap">
+        <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 3L5 10v14c0 9.5 7.5 17 17 20 9.5-3 17-10.5 17-20V10L22 3z" fill="#1B2D5E" stroke="#C8A84B" stroke-width="0.8"/>
+          <line x1="12" y1="20" x2="32" y2="20" stroke="#C8A84B" stroke-width="1.6"/>
+          <line x1="22" y1="13" x2="22" y2="20" stroke="#C8A84B" stroke-width="1.6"/>
+          <line x1="14" y1="20" x2="12" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
+          <line x1="12" y1="20" x2="10" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
+          <path d="M9.5 26.5 Q11 29 12.5 26.5" stroke="#C8A84B" stroke-width="1.4" fill="none"/>
+          <line x1="30" y1="20" x2="32" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
+          <line x1="32" y1="20" x2="34" y2="26" stroke="#C8A84B" stroke-width="1.1"/>
+          <path d="M31.5 26.5 Q33 29 34.5 26.5" stroke="#C8A84B" stroke-width="1.4" fill="none"/>
+          <line x1="22" y1="13" x2="22" y2="32" stroke="#C8A84B" stroke-width="1.6"/>
+          <line x1="18" y1="32" x2="26" y2="32" stroke="#C8A84B" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <div class="footer-logo-main">IURE <span>REDACTA</span></div>
+          <div class="footer-logo-sub">Redacción jurídica asistida por IA</div>
         </div>
-        <p>Escritos procesales, contratos y requerimientos asistidos por IA. Entrega en <strong style="color:var(--gold-lt)">24–48 h hábiles</strong>. CET art. 28 RGPD. PDF de acuse automático. Eliminación garantizada de datos en 24 h. Conforme al AI Act (UE) 2024/1689.</p>
-        <p style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.45);">✉ <a href="/cdn-cgi/l/email-protection#630a1611061106070200170223040e020a0f4d000c0e" style="color:rgba(255,255,255,.6);"><span class="__cf_email__" data-cfemail="4f263a3d2a3d2a2b2e2c3b2e0f28222e2623612c2022">[email&#160;protected]</span></a></p>
       </div>
+      <p>Escritos procesales, contratos, requerimientos y dictámenes asistidos por IA. Entrega en <strong style="color:var(--gold-lt)">24–48 h hábiles</strong>. CET art. 28 RGPD. PDF de acuse automático. Eliminación garantizada de datos en 24 h. Conforme al AI Act (UE) 2024/1689.</p>
+      <p class="footer-email">✉ <a href="mailto:iureredacta@gmail.com">iureredacta@gmail.com</a></p>
+    </div>
+
+    <!-- BLOQUE INFERIOR: tres columnas alineadas -->
+    <div class="footer-cols">
       <div class="footer-col">
         <h5>Servicios</h5>
         <ul>
@@ -2081,12 +2089,15 @@ function switchService(svc){
           <li><a href="#" onclick="openModal('modalRGPD');return false;">Política de privacidad</a></li>
           <li><a href="#" onclick="openModal('modalCET');return false;">Contrato Encargado (CET)</a></li>
           <li><a href="#" onclick="openModal('modalDisclaimer');return false;">Aviso profesional</a></li>
+          <li><a href="#" onclick="openModal('modalIA');return false;">Política de IA (AI Act)</a></li>
           <li><a href="#" onclick="aceptarCookies();return false;">Política de cookies</a></li>
+          <li><a href="mailto:iureredacta@gmail.com?subject=Ejercicio%20de%20derechos%20RGPD">Ejercicio de derechos RGPD</a></li>
         </ul>
       </div>
-          <li><a href="#" onclick="openModal('modalDisclaimer');return false;">Aviso profesional</a></li>
-          <li><a href="#" onclick="openModal('modalIA');return false;">Política de IA (AI Act)</a></li>
-          <li><a href="/cdn-cgi/l/email-protection#b8c8cad1ced9dbd1dcd9dcf8d1cdcaddcadddcd9dbccd996dbd7d5">Ejercicio de derechos RGPD</a></li>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:iureredacta@gmail.com">iureredacta@gmail.com</a></li>
           <li><a href="https://www.iureredacta.com" target="_blank">iureredacta.com</a></li>
         </ul>
       </div>
