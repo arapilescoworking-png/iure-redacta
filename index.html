@@ -3097,10 +3097,8 @@ async function uploadToDrive(svc, d){
   try{
     const payloadObj={ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64,datos};
     const payloadStr=encodeURIComponent(JSON.stringify(payloadObj));
-    const resp=await fetch(DRIVE_WEBAPP_URL+'?payload='+payloadStr,{method:'GET',redirect:'follow'});
-    const json=await resp.json();
-    if(json.ok&&json.data){driveLinks[svc]=json.data;progressEl.innerHTML=`✅ Expediente en Drive: <a href="${json.data.urlExpediente}" target="_blank" style="color:var(--navy);font-weight:600;">Ver carpeta »</a>`;}
-    else{progressEl.textContent='⚠️ No se pudo crear la carpeta Drive. El encargo sigue registrado.';console.error('Drive:',json);}
+    await fetch(DRIVE_WEBAPP_URL+'?payload='+payloadStr,{method:'GET',mode:'no-cors'});
+    progressEl.innerHTML='✅ Encargo enviado correctamente. Recibirá el documento y el enlace a Drive por email en 24–48h hábiles.';
   }catch(e){progressEl.textContent='⚠️ Drive no disponible. Encargo registrado correctamente.';console.warn('Drive fetch:',e);}
 }
 function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
