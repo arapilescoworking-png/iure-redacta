@@ -910,7 +910,7 @@ function switchService(svc){
             <svg class="doc-cat-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="doc-category-body"><div class="doc-category-inner">
-            <p style="font-size:.83rem;color:var(--text-md);line-height:1.7;margin-bottom:10px;">Los vídeos superan el límite de 25 MB. Descríbalos a continuación para que el sistema los incorpore al escrito.</p>
+            <p style="font-size:.83rem;color:var(--text-md);line-height:1.7;margin-bottom:10px;">Los vídeos superan el límite de 50 MB. Descríbalos a continuación para que el sistema los incorpore al escrito.</p>
             <label style="font-size:.71rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-md);">Descripción de vídeos disponibles <span style="color:var(--text-lt);font-weight:400;">(opcional)</span></label>
             <textarea id="eVideoDesc" rows="3" maxlength="3000" oninput="updateCounter(this,'eVideoCount',3000)" placeholder="Describa qué muestran, cuándo se grabaron y qué acreditan…" style="margin-top:6px;min-height:80px;"></textarea>
             <div class="char-counter" id="eVideoCount">0 / 3.000</div>
@@ -918,7 +918,7 @@ function switchService(svc){
         </div>
 
         <p class="file-error" id="eFileError"></p>
-        <div class="total-size-info">Total: <span id="eTotalSize">0.00 MB</span> / 25 MB</div>
+        <div class="total-size-info">Total: <span id="eTotalSize">0.00 MB</span> / 50 MB</div>
 
         <div class="field-group cols-2" style="margin-top:14px;">
           <div class="field">
@@ -1200,7 +1200,7 @@ function switchService(svc){
           <div class="doc-upload-mini"><input type="file" multiple accept=".pdf,.doc,.docx,.txt" onchange="cCatFiles(event,'soporte')"/><span class="doc-upload-mini-text">PDF, DOC, DOCX</span><span class="doc-upload-mini-btn">+ Adjuntar</span></div>
           <div class="file-list-area" id="clist-soporte"></div>
           <p class="file-error" id="cFileError"></p>
-          <div class="total-size-info">Total: <span id="cTotalSize">0.00 MB</span> / 25 MB</div>
+          <div class="total-size-info">Total: <span id="cTotalSize">0.00 MB</span> / 50 MB</div>
         </div>
 
         <!-- Descripción del objeto -->
@@ -1464,7 +1464,7 @@ function switchService(svc){
           <div class="doc-upload-mini"><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.tiff" onchange="rCatFiles(event,'soporte')"/><span class="doc-upload-mini-text">PDF, DOC, DOCX, JPG, PNG</span><span class="doc-upload-mini-btn">+ Adjuntar</span></div>
           <div class="file-list-area" id="rlist-soporte"></div>
           <p class="file-error" id="rFileError"></p>
-          <div class="total-size-info">Total: <span id="rTotalSize">0.00 MB</span> / 25 MB</div>
+          <div class="total-size-info">Total: <span id="rTotalSize">0.00 MB</span> / 50 MB</div>
         </div>
 
         <div class="btn-row end"><button type="button" class="btn btn-primary" onclick="rNext(1)">Continuar <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
@@ -1772,11 +1772,11 @@ function switchService(svc){
       <!-- PANEL D2: Documentación aportada -->
       <div class="form-panel" id="dp-2">
         <p class="panel-title">Documentación de apoyo</p>
-        <p class="panel-subtitle">Aporte todos los documentos que puedan ser relevantes para elaborar el dictamen: contratos, resoluciones, comunicaciones, informes periciales, material gráfico y vídeos. <strong>Tamaño máximo total: 25 MB.</strong></p>
+        <p class="panel-subtitle">Aporte todos los documentos que puedan ser relevantes para elaborar el dictamen: contratos, resoluciones, comunicaciones, informes periciales, material gráfico y vídeos. <strong>Tamaño máximo total: 50 MB (máx. 20 MB por archivo).</strong></p>
 
         <div class="mandatory-alert">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          <span>Los archivos no pueden superar <strong>25 MB en total</strong>. Si dispone de documentación más voluminosa, indíquelo en la descripción y contacte con nosotros.</span>
+          <span>Los archivos no pueden superar <strong>50 MB en total</strong> (máx. 20 MB por archivo). Si dispone de documentación más voluminosa, indíquelo en la descripción y contacte con nosotros.</span>
         </div>
 
         <!-- DOCUMENTOS ESCRITOS -->
@@ -1857,7 +1857,7 @@ function switchService(svc){
             <div style="display:flex;align-items:center;gap:7px;"><span class="doc-cat-badge" id="dbadge-videos">✓</span><svg class="doc-cat-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
           </button>
           <div class="doc-category-body">
-            <div class="notice notice-warn" style="margin-bottom:10px;"><strong>Aviso:</strong> Los vídeos consumen gran parte del límite de 25 MB. Si los archivos son muy pesados, indíquelo en la descripción y facilite un enlace de descarga seguro.</div>
+            <div class="notice notice-warn" style="margin-bottom:10px;"><strong>Aviso:</strong> Los vídeos consumen gran parte del límite de 50 MB. Si los archivos son muy pesados, indíquelo en la descripción y facilite un enlace de descarga seguro.</div>
             <div class="doc-upload-mini" onclick="document.getElementById('dFileVideos').click()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               <span style="font-size:.82rem;">Añadir vídeos</span>
@@ -1870,7 +1870,7 @@ function switchService(svc){
         </div>
 
         <div style="margin-top:14px;padding:10px 14px;background:rgba(91,35,130,.06);border:1px solid rgba(91,35,130,.2);border-radius:var(--radius);font-size:.82rem;color:var(--text-lt);">
-          Tamaño total adjunto: <strong id="dTotalSize">0.00 MB</strong> / máx. 25 MB
+          Tamaño total adjunto: <strong id="dTotalSize">0.00 MB</strong> / máx. 50 MB
         </div>
 
         <div class="btn-row">
@@ -2106,6 +2106,25 @@ function switchService(svc){
 <div class="modal-overlay" id="modalCET" onclick="closeModalOutside(event,'modalCET')"><div class="modal-box"><button class="modal-close" onclick="closeModal('modalCET')">&times;</button><h3>Contrato de Encargado del Tratamiento</h3><p style="font-size:.79rem;color:var(--text-lt);">Conforme al artículo 28 RGPD y al artículo 33 LOPDGDD</p><h4>PARTES</h4><p><strong>Responsable del tratamiento:</strong> El letrado o despacho identificado en el formulario como «Letrado/a».</p><p><strong>Encargado del tratamiento:</strong> IURE REDACTA — sistema de redacción jurídica asistida por IA (www.iureredacta.com — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a2cbd7d0c7d0c7c6c3c1d6c3e2c5cfc3cbce8cc1cdcf">[email&#160;protected]</a>).</p><h4>OBJETO</h4><p>Regulación del tratamiento de datos personales para la única finalidad de redactar el documento encargado (escrito procesal, contrato o requerimiento).</p><h4>SUB-ENCARGADOS AUTORIZADOS</h4><p>Con autorización general, IURE REDACTA utiliza los siguientes sub-encargados bajo marcos RGPD válidos: <strong>Google LLC</strong> (Google Drive/Apps Script — almacenamiento cifrado del expediente); <strong>EmailJS Inc.</strong> (notificaciones). Ambos sujetos a cláusulas contractuales tipo UE. No se contratarán otros sub-encargados sin comunicación previa.</p><h4>OBLIGACIONES DEL ENCARGADO</h4><ol><li>Tratar los datos únicamente para la finalidad del encargo.</li><li>Garantizar la confidencialidad de las personas autorizadas.</li><li>Adoptar medidas de seguridad (art. 32 RGPD), incluyendo cifrado TLS 1.3 y en reposo.</li><li>No subcontratar más allá de los sub-encargados declarados sin autorización previa.</li><li>Asistir al Responsable en el ejercicio de derechos de los interesados.</li><li><strong>Eliminar todos los datos en un máximo de 24 horas</strong> tras la entrega, sin conservar copias.</li><li>Notificar al Responsable cualquier brecha de seguridad en el plazo máximo de 24 horas.</li><li>Facilitar al Responsable la información necesaria para acreditar el cumplimiento.</li></ol><h4>OBLIGACIONES DEL RESPONSABLE</h4><ol><li>Facilitar solo los datos estrictamente necesarios.</li><li>Garantizar la licitud del tratamiento de los datos facilitados.</li><li>Informar a los interesados conforme a los arts. 13 y 14 RGPD.</li></ol><h4>DURACIÓN</h4><p>Desde la aceptación electrónica hasta la eliminación de los datos (máximo 24h tras la entrega).</p><h4>ACEPTACIÓN ELECTRÓNICA Y EVIDENCIA</h4><p>La aceptación mediante casilla tiene plena validez jurídica conforme al art. 23 LSSI-CE y la Directiva 2000/31/CE, quedando registrada con marca de tiempo en el PDF de acuse descargable.</p></div></div>
 
 <div class="modal-overlay" id="modalIA" onclick="closeModalOutside(event,'modalIA')"><div class="modal-box"><button class="modal-close" onclick="closeModal('modalIA')">&times;</button><h3>Política de Inteligencia Artificial</h3><p style="font-size:.79rem;color:var(--text-lt);">Conforme al Reglamento (UE) 2024/1689 — AI Act</p><h4>Sistema de IA utilizado</h4><p>IURE REDACTA utiliza modelos de lenguaje de gran escala (LLM) de tipo generativo para asistir en la redacción de documentos jurídicos. El servicio opera como <strong>responsable del despliegue</strong> (deployer) conforme al art. 3.4 del AI Act.</p><h4>Clasificación de riesgo</h4><p>El servicio se clasifica como sistema de IA de <strong>riesgo limitado</strong> conforme al Reglamento (UE) 2024/1689. No toma decisiones vinculantes sobre personas físicas, no sustituye la dirección letrada y el resultado es siempre un borrador sujeto a revisión humana obligatoria.</p><h4>Obligaciones de transparencia (art. 50 AI Act)</h4><p>Se informa expresamente al usuario de que los documentos generados son elaborados mediante inteligencia artificial generativa. Esta información se recoge en el PDF de acuse con marca de tiempo.</p><h4>Supervisión humana obligatoria</h4><p>El diseño del servicio hace estructuralmente obligatoria la revisión por un letrado en ejercicio antes de cualquier uso del borrador. Ningún documento puede ser utilizado sin esta intervención humana cualificada.</p><h4>Exactitud y alucinaciones</h4><p>Los sistemas de IA generativa pueden producir contenido incorrecto, incompleto o contrario a derecho («alucinación»). IURE REDACTA no garantiza la exactitud jurídica del borrador. La verificación y corrección corresponde íntegramente al letrado revisor.</p><h4>Datos de entrenamiento</h4><p>IURE REDACTA no entrena modelos propios. Los modelos utilizados son provistos por terceros (Anthropic, Inc.) sujetos a sus propias políticas de uso y privacidad.</p><h4>Contacto</h4><p>Para consultas relativas al uso de IA: <a href="/cdn-cgi/l/email-protection#dbaba9b2adbab8b2bfbabf9bb2aea9bea9bebfbab8afbaf5b8b4b6"><span class="__cf_email__" data-cfemail="3c4c4e554a5d5f55585d587c55494e594e59585d5f485d125f5351">[email&#160;protected]</span></a></p></div></div>
+
+
+<!-- MODAL LÍMITE ARCHIVOS -->
+<div class="modal-overlay" id="modalLimiteArchivos" onclick="closeModalOutside(event,'modalLimiteArchivos')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalLimiteArchivos')">&times;</button>
+    <h3>Documentación voluminosa</h3>
+    <p>El volumen total de sus archivos supera el límite de <strong>50 MB</strong> admitido por el sistema.</p>
+    <p>Para encargos con documentación más voluminosa, puede contactar directamente con IURE REDACTA y remitir los archivos a través de <strong>WeTransfer</strong> u otro sistema de transferencia de archivos que acuerden.</p>
+    <div style="background:#f7f5f0;border-radius:8px;padding:16px;margin:16px 0;text-align:center;">
+      <p style="margin:0 0 12px;font-size:.9rem;color:var(--navy);font-weight:600;">Contactar con IURE REDACTA</p>
+      <a href="mailto:iureredacta@gmail.com?subject=Documentación%20voluminosa%20-%20Encargo&body=Estimados%20señores%2C%0A%0ADeseo%20remitir%20documentación%20voluminosa%20para%20un%20encargo.%20Por%20favor%2C%20indíquenme%20cómo%20proceder.%0A%0AGracias." 
+         style="display:inline-block;background:var(--navy);color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem;">
+        Enviar correo a IURE REDACTA
+      </a>
+    </div>
+    <p style="font-size:.8rem;color:var(--text-lt);margin-top:8px;">También puede continuar el encargo adjuntando solo los documentos más relevantes (hasta 50 MB en total, máx. 20 MB por archivo) e indicar en la descripción que dispone de documentación adicional.</p>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════════════
      JAVASCRIPT COMPARTIDO
@@ -2433,7 +2452,8 @@ DURACIÓN: Desde la aceptación electrónica hasta la eliminación de los datos 
 ACEPTACIÓN ELECTRÓNICA Y EVIDENCIA: La aceptación mediante casilla tiene plena validez jurídica conforme al art. 23 LSSI-CE y la Directiva 2000/31/CE, quedando registrada con marca de tiempo en el PDF de acuse descargable por el Responsable.`;
 
 /* ── GLOBALS ─────────────────────────────────────── */
-const MAX_BYTES = 25*1024*1024;
+const MAX_BYTES_PER_FILE = 20*1024*1024;
+const MAX_BYTES = 50*1024*1024;
 // Estado para cada servicio
 const state = {
   e: { files:[], grafica:[], data:null },
@@ -2489,7 +2509,7 @@ function eCatFiles(e,cat){
   const fe=document.getElementById('eFileError'); let total=totalBytesFor('e'); const errs=[];
   Array.from(e.target.files).forEach(f=>{
     if(state.e.files.find(u=>u.file.name===f.name)) return;
-    if(total+f.size>MAX_BYTES){errs.push(`«${f.name}» supera 25 MB`);return;}
+    if(f.size>MAX_BYTES_PER_FILE){errs.push(`«${f.name}» supera 20 MB por archivo`);return;} if(total+f.size>MAX_BYTES){abrirModalLimiteArchivos();return;}
     state.e.files.push({file:f,category:cat}); total+=f.size;
   });
   fe.textContent=errs.join(' '); fe.style.display=errs.length?'block':'none';
@@ -2518,7 +2538,7 @@ function eGraficaFiles(e){
   const fe=document.getElementById('eFileError'); let total=totalBytesFor('e'); const errs=[];
   Array.from(e.target.files).forEach(f=>{
     if(state.e.grafica.find(u=>u.file.name===f.name)) return;
-    if(total+f.size>MAX_BYTES){errs.push(`«${f.name}» supera 25 MB`);return;}
+    if(f.size>MAX_BYTES_PER_FILE){errs.push(`«${f.name}» supera 20 MB por archivo`);return;} if(total+f.size>MAX_BYTES){abrirModalLimiteArchivos();return;}
     state.e.grafica.push({file:f,desc:''}); total+=f.size;
   });
   fe.textContent=errs.join(' '); fe.style.display=errs.length?'block':'none';
@@ -2554,7 +2574,7 @@ function cCatFiles(e,cat){
   const fe=document.getElementById('cFileError'); let total=totalBytesFor('c'); const errs=[];
   Array.from(e.target.files).forEach(f=>{
     if(state.c.files.find(u=>u.file.name===f.name)) return;
-    if(total+f.size>MAX_BYTES){errs.push(`«${f.name}» supera 25 MB`);return;}
+    if(f.size>MAX_BYTES_PER_FILE){errs.push(`«${f.name}» supera 20 MB por archivo`);return;} if(total+f.size>MAX_BYTES){abrirModalLimiteArchivos();return;}
     state.c.files.push({file:f,category:cat}); total+=f.size;
   });
   fe.textContent=errs.join(' '); fe.style.display=errs.length?'block':'none';
@@ -2576,7 +2596,7 @@ function rCatFiles(e,cat){
   const fe=document.getElementById('rFileError'); let total=totalBytesFor('r'); const errs=[];
   Array.from(e.target.files).forEach(f=>{
     if(state.r.files.find(u=>u.file.name===f.name)) return;
-    if(total+f.size>MAX_BYTES){errs.push(`«${f.name}» supera 25 MB`);return;}
+    if(f.size>MAX_BYTES_PER_FILE){errs.push(`«${f.name}» supera 20 MB por archivo`);return;} if(total+f.size>MAX_BYTES){abrirModalLimiteArchivos();return;}
     state.r.files.push({file:f,category:cat}); total+=f.size;
   });
   fe.textContent=errs.join(' '); fe.style.display=errs.length?'block':'none';
@@ -2753,7 +2773,7 @@ function dNext(cur){
     if(!(document.getElementById('dHechos')?.value||'').trim()){alert('La descripción de los hechos es obligatoria.');return;}
   }
   if(cur===2){
-    if(totalBytesFor('d')>MAX_BYTES){alert('El volumen total de los archivos adjuntos supera los 25 MB.');return;}
+    if(totalBytesFor('d')>MAX_BYTES){abrirModalLimiteArchivos();return;}
   }
   if(cur===3){
     if(!validateLetrado('d')) return;
@@ -2771,7 +2791,7 @@ function addFilesDict(svc, cat, e){
   const fileList = e.target ? e.target.files : (e.files || e);
   Array.from(fileList).forEach(f=>{
     if(state[svc].files.find(u=>u.file.name===f.name&&u.category===cat)) return;
-    if(total+f.size>MAX_BYTES){errs.push(`«${f.name}» supera el límite de 25 MB`);return;}
+    if(f.size>MAX_BYTES_PER_FILE){errs.push(`«${f.name}» supera 20 MB por archivo`);return;} if(total+f.size>MAX_BYTES){abrirModalLimiteArchivos();return;}
     state[svc].files.push({file:f,category:cat}); total+=f.size;
   });
   if(fe){fe.textContent=errs.join(' ');fe.style.display=errs.length?'block':'none';}
@@ -3413,6 +3433,7 @@ function dlBlob(blob,fn){ const url=URL.createObjectURL(blob),a=document.createE
 function rndRef(){ return String(Math.floor(Math.random()*900000)+100000); }
 function updateCounter(el,id,max){ const n=el.value.length,c=document.getElementById(id); if(!c)return; c.textContent=n.toLocaleString('es-ES')+' / '+max.toLocaleString('es-ES'); c.classList.toggle('warn',n>max*.85); }
 function toggleFaq(btn){ const it=btn.closest('.faq-item'),open=it.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');}); if(!open){it.classList.add('open');btn.setAttribute('aria-expanded','true');} }
+function abrirModalLimiteArchivos(){ openModal('modalLimiteArchivos'); }
 function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
 function closeModalOutside(e,id){ if(e.target===document.getElementById(id)) closeModal(id); }
