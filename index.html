@@ -3085,10 +3085,9 @@ async function uploadToDrive(svc, d){
   if(d.remitente?.nombre) datos.remitente=d.remitente.nombre;
   if(d.destinatario?.nombre) datos.destinatario=d.destinatario.nombre;
   try{
-    // Sin base64 para no superar límite de URL (413) — solo metadatos de archivos
+    // Envío via formulario oculto (evita CORS y límite de URL)
     const payloadObj={ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64.map(a=>({nombre:a.nombre,mimeType:a.mimeType,tamano:a.tamano,categoria:a.categoria})),datos};
-    const payloadStr=encodeURIComponent(JSON.stringify(payloadObj));
-    await fetch(DRIVE_WEBAPP_URL+'?payload='+payloadStr,{method:'GET',mode:'no-cors'});
+    submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadObj));
     progressEl.innerHTML='✅ Encargo enviado correctamente. Recibirá el documento y el enlace a Drive por email en 24–48h hábiles.';
   }catch(e){progressEl.textContent='⚠️ Drive no disponible. Encargo registrado correctamente.';console.warn('Drive fetch:',e);}
 }
@@ -3359,6 +3358,28 @@ function downloadPDFEncargo(svc){
   doc.save('IureRedacta_Encargo_'+d.ref+'.pdf');
 }
 function dlJSON(svc){ const d=state[svc].data; if(!d) return; dlBlob(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),`IureRedacta_${d.ref}.json`); }
+function submitViaHiddenForm(url, jsonData){
+  try{
+    // Crear iframe oculto como target
+    const iframeName='iure_submit_'+Date.now();
+    const iframe=document.createElement('iframe');
+    iframe.name=iframeName; iframe.style.display='none';
+    document.body.appendChild(iframe);
+    // Crear formulario oculto
+    const form=document.createElement('form');
+    form.method='POST'; form.action=url; form.target=iframeName;
+    form.style.display='none';
+    const input=document.createElement('input');
+    input.type='hidden'; input.name='payload'; input.value=jsonData;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+    // Limpiar tras 10 segundos
+    setTimeout(()=>{
+      try{document.body.removeChild(form);document.body.removeChild(iframe);}catch(e){}
+    },10000);
+  }catch(err){console.warn('submitViaHiddenForm error:',err);}
+}
 function dlBlob(blob,fn){ const url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url; a.download=fn; a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000); }
 function rndRef(){ return String(Math.floor(Math.random()*900000)+100000); }
 function updateCounter(el,id,max){ const n=el.value.length,c=document.getElementById(id); if(!c)return; c.textContent=n.toLocaleString('es-ES')+' / '+max.toLocaleString('es-ES'); c.classList.toggle('warn',n>max*.85); }
