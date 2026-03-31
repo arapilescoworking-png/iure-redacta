@@ -3095,7 +3095,8 @@ async function uploadToDrive(svc, d){
   if(d.remitente?.nombre) datos.remitente=d.remitente.nombre;
   if(d.destinatario?.nombre) datos.destinatario=d.destinatario.nombre;
   try{
-    const resp=await fetch(DRIVE_WEBAPP_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64,datos})});
+    const payloadStr=JSON.stringify({ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:archivosB64,datos});
+    const resp=await fetch(DRIVE_WEBAPP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:payloadStr});
     const json=await resp.json();
     if(json.ok&&json.data){driveLinks[svc]=json.data;progressEl.innerHTML=`✅ Expediente en Drive: <a href="${json.data.urlExpediente}" target="_blank" style="color:var(--navy);font-weight:600;">Ver carpeta »</a>`;}
     else{progressEl.textContent='⚠️ No se pudo crear la carpeta Drive. El encargo sigue registrado.';console.error('Drive:',json);}
