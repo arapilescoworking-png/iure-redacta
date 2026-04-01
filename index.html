@@ -3130,9 +3130,16 @@ function buildLetradoBlock(svc){
       <div class="notice notice-info" style="margin-bottom:8px;">El primer encargo es <strong>gratuito</strong>.</div>
       <div class="checkbox-row"><input type="checkbox" id="${prefix}WantsInvoice" onchange="document.getElementById('${prefix}BillingPanel').style.display=this.checked?'block':'none'"/><label class="checkbox-label" for="${prefix}WantsInvoice">Deseo recibir <strong>factura justificativa</strong>.</label></div>
       <div class="billing-panel" id="${prefix}BillingPanel">
-        <p class="billing-panel-title">Datos de facturación</p>
-        <div class="field-group cols-2"><div class="field"><label for="${prefix}FacNombre">Nombre / Razón social <span class="req">*</span></label><input type="text" id="${prefix}FacNombre" placeholder="Titular"/></div><div class="field"><label for="${prefix}FacNIF">NIF / CIF <span class="req">*</span></label><input type="text" id="${prefix}FacNIF" placeholder="00000000A"/></div></div>
-        <div class="field"><label for="${prefix}FacDir">Dirección fiscal <span class="req">*</span></label><input type="text" id="${prefix}FacDir" placeholder="Calle, número, CP, municipio, provincia"/></div>
+        <p class="billing-panel-title">Datos de facturación — conforme al RD 1619/2012</p>
+        <div class="field-group cols-2">
+          <div class="field"><label for="${prefix}FacNombre">Nombre / Razón social <span class="req">*</span></label><input type="text" id="${prefix}FacNombre" placeholder="Nombre completo o razón social"/></div>
+          <div class="field"><label for="${prefix}FacNIF">NIF / CIF / NIE <span class="req">*</span></label><input type="text" id="${prefix}FacNIF" placeholder="00000000A"/></div>
+        </div>
+        <div class="field"><label for="${prefix}FacDir">Domicilio fiscal <span class="req">*</span></label><input type="text" id="${prefix}FacDir" placeholder="Calle y número, código postal, municipio, provincia"/></div>
+        <div class="field-group cols-2">
+          <div class="field"><label for="${prefix}FacEmail">Correo electrónico para la factura</label><input type="email" id="${prefix}FacEmail" placeholder="facturacion@ejemplo.com"/></div>
+          <div class="field"><label for="${prefix}FacConcepto">Referencia / Concepto <span class="hint">— opcional</span></label><input type="text" id="${prefix}FacConcepto" placeholder="Ej.: Nº pedido, expediente interno…"/></div>
+        </div>
       </div>
     </div>
     <div class="cet-block">
@@ -3162,9 +3169,9 @@ function validateLetrado(prefix){
   if(!document.getElementById(prefix+'Consent1').checked){alert('Debe aceptar la política de privacidad.');return false;}
   if(!document.getElementById(prefix+'Consent2').checked){alert('Debe aceptar el aviso profesional.');return false;}
   if(document.getElementById(prefix+'WantsInvoice')?.checked){
-    if(!document.getElementById(prefix+'FacNombre')?.value.trim()){alert('Indique el nombre para la factura.');return false;}
-    if(!document.getElementById(prefix+'FacNIF')?.value.trim()){alert('Indique el NIF para la factura.');return false;}
-    if(!document.getElementById(prefix+'FacDir')?.value.trim()){alert('Indique la dirección fiscal.');return false;}
+    if(!document.getElementById(prefix+'FacNombre')?.value.trim()){alert('Indique el nombre o razón social para la factura.');return false;}
+    if(!document.getElementById(prefix+'FacNIF')?.value.trim()){alert('Indique el NIF/CIF/NIE para la factura.');return false;}
+    if(!document.getElementById(prefix+'FacDir')?.value.trim()){alert('Indique el domicilio fiscal completo.');return false;}
   }
   return true;
 }
@@ -3175,7 +3182,7 @@ function collectLetradoData(prefix){
     letrado:{nombre:document.getElementById(prefix+'LetNombre')?.value.trim()||'',email:document.getElementById(prefix+'LetEmail')?.value.trim()||'',numColegiacion:document.getElementById(prefix+'LetNum')?.value.trim()||'',colegio:document.getElementById(prefix+'LetColegio')?.value.trim()||'',telefono:document.getElementById(prefix+'LetTel')?.value.trim()||''},
     procurador:{nombre:document.getElementById(prefix+'ProcNombre')?.value.trim()||'',email:document.getElementById(prefix+'ProcEmail')?.value.trim()||'',numColegiacion:document.getElementById(prefix+'ProcNum')?.value.trim()||'',colegio:document.getElementById(prefix+'ProcColegio')?.value.trim()||''},
     cliente:{nombre:document.getElementById(prefix+'ClienteNombre')?.value.trim()||'',nif:document.getElementById(prefix+'ClienteNIF')?.value.trim()||'',domicilio:document.getElementById(prefix+'ClienteDom')?.value.trim()||''},
-    facturacion:document.getElementById(prefix+'WantsInvoice')?.checked?{nombre:document.getElementById(prefix+'FacNombre')?.value.trim()||'',nif:document.getElementById(prefix+'FacNIF')?.value.trim()||'',direccion:document.getElementById(prefix+'FacDir')?.value.trim()||''}:null,
+    facturacion:document.getElementById(prefix+'WantsInvoice')?.checked?{nombre:document.getElementById(prefix+'FacNombre')?.value.trim()||'',nif:document.getElementById(prefix+'FacNIF')?.value.trim()||'',domicilioFiscal:document.getElementById(prefix+'FacDir')?.value.trim()||'',email:document.getElementById(prefix+'FacEmail')?.value.trim()||'',concepto:document.getElementById(prefix+'FacConcepto')?.value.trim()||''}:null,
     cetAceptado:true,cetTimestamp:new Date().toISOString()
   };
 }
@@ -3900,6 +3907,19 @@ function downloadPDFEncargo(svc){
   }
 
   // Pie
+  y+=4;addSep();
+  // DATOS DE FACTURACIÓN (si los hay)
+  if(d.facturacion){
+    y+=2;addSep();
+    addSection('DATOS DE FACTURACIÓN — RD 1619/2012');
+    addField('Nombre / Razón social',d.facturacion.nombre);
+    addField('NIF / CIF / NIE',d.facturacion.nif);
+    addField('Domicilio fiscal',d.facturacion.domicilioFiscal);
+    if(d.facturacion.email) addField('Email factura',d.facturacion.email);
+    if(d.facturacion.concepto) addField('Referencia',d.facturacion.concepto);
+    addField('Servicio facturado',svcNames[svc]||'Servicio jurídico');
+    addLine('Nota: Los importes serán comunicados por separado. IVA aplicable según normativa vigente.',gray,8,false,2);
+  }
   y+=4;addSep();
   addLine('AVISO: Este documento es un resumen del encargo enviado. El documento jurídico generado debe ser revisado, adaptado y suscrito por el letrado antes de cualquier uso. Datos eliminados en 24h.',gray,8,false,0);
 
