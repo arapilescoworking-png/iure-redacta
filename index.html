@@ -3574,7 +3574,7 @@ async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
   btn.textContent='Enviando…';
   await sendEmail(d);
   // 4. Guardar contacto en Gmail Contacts (yureredacta@gmail.com)
-  await guardarContactoGmail(d.letrado.nombre, d.letrado.email);
+  await guardarContactoGmail(d.letrado.nombre, d.letrado.email, d.letrado.numColegiacion, d.letrado.colegio);
   // 4. Panel de éxito
   document.getElementById(refId).textContent=d.ref;
   document.getElementById(testId).textContent=buildTestText(d);
@@ -4044,15 +4044,16 @@ function aceptarCookies(){
 }
 
 /* ── GUARDAR CONTACTO EN GMAIL (via Apps Script) ──── */
-async function guardarContactoGmail(nombre, email){
+async function guardarContactoGmail(nombre, email, numColegiacion, colegio){
   if(!nombre || !email) return;
-  if(!DRIVE_WEBAPP_URL || DRIVE_WEBAPP_URL.includes('AKfycb')) {
-    // Apps Script URL configurada — llamar
-    try {
-      await fetch(DRIVE_WEBAPP_URL + '?action=addContact&nombre=' + encodeURIComponent(nombre) + '&email=' + encodeURIComponent(email), { method: 'GET', mode: 'no-cors' });
-      console.log('Contacto enviado a Gmail Contacts:', nombre, email);
-    } catch(e){ console.warn('No se pudo guardar el contacto:', e); }
-  }
+  if(!DRIVE_WEBAPP_URL || DRIVE_WEBAPP_URL.includes('PEGAR')) return;
+  try {
+    const payload = { action:'addContact', nombre, email,
+      numColegiacion: numColegiacion||'', colegio: colegio||'' };
+    const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payload));
+    await fetch(url, { method:'GET', redirect:'follow' });
+    console.log('Contacto guardado en Gmail:', nombre, email);
+  } catch(e){ console.warn('No se pudo guardar contacto:', e); }
 }
 
 /* ── EXPORTAR LOGO SVG como favicon inline ──────────── */
