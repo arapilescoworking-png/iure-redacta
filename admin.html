@@ -944,14 +944,14 @@ function abrirClaudePanel(folderId){
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn-copy" onclick="descargarTodos()" style="background:var(--navy);">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          Abrir todos los archivos
+          Descargar todos los archivos
         </button>
-        <a href="${exp.urlDocs||exp.urlExpediente}" target="_blank" class="btn-copy" style="background:#1a5e35;text-decoration:none;">
+        <a href="${exp.urlDocs}" target="_blank" class="btn-copy" style="background:#1a5e35;text-decoration:none;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          Abrir carpeta en Drive
+          Ver carpeta Documentos en Drive
         </a>
       </div>
-      <p style="font-size:.72rem;color:var(--text-lt);margin-top:6px;">💡 En Drive puedes seleccionar todos los archivos y descargarlos en un .zip de una sola vez.</p>
+      <p style="font-size:.72rem;color:var(--text-lt);margin-top:6px;">💡 Los archivos se descargarán en su carpeta de Descargas. Si el navegador bloquea las descargas múltiples, pulse "Permitir" cuando lo solicite.</p>
     </div>
     <div class="claude-step">
       <div class="claude-step-title"><span class="claude-step-num">2</span>Copia el prompt y pégalo en Claude</div>
@@ -968,6 +968,12 @@ function abrirClaudePanel(folderId){
       <p style="font-size:.78rem;color:var(--text-md);margin-top:6px;">Cuando Claude genere el documento, súbelo aquí desde el botón <strong>"Subir documento generado"</strong> y luego pulsa <strong>"Enviar al cliente"</strong>.</p>
     </div>
   `;
+
+  // Guardar lista de archivos para descarga
+  window._claudeArchivos = [];
+  if(urlEncargo) window._claudeArchivos.push({ nombre: 'ENCARGO_' + exp.ref + '.pdf', url: urlEncargo });
+  archivosCliente.forEach(f => window._claudeArchivos.push(f));
+  window._claudeRef = exp.ref;
 
   document.getElementById('claudePanel').classList.add('visible');
 }
@@ -1027,13 +1033,37 @@ INSTRUCCIONES ADICIONALES:
 }
 
 function descargarTodos(){
-  // Recoger todos los enlaces del panel
-  const links = document.querySelectorAll('#claudePanelBody .claude-file-link');
-  if(!links.length){ showToast('No hay archivos para abrir.','err'); return; }
-  links.forEach((link, i) => {
-    setTimeout(() => { window.open(link.href, '_blank'); }, i * 400);
+  const archivos = window._claudeArchivos || [];
+  if(!archivos.length){ showToast('No hay archivos para descargar.','err'); return; }
+
+  // Convertir URL de Drive view a URL de descarga directa
+  // https://drive.google.com/file/d/FILE_ID/view -> https://drive.google.com/uc?export=download&id=FILE_ID
+  let descargados = 0;
+  archivos.forEach((arch, i) => {
+    setTimeout(() => {
+      let url = arch.url || '';
+      // Extraer FILE_ID de la URL de Drive
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if(match) {
+        const fileId = match[1];
+        const downloadUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = arch.nombre || ('archivo_' + (i+1));
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        descargados++;
+      } else {
+        // URL no es de Drive, abrir en pestaña
+        window.open(url, '_blank');
+        descargados++;
+      }
+    }, i * 800); // 800ms entre descargas para evitar bloqueos del navegador
   });
-  showToast('Abriendo ' + links.length + ' archivo(s)…','ok');
+
+  showToast('Descargando ' + archivos.length + ' archivo(s)… Revise su carpeta de Descargas.','ok');
 }
 
 function copiarPrompt(){
