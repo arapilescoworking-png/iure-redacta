@@ -421,6 +421,9 @@ textarea{resize:vertical;min-height:100px;line-height:1.7;}
 .checkbox-label{font-size:.85rem;color:var(--text-md);line-height:1.55;cursor:pointer;}
 .checkbox-label strong{color:var(--text);font-weight:600;}
 .checkbox-label a{color:var(--navy);}
+.consent-text{font-size:.85rem;color:var(--text-md);line-height:1.55;cursor:pointer;border-bottom:1px dashed rgba(27,45,94,.3);padding-bottom:1px;transition:color .2s;}
+.consent-text:hover{color:var(--navy);}
+.consent-hint{font-size:.74rem;color:var(--text-lt);display:block;margin-top:2px;}
 
 /* BILLING */
 .billing-panel{display:none;border:1px solid var(--gold);border-radius:var(--radius-lg);background:rgba(200,168,75,.05);padding:16px 18px;margin-top:8px;animation:fadeIn .3s ease;}
@@ -3135,14 +3138,14 @@ function buildLetradoBlock(svc){
     <div class="cet-block">
       <div class="cet-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4"/></svg>Contrato de Encargado del Tratamiento (art. 28 RGPD)</div>
       <p class="cet-subtitle">El art. 28 RGPD exige la suscripción de un CET cuando el letrado (responsable del tratamiento) encarga a IURE REDACTA (encargado) el procesamiento de datos personales de sus clientes. La aceptación electrónica tiene plena validez jurídica conforme al art. 23 LSSI-CE, quedando registrada con marca de tiempo en el PDF de acuse.</p>
-      <div class="checkbox-row"><input type="checkbox" id="${prefix}ConsentCET" required/><label class="checkbox-label" for="${prefix}ConsentCET"><strong>Acepto y suscribo el Contrato de Encargado del Tratamiento</strong> en nombre del responsable del tratamiento identificado como letrado/a. <a href="#" onclick="openModal('modalCET');return false;">Leer el contrato completo.</a></label></div>
+      <div class="checkbox-row"><input type="checkbox" id="${prefix}ConsentCET" required/><span class="consent-text" onclick="openModal('modalCET')"><strong>Acepto y suscribo el Contrato de Encargado del Tratamiento</strong> en nombre del responsable del tratamiento identificado como letrado/a.<span class="consent-hint">📄 Pulse aquí para leer el contrato completo antes de aceptar</span></span></div>
     </div>
     <div class="section-block">
       <div class="section-block-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Consentimientos</div>
       <div class="notice notice-warn"><strong>Aviso:</strong> Todos los datos serán eliminados en máximo <strong>24 horas</strong> tras la entrega. Sin registro permanente.</div>
-      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent1" required/><label class="checkbox-label" for="${prefix}Consent1">He leído y acepto la <a href="#" onclick="openModal('modalRGPD');return false;">Política de Privacidad</a> incluyendo la eliminación de datos en 24h. <strong>(Obligatorio)</strong></label></div>
-      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent2" required/><label class="checkbox-label" for="${prefix}Consent2">Entiendo que el documento generado es un <strong>borrador que debe ser revisado y suscrito por el letrado</strong> antes de cualquier uso. <a href="#" onclick="openModal('modalDisclaimer');return false;">Leer aviso.</a> <strong>(Obligatorio)</strong></label></div>
-      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent3"/><label class="checkbox-label" for="${prefix}Consent3">Autorizo comunicaciones sobre el estado del encargo. Revocable en privacidad@iureredacta.com.</label></div>
+      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent1" required/><span class="consent-text" onclick="openModal('modalRGPD')">He leído y acepto la <strong>Política de Privacidad</strong> incluyendo la eliminación garantizada de datos en 24h. <strong>(Obligatorio)</strong><span class="consent-hint">📄 Pulse aquí para leer la política de privacidad completa antes de aceptar</span></span></div>
+      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent2" required/><span class="consent-text" onclick="openModal('modalDisclaimer')">Entiendo que el documento generado es un <strong>borrador que debe ser revisado y suscrito por el letrado</strong> antes de cualquier uso. <strong>(Obligatorio)</strong><span class="consent-hint">📄 Pulse aquí para leer el aviso profesional completo antes de aceptar</span></span></div>
+      <div class="checkbox-row"><input type="checkbox" id="${prefix}Consent3"/><label class="checkbox-label" for="${prefix}Consent3">Autorizo comunicaciones sobre el estado del encargo. Revocable en <span style="color:var(--navy)">privacidad@iureredacta.com</span>.</label></div>
     </div>`;
 }
 
