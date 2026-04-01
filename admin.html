@@ -721,10 +721,9 @@ async function confirmarEnvio(folderId){
   if(!exp){ showToast('Error: datos del expediente no encontrados.','err'); return; }
   const { ref, email, letrado, servicio } = exp;
   console.log('[confirmarEnvio] folderId:', folderId, 'email:', email, 'ref:', ref);
-  if(!email){
-    showToast('No hay email del letrado registrado. El Apps Script buscará el email en Drive.','ok');
-  }
-  if(!confirm('¿Enviar el documento al letrado?\n\nRef: ' + ref + '\nEmail: ' + (email||'(se buscará en Drive)') + '\n\nSe programará el borrado de Drive en 24 horas.')) return;
+  // Si no hay email disponible, el Apps Script lo buscará en STATUS.json del expediente
+  if(!email){ email = ''; }
+  if(!confirm('¿Enviar el documento al letrado?\n\nRef: ' + ref + '\nEmail: ' + email + '\n\nSe programará el borrado de Drive en 24 horas.')) return;
   showToast('Enviando documento…','ok');
   const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
   console.log('[enviarAlCliente] result:', res);
