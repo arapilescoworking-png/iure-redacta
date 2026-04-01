@@ -624,19 +624,20 @@ function renderDetail(exp){
       <div class="upload-input-row">
         <input type="file" class="upload-file-input" id="file-${exp.folderId}" multiple
           accept=".pdf,.doc,.docx,.txt"/>
-        <button class="btn-upload" onclick="subirDocumento('${exp.folderId}','${esc(exp.ref)}')">Subir</button>
+        <button class="btn-upload" data-folderid="${exp.folderId}" data-ref="${esc(exp.ref)}" onclick="subirDocumento(this.dataset.folderid, this.dataset.ref)">Subir</button>
       </div>
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
-      <button class="btn-enviar" onclick="confirmarEnvio('${exp.folderId}')"
+      <button class="btn-enviar" data-folderid="${exp.folderId}"
+        onclick="confirmarEnvio(this.dataset.folderid)"
         ${exp.estado==='verde'?'disabled':''}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ${exp.estado==='verde'?'Ya enviado':'Enviar al cliente'}
       </button>
-      <button class="btn-estado" onclick="confirmarEstado('${exp.folderId}','amarillo')">Marcar: Pendiente envío 🟡</button>
-      <button class="btn-estado" onclick="confirmarEstado('${exp.folderId}','rojo')">Marcar: Sin iniciar 🔴</button>
-      <button class="btn-eliminar" onclick="confirmarEliminar('${exp.folderId}','${esc(exp.ref)}')">🗑️ Eliminar expediente</button>
+      <button class="btn-estado" data-folderid="${exp.folderId}" onclick="confirmarEstado(this.dataset.folderid,'amarillo')">Marcar: Pendiente envío 🟡</button>
+      <button class="btn-estado" data-folderid="${exp.folderId}" onclick="confirmarEstado(this.dataset.folderid,'rojo')">Marcar: Sin iniciar 🔴</button>
+      <button class="btn-eliminar" data-folderid="${exp.folderId}" data-ref="${esc(exp.ref)}" onclick="confirmarEliminar(this.dataset.folderid, this.dataset.ref)">🗑️ Eliminar expediente</button>
     </div>
   </div>`;
 }
@@ -715,7 +716,8 @@ function confirmarEnvio(folderId){
     'Enviar documento al cliente',
     `Se enviará el documento a <strong>${email}</strong> y se programará el borrado automático de Drive en 24 horas.<br><br>Esta acción no se puede deshacer.`,
     async ()=>{
-      console.log('[enviarAlCliente] sending to:', email, 'ref:', ref);
+      console.log('[enviarAlCliente] sending to:', email||'(vacío)', 'ref:', ref, 'letrado:', letrado||'(vacío)');
+      if(!email){ showToast('No hay email del letrado para este expediente. Revise Drive.','err'); return; }
       const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
       console.log('[enviarAlCliente] result:', res);
       if(res.ok){
