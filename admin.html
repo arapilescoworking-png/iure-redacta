@@ -716,69 +716,68 @@ function fileToB64(file){
 }
 
 // ── ENVIAR AL CLIENTE ────────────────────────────────────
-function confirmarEnvio(folderId){
+async function confirmarEnvio(folderId){
   const exp = expData[folderId];
   if(!exp){ showToast('Error: datos del expediente no encontrados.','err'); return; }
   const { ref, email, letrado, servicio } = exp;
-  showConfirm(
-    'Enviar documento al cliente',
-    `Se enviará el documento a <strong>${email}</strong> y se programará el borrado automático de Drive en 24 horas.<br><br>Esta acción no se puede deshacer.`,
-    async ()=>{
-      console.log('[enviarAlCliente] sending to:', email||'(vacío)', 'ref:', ref, 'letrado:', letrado||'(vacío)');
-      if(!email){ showToast('No hay email del letrado para este expediente. Revise Drive.','err'); return; }
-      const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
-      console.log('[enviarAlCliente] result:', res);
-      if(res.ok){
-        showToast('Documento enviado. Borrado programado en 24h.','ok');
-        // Actualizar semáforo sin recargar toda la lista
-        const card = document.getElementById('card-'+folderId);
-        if(card){
-          card.className = card.className.replace(/rojo|amarillo|verde/g,'verde');
-          const sem = card.querySelector('.semaforo');
-          if(sem) sem.className = 'semaforo verde';
-          const label = card.querySelector('.exp-estado-label');
-          if(label) label.textContent = 'Enviado';
-          const btnEnviar = card.querySelector('.btn-enviar');
-          if(btnEnviar){ btnEnviar.disabled=true; btnEnviar.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Ya enviado'; }
-          if(exp) exp.estado='verde';
-        }
-        actualizarStats();
-      } else {
-        showToast('Error al enviar: '+res.error,'err');
-      }
-    },
-    'green'
-  );
+  console.log('[confirmarEnvio] folderId:', folderId, 'email:', email, 'ref:', ref);
+  if(!email){
+    showToast('No hay email del letrado registrado. El Apps Script buscará el email en Drive.','ok');
+  }
+  if(!confirm('¿Enviar el documento al letrado?\n\nRef: ' + ref + '\nEmail: ' + (email||'(se buscará en Drive)') + '\n\nSe programará el borrado de Drive en 24 horas.')) return;
+  showToast('Enviando documento…','ok');
+  const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
+  console.log('[enviarAlCliente] result:', res);
+  if(res.ok){
+    showToast('Documento enviado. Borrado programado en 24 horas.','ok');
+    const card = document.getElementById('card-'+folderId);
+    if(card){
+      card.className = card.className.replace(/rojo|amarillo|verde/g,'verde');
+      const sem = card.querySelector('.semaforo');
+      if(sem) sem.className = 'semaforo verde';
+      const lbl = card.querySelector('.exp-estado-label');
+      if(lbl) lbl.textContent = 'Enviado';
+      const btnE = card.querySelector('.btn-enviar');
+      if(btnE){ btnE.disabled=true; btnE.textContent='Ya enviado'; }
+      if(exp) exp.estado='verde';
+    }
+    actualizarStats();
+  } else {
+    showToast('Error al enviar: '+(res.error||'sin detalle'),'err');
+  }
 }
 
 // ── ACTUALIZAR ESTADO ────────────────────────────────────
-function confirmarEstado(folderId, estado){
+async function confirmarEstado(folderId, estado){
   const labels = { rojo:'Sin iniciar 🔴', amarillo:'Pendiente envío 🟡' };
-  showConfirm(
-    'Cambiar estado',
-    `¿Marcar este expediente como <strong>${labels[estado]}</strong>?`,
-    async ()=>{
-      const res = await apiCall({ action:'actualizarEstado', folderId, estado });
-      if(res.ok){ showToast('Estado actualizado.','ok'); setTimeout(()=>cargarExpedientes(),1000); }
-      else showToast('Error: '+res.error,'err');
-    }
-  );
+  if(!confirm('¿Cambiar estado a: ' + labels[estado] + '?')) return;
+  const res = await apiCall({ action:'actualizarEstado', folderId, estado });
+  if(res.ok){
+    showToast('Estado actualizado.','ok');
+    setTimeout(()=>cargarExpedientes(),800);
+  } else {
+    showToast('Error: '+(res.error||'sin detalle'),'err');
+  }
 }
 
 // ── ELIMINAR EXPEDIENTE ──────────────────────────────────
-function confirmarEliminar(folderId, ref){
-  showConfirm(
-    'Eliminar expediente',
-    `¿Está seguro de que desea eliminar el expediente <strong>${ref}</strong> de Drive? Esta acción moverá la carpeta a la papelera.`,
-    async ()=>{
-      const res = await apiCall({ action:'eliminarExpediente', folderId });
-      console.log('[eliminar] result:', res);
-      if(res.ok){ 
-        showToast('Expediente eliminado.','ok'); 
-        setTimeout(()=>cargarExpedientes(),1000); 
-      } else { 
-        showToast('Error al eliminar: '+(res.error||'sin detalle'),'err'); 
-      }
+async function confirmarEliminar(folderId, ref){
+  console.log('[confirmarEliminar] folderId:', folderId, 'ref:', ref);
+  if(!confirm('¿Eliminar el expediente ' + ref + '?\nEsta acción moverá la carpeta a la papelera de Drive.')) return;
+  showToast('Eliminando…','ok');
+  const res = await apiCall({ action:'eliminarExpediente', folderId });
+  console.log('[eliminar] result:', res);
+  if(res.ok){
+    showToast('Expediente eliminado correctamente.','ok');
+    const card = document.getElementById('card-'+folderId);
+    if(card) card.remove();
+    expedientes = expedientes.filter(e=>e.folderId!==folderId);
+    actualizarStats();
+  } else {
+    showToast('Error al eliminar: '+(res.error||'sin detalle'),'err');
+  }
+  // dummy line to absorb extra closing
+  void 0;
     }
   );
 }
