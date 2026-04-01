@@ -732,9 +732,9 @@ function switchService(svc){
 </div>
 
 <!-- ══ MODAL MUESTRA RESULTADO (Próximamente) ══ -->
-<div class="modal-overlay" id="modalMuestra" onclick="closeModalOutside(event,'modalMuestra')" role="dialog" aria-modal="true" aria-labelledby="modalMuestraTit">
+<div class="modal-overlay" id="modalMuestraEscritos" onclick="closeModalOutside(event,'modalMuestraEscritos')" role="dialog" aria-modal="true" aria-labelledby="modalMuestraTit">
   <div class="modal-box modal-box-wide">
-    <button class="modal-close" onclick="closeModal('modalMuestra')" aria-label="Cerrar">&times;</button>
+    <button class="modal-close" onclick="closeModal('modalMuestraEscritos')" aria-label="Cerrar">&times;</button>
     <h3 id="modalMuestraTit">Muestra real — Escritos Jurídicos</h3>
     <p style="font-size:.83rem;color:var(--text-lt);margin-bottom:16px;">Ejemplo real anonimizado. Encargo → demanda completa → análisis estratégico. Todos los datos son ficticios.</p>
 
@@ -858,6 +858,281 @@ function switchService(svc){
   </div>
 </div>
 
+<div class="modal-overlay" id="modalMuestraContratos" onclick="closeModalOutside(event,'modalMuestraContratos')" role="dialog" aria-modal="true">
+  <div class="modal-box modal-box-wide">
+    <button class="modal-close" onclick="closeModal('modalMuestraContratos')" aria-label="Cerrar">&times;</button>
+    <h3>Muestra real — Contratos</h3>
+    <p style="font-size:.83rem;color:var(--text-lt);margin-bottom:16px;">Ejemplo real anonimizado. Encargo → anexo modificativo completo → memorándum estratégico. Todos los datos son ficticios.</p>
+
+    <div class="muestra-tabs">
+      <button class="muestra-tab active" onclick="switchMuestraTabC(0)">📋 Encargo</button>
+      <button class="muestra-tab" onclick="switchMuestraTabC(1)">📄 Contrato</button>
+      <button class="muestra-tab" onclick="switchMuestraTabC(2)">🔍 Memorándum estratégico</button>
+    </div>
+
+    <!-- PESTAÑA 1: ENCARGO -->
+    <div class="muestra-panel active" id="muestraPanelC0">
+      <div class="muestra-block"><div class="muestra-label">Tipo de contrato</div><div class="muestra-value">Arrendamiento de vivienda (LAU) — Anexo modificativo al contrato principal</div></div>
+      <div class="muestra-block"><div class="muestra-label">Posición del cliente</div><div class="muestra-value">Arrendador (propietario) — D. Martín Martín Martín, DNI 555 555 J</div></div>
+      <div class="muestra-block"><div class="muestra-label">Letrado</div><div class="muestra-value">D. Juan García García — ICAM nº 123-456</div></div>
+      <div class="muestra-block"><div class="muestra-label">Nueva renta pactada</div><div class="muestra-value">900 € mensuales (reducción desde 1.000 €)</div></div>
+      <div class="muestra-block"><div class="muestra-label">Nueva duración</div><div class="muestra-value">10 años desde el 1 de abril de 2025 (hasta el 31 de marzo de 2035)</div></div>
+      <div class="muestra-block"><div class="muestra-label">Objeto e instrucciones</div><div class="muestra-value">Como consecuencia del impago de rentas, las partes han acordado adecuar el contrato mediante un anexo modificativo con los siguientes cambios: (1) reducción de renta a 900 €/mes; (2) ampliación de la duración a 10 años; (3) autorización de subarriendo de una habitación; (4) traslado de gastos de comunidad (100 €/mes) al arrendatario; (5) incorporación de nueva arrendataria: Dña. María García García, DNI 444 444 H, con responsabilidad solidaria.</div></div>
+      <div class="muestra-block"><div class="muestra-label">Contrato principal de referencia</div><div class="muestra-value">Contrato de arrendamiento de vivienda suscrito el 1 de abril de 2025 entre D. Martín Martín Martín (arrendador) y D. José José José (arrendatario), sobre vivienda en Avenida de España nº 706, Madrid 28099</div></div>
+    </div>
+
+    <!-- PESTAÑA 2: CONTRATO -->
+    <div class="muestra-panel" id="muestraPanelC1">
+      <div class="muestra-doc-content">
+        <h4 style="text-align:center;margin-bottom:4px;">ANEXO MODIFICATIVO AL CONTRATO DE ARRENDAMIENTO DE VIVIENDA</h4>
+        <p style="text-align:center;font-size:.80rem;color:var(--text-lt);margin-bottom:16px;"><em>Ref. contrato principal: Madrid, 1 de abril de 2025 | En Madrid, a [●] de [●] de 2026</em></p>
+
+        <p><strong>REUNIDOS</strong></p>
+        <p>De una parte, en concepto de <strong>ARRENDADOR</strong>: D. Martín Martín Martín, con DNI 555 555 J y domicilio en la Avenida de las Ciudades 220, 28592, Madrid.</p>
+        <p>De otra parte, en concepto de <strong>ARRENDATARIOS</strong>: D. José José José, con DNI 666 666 H, y Dña. María García García, con DNI 444 444 H, ambos con domicilio en la Calle Paniagua número 712, Madrid.</p>
+
+        <p><strong>EXPONEN</strong></p>
+        <p><strong>I.</strong> Que con fecha 1 de abril de 2025 las partes suscribieron un contrato de arrendamiento de vivienda sobre el inmueble sito en la Avenida de España número 706, Madrid 28099, inscrito en el Registro de la Propiedad n.º 8 de Madrid.</p>
+        <p><strong>II.</strong> Que como consecuencia de las vicisitudes surgidas durante la ejecución del Contrato Principal, en particular el impago de rentas, las partes han alcanzado un acuerdo extrajudicial de adecuación contractual, cuyas condiciones se formalizan en el presente Anexo Modificativo.</p>
+        <p><strong>III.</strong> Que las partes tienen plena capacidad para modificar lo pactado, de conformidad con los artículos <strong>1255 y 1203 del Código Civil</strong> y en el marco de la <strong>Ley 29/1994, de 24 de noviembre, de Arrendamientos Urbanos (LAU)</strong>.</p>
+
+        <p><strong>ESTIPULACIONES</strong></p>
+        <p><strong>PRIMERA. Reducción de la Renta Mensual.</strong> A partir de la firma del presente Anexo, la renta mensual queda modificada y fijada en <strong>NOVECIENTOS EUROS (900,00 €)</strong> mensuales. El modo de pago y el mecanismo de actualización anual permanecen inalterados. Las partes declaran expresamente que la reducción no supone novación extintiva del Contrato Principal, sino mera modificación de condición económica (art. 1203 CC).</p>
+        <p><strong>SEGUNDA. Ampliación del Plazo de Duración.</strong> La duración del arrendamiento queda ampliada a <strong>DIEZ (10) AÑOS</strong> contados desde el 1 de abril de 2025, con fecha de vencimiento el 31 de marzo de 2035, al amparo del <strong>artículo 9.1 de la LAU</strong>. Transcurrido dicho plazo, el contrato podrá prorrogarse conforme al artículo 10 de la LAU vigente.</p>
+        <p><strong>TERCERA. Autorización de Subarriendo Parcial de Habitación.</strong> El Arrendador autoriza expresamente el subarriendo de <strong>una única habitación</strong>, con los siguientes límites: (3.1) limitado a una sola habitación; (3.2) comunicación previa y por escrito al Arrendador de la identidad del subarrendatario; (3.3) renta del subarriendo no superior a la parte proporcional de la renta principal (art. 8.2 LAU); (3.4) responsabilidad solidaria de los Arrendatarios por la conducta del subarrendatario; (3.5) el incumplimiento faculta al Arrendador para resolver el contrato (art. 27.2.c) LAU).</p>
+        <p><strong>CUARTA. Atribución de los Gastos de Comunidad al Arrendatario.</strong> A partir de la firma, los gastos ordinarios de comunidad, que ascienden a <strong>CIEN EUROS (100,00 €) mensuales</strong>, serán sufragados íntegramente por los Arrendatarios, al amparo del <strong>artículo 20.1 de la LAU</strong>. Si el importe varía, se actualizará automáticamente previa comunicación acreditada del Arrendador.</p>
+        <p><strong>QUINTA. Incorporación de Nueva Arrendataria.</strong> Con el consentimiento expreso del Arrendador, se incorpora como arrendataria <strong>Dña. María García García, DNI 444 444 H</strong>. D. José José José y Dña. María García García asumirán <strong>solidariamente</strong> todas las obligaciones derivadas del Contrato Principal y sus modificaciones, de conformidad con el <strong>artículo 1137 del Código Civil</strong>.</p>
+        <p><strong>SEXTA. Vigencia del Resto del Contrato Principal.</strong> Las modificaciones se circunscriben a las cláusulas expresamente modificadas. El resto del Contrato Principal permanece en plena vigencia. En caso de discrepancia, prevalecerán las disposiciones del presente Anexo.</p>
+        <p><strong>SÉPTIMA. Protección de Datos.</strong> Los datos personales de las partes serán tratados exclusivamente para la gestión de la relación arrendaticia, con base en el art. 6.1.b) RGPD. No se cederán a terceros salvo obligación legal.</p>
+        <p><strong>OCTAVA. Jurisdicción y Ley Aplicable.</strong> Las partes se someten a los Juzgados y Tribunales de Madrid. Ley aplicable: LAU y supletoriamente el Código Civil.</p>
+        <p><strong>NOVENA. Nulidad Parcial.</strong> La nulidad de alguna cláusula no afectará al resto del documento.</p>
+        <p style="text-align:center;margin-top:16px;font-size:.82rem;"><em>Y en prueba de conformidad, firman el presente Anexo en Madrid, a [●] de [●] de 2026.</em></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px;font-size:.80rem;text-align:center;">
+          <div style="border:1px solid var(--border);border-radius:6px;padding:12px;"><strong>EL ARRENDADOR</strong><br>D. Martín Martín Martín<br>DNI: 555 555 J</div>
+          <div style="border:1px solid var(--border);border-radius:6px;padding:12px;"><strong>LOS ARRENDATARIOS</strong><br>D. José José José — DNI: 666 666 H<br>Dña. María García García — DNI: 444 444 H</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: MEMORÁNDUM ESTRATÉGICO -->
+    <div class="muestra-panel" id="muestraPanelC2">
+      <div class="muestra-doc-content">
+        <p style="text-align:center;font-size:.78rem;color:var(--text-lt);margin-bottom:4px;"><em>MEMORÁNDUM ESTRATÉGICO — DOCUMENTO DE TRABAJO INTERNO</em></p>
+        <h4 style="text-align:center;margin-bottom:4px;">Anexo Modificativo — Contrato de Arrendamiento de Vivienda</h4>
+        <p style="text-align:center;font-size:.82rem;color:var(--text-md);margin-bottom:16px;"><em>Ref.: IR-C-2026-715694 | Letrado: D. Juan García García — ICAM 123-456</em></p>
+
+        <p><strong>1. DATOS DEL ENCARGO Y POSICIÓN DEL CLIENTE</strong><br>Posición del cliente: Arrendador (D. Martín Martín Martín). El presente memorándum analiza las modificaciones pactadas desde la perspectiva de sus intereses. Origen de la modificación: impago de rentas por parte del arrendatario original, que ha dado lugar a una negociación extrajudicial y al acuerdo de adecuación contractual recogido en el Anexo.</p>
+
+        <p><strong>2. ANÁLISIS DE CADA MODIFICACIÓN</strong></p>
+        <p><strong>2.1 Reducción de la renta (de 1.000 € a 900 €)</strong><br>Jurídicamente válida al amparo del artículo 1255 del Código Civil. Desde la perspectiva del arrendador, supone una concesión económica de 100 €/mes (1.200 €/año) que debe contextualizarse en el marco de la solución extrajudicial del impago.<br><em>Recomendación:</em> acreditar documentalmente el acuerdo de quita o la condonación de deudas atrasadas como condición de esta reducción. Si hay deuda pendiente, incluir un plan de pago en documento separado.</p>
+        <p><strong>2.2 Ampliación de la duración a 10 años</strong><br>La LAU (art. 9.1) permite pactar libremente duraciones superiores al mínimo legal. La cláusula es válida. Sin embargo, desde la perspectiva del arrendador, una duración de 10 años supone importantes limitaciones: imposibilidad de recuperar el inmueble durante 10 años salvo causa legal (art. 9.3 LAU); exposición a la evolución del mercado de alquiler si las rentas suben significativamente.<br><em>Recomendación:</em> valorar la inclusión de una cláusula de revisión extraordinaria de renta a los 5 años o la negociación de un precio superior que compense la larga duración.</p>
+        <p><strong>2.3 Autorización de subarriendo parcial de habitación</strong><br>El art. 8 LAU exige consentimiento expreso del arrendador. El Anexo lo formaliza correctamente. El art. 8.2 LAU establece que la renta del subarriendo no puede superar la renta principal: la cláusula recoge correctamente este límite. Riesgo práctico: dificultad para controlar quién ocupa la habitación si el arrendatario no cumple la obligación de comunicación previa. Se recomienda establecer consecuencias contractuales claras (ya incluidas).</p>
+        <p><strong>2.4 Traslado de gastos de comunidad al arrendatario</strong><br>El art. 20.1 LAU lo permite expresamente. La cláusula cumple los requisitos: constancia expresa e indicación del importe (100 €/mes). El mecanismo de actualización automática previsto es adecuado.</p>
+        <p><strong>2.5 Incorporación de nueva arrendataria: Dña. María García García</strong><br>La solidaridad pasiva pactada es la configuración más protectora para el arrendador: podrá reclamar la totalidad de la deuda a cualquiera de los dos arrendatarios (art. 1137 CC). <em>Alerta:</em> el Anexo no recoge si Dña. María García García asume las deudas pendientes derivadas del impago anterior. Si existe deuda previa, incluir declaración expresa de subrogación.</p>
+
+        <p><strong>3. ALERTAS Y RIESGOS PRINCIPALES</strong></p>
+        <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:.80rem;margin-bottom:10px;">
+          <div style="background:#fff8e1;padding:8px 12px;border-bottom:1px solid var(--border);"><strong>⚠️ RIESGO MEDIO</strong> — Duración de 10 años excepcionalmente larga para el arrendador. Considerar cláusula de revisión extraordinaria de renta a los 5 años.</div>
+          <div style="background:#fff8e1;padding:8px 12px;border-bottom:1px solid var(--border);"><strong>⚠️ RIESGO MEDIO</strong> — Ausencia de acuerdo expreso sobre la deuda de rentas atrasadas. Si existe deuda pendiente, documentarla y regularizarla en paralelo.</div>
+          <div style="background:#e8f4fd;padding:8px 12px;border-bottom:1px solid var(--border);"><strong>ℹ️ ATENCIÓN</strong> — La nueva arrendataria no responde de deudas anteriores al Anexo salvo pacto expreso.</div>
+          <div style="background:#e8f4fd;padding:8px 12px;border-bottom:1px solid var(--border);"><strong>ℹ️ ATENCIÓN</strong> — El subarriendo autorizado debe monitorizarse: exigir comunicación previa y conservar documentación de cada subarrendatario.</div>
+          <div style="background:#e8f9e8;padding:8px 12px;border-bottom:1px solid var(--border);"><strong>✅ CORRECTO</strong> — Traslado de gastos de comunidad con importe determinado: cumple art. 20.1 LAU.</div>
+          <div style="background:#e8f9e8;padding:8px 12px;"><strong>✅ CORRECTO</strong> — Solidaridad pasiva de arrendatarios: máxima protección del arrendador frente a impagos futuros.</div>
+        </div>
+
+        <p><strong>4. CAMPOS PENDIENTES</strong><br>— Fecha concreta de firma del Anexo: indicada como «[●] de [●] de 2026».<br>— Acuerdo sobre deuda de rentas atrasadas: si existe, documentar en instrumento separado (reconocimiento de deuda, plan de pagos o quita).</p>
+
+        <p><strong>5. NORMATIVA APLICABLE</strong><br>— <strong>LAU (Ley 29/1994)</strong>: arts. 8.2, 9.1, 10, 20.1, 27.2.c).<br>— <strong>Ley 12/2023</strong>: actualización de renta y límites aplicables.<br>— <strong>Código Civil</strong>: arts. 1137 (solidaridad), 1203 (modificación de obligaciones), 1255 (autonomía de la voluntad).<br>— <strong>RGPD y LOPDGDD</strong>: tratamiento de datos personales de las partes.</p>
+
+        <p><strong>6. RECOMENDACIONES FINALES</strong><br>— Verificar y regularizar en documento separado la situación de la deuda de rentas atrasadas antes de la firma.<br>— Valorar la inclusión de una cláusula de revisión extraordinaria de renta a los 5 años de vigencia del Anexo.<br>— Solicitar a Dña. María García García documentación acreditativa de su capacidad económica.<br>— Depositar la fianza legal ante el organismo competente de la Comunidad de Madrid, si aún no se hubiera hecho.<br>— Conservar copia firmada del Anexo por ambas partes y remitir notificación a la comunidad de propietarios si sus estatutos lo requieren.</p>
+
+        <p style="font-size:.75rem;color:var(--text-lt);margin-top:16px;border-top:1px solid var(--border);padding-top:10px;"><em>Madrid, [●] de [●] de 2026 | D. Juan García García — ICAM 123-456</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--text-lt);margin-top:14px;text-align:center;">Todos los datos son ficticios y han sido generados exclusivamente con fines ilustrativos.</p>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="modalMuestraRequerimientos" onclick="closeModalOutside(event,'modalMuestraRequerimientos')" role="dialog" aria-modal="true">
+  <div class="modal-box modal-box-wide">
+    <button class="modal-close" onclick="closeModal('modalMuestraRequerimientos')" aria-label="Cerrar">&times;</button>
+    <h3>Muestra real — Requerimientos y Burofax</h3>
+    <p style="font-size:.83rem;color:var(--text-lt);margin-bottom:16px;">Ejemplo real anonimizado. Encargo → burofax de requerimiento completo → memorándum estratégico. Todos los datos son ficticios.</p>
+
+    <div class="muestra-tabs">
+      <button class="muestra-tab active" onclick="switchMuestraTabR(0)">📋 Encargo</button>
+      <button class="muestra-tab" onclick="switchMuestraTabR(1)">📨 Requerimiento</button>
+      <button class="muestra-tab" onclick="switchMuestraTabR(2)">🔍 Memorándum estratégico</button>
+    </div>
+
+    <!-- PESTAÑA 1: ENCARGO -->
+    <div class="muestra-panel active" id="muestraPanelR0">
+      <div class="muestra-block"><div class="muestra-label">Tipo</div><div class="muestra-value">Requerimiento de cumplimiento contractual — Burofax con acuse de recibo y certificación de contenido</div></div>
+      <div class="muestra-block"><div class="muestra-label">Materia</div><div class="muestra-value">Arrendamiento urbano (LAU)</div></div>
+      <div class="muestra-block"><div class="muestra-label">Letrado</div><div class="muestra-value">D. Juan García García — ICAM nº 123.456</div></div>
+      <div class="muestra-block"><div class="muestra-label">Remitente</div><div class="muestra-value">D. Martín Martín Martín, DNI 555 555 J — Arrendador y propietario de la vivienda</div></div>
+      <div class="muestra-block"><div class="muestra-label">Destinatarios</div><div class="muestra-value">D. José José José, DNI 666 666 H, y Dña. María García García, DNI 444 444 H — Arrendatarios solidarios — Calle Paniagua nº 712, Madrid</div></div>
+      <div class="muestra-block"><div class="muestra-label">Descripción de los hechos</div><div class="muestra-value">Las partes celebraron un contrato de arrendamiento de vivienda, posteriormente modificado mediante Anexo. En dicho Anexo se permitía subarrendar una habitación previa comunicación de datos del subarrendatario. El subarriendo se ha producido sin esa comunicación. Además se ha producido el impago de un mes de renta (900 €) y de los gastos de comunidad (100 €). Por último, vecinos del edificio se han quejado de fiestas hasta altas horas de la madrugada. Se solicita requerimiento por burofax para que el arrendatario cumpla todas sus obligaciones.</div></div>
+      <div class="muestra-block"><div class="muestra-label">Incumplimientos acumulados</div><div class="muestra-value">1.º Subarriendo sin comunicación previa (art. 27.2.c LAU) · 2.º Impago de renta y comunidad: 1.000 € (art. 27.2.a LAU) · 3.º Actividades molestas — fiestas nocturnas (art. 27.2.e LAU)</div></div>
+    </div>
+
+    <!-- PESTAÑA 2: REQUERIMIENTO -->
+    <div class="muestra-panel" id="muestraPanelR1">
+      <div class="muestra-doc-content">
+        <div style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px;">
+          <p style="margin:0;font-size:.85rem;"><strong>D. JUAN GARCÍA GARCÍA</strong><br>Abogado | ICAM n.º 123.456<br>iureredacta@gmail.com<br>Madrid, a 1 de abril de 2026.</p>
+        </div>
+        <p><strong>A:<br>D. JOSÉ JOSÉ JOSÉ</strong>, DNI 666 666 H<br><strong>Dña. MARÍA GARCÍA GARCÍA</strong>, DNI 444 444 H<br>Calle Paniagua número 712, Madrid.<br><em>(Se remite igualmente a quienes resulten ocupar la habitación subarrendada en la Avda. de España nº 706, Madrid 28099.)</em></p>
+        <p style="background:var(--navy);color:#fff;padding:10px 14px;border-radius:6px;font-size:.82rem;font-weight:700;">ASUNTO: REQUERIMIENTO DE CUMPLIMIENTO CONTRACTUAL — Contrato de arrendamiento de vivienda de fecha 1 de abril de 2025 y Anexo Modificativo, sobre el inmueble sito en la Avenida de España nº 706, Madrid 28099.<br>BUROFAX CON ACUSE DE RECIBO Y CERTIFICACIÓN DE CONTENIDO</p>
+        <p>Muy señores míos: En nombre y representación de D. MARTÍN MARTÍN MARTÍN, DNI 555 555 J (en adelante, «el Arrendador»), me dirijo a ustedes mediante el presente burofax a fin de requerirles formal y fehacientemente el cumplimiento de las obligaciones contractuales que a continuación se detallan.</p>
+
+        <p><strong>I. HECHOS</strong></p>
+        <p><strong>PRIMERO. — Contrato de arrendamiento y Anexo Modificativo.</strong> Con fecha 1 de abril de 2025, D. Martín Martín Martín celebró con D. José José José un contrato de arrendamiento de vivienda sobre el inmueble sito en la Avenida de España nº 706, Madrid 28099, por una renta inicial de 1.000 €. Posteriormente, las partes suscribieron un Anexo Modificativo que introdujo: (i) reducción de la renta a 900,00 €; (ii) ampliación del plazo a diez años; (iii) autorización de subarriendo parcial de una habitación, condicionada a comunicación previa y por escrito de los datos del subarrendatario; (iv) traslado de los gastos de comunidad (100,00 € mensuales) a los Arrendatarios; y (v) incorporación de Dña. María García García como arrendataria solidaria.</p>
+        <p><strong>SEGUNDO. — Subarriendo parcial sin comunicación previa al Arrendador.</strong> Mi mandante ha tenido conocimiento de que los Arrendatarios han procedido a subarrendar una habitación del inmueble sin haber comunicado previamente y por escrito la identidad completa del subarrendatario, el período pactado ni la renta acordada, en manifiesta contravención de la cláusula 3.2 del Anexo Modificativo.</p>
+        <p><strong>TERCERO. — Impago de la renta mensual y de los gastos de comunidad.</strong> Los Arrendatarios han incurrido en el impago de un mes de renta (900,00 €) y de los gastos ordinarios de comunidad (100,00 €), en incumplimiento de las Estipulaciones Primera y Cuarta del Anexo Modificativo.</p>
+        <p><strong>CUARTO. — Perturbación de la convivencia vecinal.</strong> Diversos vecinos han manifestado quejas reiteradas por la organización de fiestas hasta altas horas de la madrugada, causando perturbaciones que afectan a la convivencia. Dicha conducta constituye incumplimiento del artículo 27.2.e) LAU, así como de la LO 4/2015 y las ordenanzas municipales del Ayuntamiento de Madrid.</p>
+
+        <p><strong>II. FUNDAMENTOS DE DERECHO</strong></p>
+        <p><strong>1. Subarriendo sin comunicación previa (cláusula 3.2 Anexo / art. 8 LAU).</strong> El art. 8.2 LAU permite el subarriendo parcial únicamente con consentimiento previo y escrito y con respeto de los límites pactados. El incumplimiento de la condición de comunicación previa constituye, además, causa de resolución conforme al art. 27.2.c) LAU (cláusula 3.5 del Anexo).</p>
+        <p><strong>2. Impago de renta y gastos de comunidad (art. 27.2.a LAU / arts. 1100 y 1101 CC).</strong> El art. 27.2.a) LAU tipifica el impago de la renta o cantidades asumidas contractualmente como causa de resolución de pleno derecho. La mora se produce automáticamente desde el transcurso del plazo de pago, con devengo de intereses al tipo legal (art. 1108 CC).</p>
+        <p><strong>3. Perturbación de la convivencia (art. 27.2.e LAU).</strong> El art. 27.2.e) LAU permite resolver el contrato cuando el arrendatario realice actividades molestas o ilícitas. La realización reiterada de fiestas nocturnas habilita la resolución contractual y puede dar lugar a responsabilidad frente a la comunidad de propietarios (arts. 7.2 y 9 LPH).</p>
+
+        <p><strong>III. REQUERIMIENTO</strong></p>
+        <p>En virtud de cuanto antecede, les <strong>REQUIERO</strong> para que en el plazo improrrogable de <strong>CINCO (5) DÍAS HÁBILES</strong> desde la recepción del presente burofax procedan a:</p>
+        <p><strong>PRIMERO. —</strong> Comunicar al Arrendador, por escrito fehaciente, la identidad completa del subarrendatario actual (nombre, apellidos y DNI), el período y la renta pactada (cláusula 3.2 del Anexo).</p>
+        <p><strong>SEGUNDO. —</strong> Abonar mediante transferencia bancaria el importe total de <strong>1.000,00 €</strong> (900 € de renta + 100 € de gastos de comunidad), más los intereses de demora devengados al tipo legal del dinero desde la fecha de vencimiento.</p>
+        <p><strong>TERCERO. —</strong> Cesar de forma inmediata y definitiva en la organización de fiestas u otras actividades que generen ruidos o molestias en horario de descanso nocturno, dando cumplimiento a la normativa municipal y a las obligaciones contractuales asumidas.</p>
+
+        <p><strong>IV. ADVERTENCIA Y RESERVA DE ACCIONES</strong></p>
+        <p>Transcurrido el plazo sin cumplimiento íntegro, mi mandante ejercitará sin más dilación: a) La resolución del contrato por las causas del art. 27.2 LAU concurrentes, con desahucio y reclamación de daños. b) La acción dineraria por rentas, gastos de comunidad e intereses, con condena en costas (art. 394 LEC). c) La comunicación a la Comunidad de Propietarios para ejercitar las acciones de cesación del art. 7.2 LPH. d) Cualesquiera otras acciones civiles o administrativas procedentes.</p>
+        <p>La presente comunicación <strong>interrumpe la prescripción</strong> de cuantas acciones ostenta mi representado (art. 1973 CC) y <strong>constituye a ustedes en mora</strong> desde este momento respecto de todas las obligaciones vencidas e incumplidas.</p>
+        <p style="text-align:right;font-size:.82rem;margin-top:16px;"><em>En Madrid, a 1 de abril de 2026.<br><br><strong>D. JUAN GARCÍA GARCÍA</strong><br>Abogado — ICAM n.º 123.456<br>Actuando en nombre y representación de D. Martín Martín Martín</em></p>
+        <p style="font-size:.75rem;color:var(--text-lt);border-top:1px solid var(--border);padding-top:8px;margin-top:12px;"><em>El presente requerimiento se remite mediante BUROFAX CON ACUSE DE RECIBO Y CERTIFICACIÓN DE CONTENIDO (arts. 1218 y 1973 CC). Copia adjunta: (1) Contrato de arrendamiento de 1 de abril de 2025; (2) Anexo Modificativo.</em></p>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: MEMORÁNDUM ESTRATÉGICO -->
+    <div class="muestra-panel" id="muestraPanelR2">
+      <div class="muestra-doc-content">
+        <p style="text-align:center;font-size:.78rem;color:var(--text-lt);margin-bottom:4px;"><em>DOCUMENTO RESERVADO — USO INTERNO DEL LETRADO</em></p>
+        <h4 style="text-align:center;margin-bottom:4px;">Memorándum Estratégico</h4>
+        <p style="text-align:center;font-size:.82rem;color:var(--text-md);margin-bottom:16px;"><em>Ref.: IR-R-2026-757225 | Requerimiento de cumplimiento contractual — Arrendamiento de vivienda<br>Letrado: D. Juan García García — ICAM 123.456</em></p>
+
+        <p><strong>1. RESUMEN EJECUTIVO</strong><br>El Arrendador presenta tres incumplimientos simultáneos: subarriendo parcial sin la comunicación previa exigida en el Anexo; impago de un mes de renta (900 €) y de gastos de comunidad (100 €); y organización reiterada de fiestas nocturnas. El objetivo del requerimiento es triple: (i) documentar fehacientemente los incumplimientos para preparar una eventual demanda de resolución y desahucio; (ii) constituir en mora e interrumpir la prescripción; y (iii) generar presión negociadora para obtener el cumplimiento voluntario sin necesidad de litigio.</p>
+
+        <p><strong>2. POSICIÓN JURÍDICA DEL ARRENDADOR</strong><br><em>Fortalezas:</em> Contrato y Anexo Modificativo formalizados por escrito — base documental sólida. El Anexo condicionó la autorización de subarriendo a la comunicación previa: su incumplimiento es hecho objetivo y fácil de probar. Los tres incumplimientos son causas de resolución autónomas (arts. 27.2.a, c y e LAU); su concurrencia refuerza la posición. Solidaridad pasiva de los Arrendatarios (cláusula Quinta Anexo / art. 1137 CC). Burofax con certificación de contenido: plena acreditación procesal del envío, contenido y fecha (art. 326 LEC).<br><em>Debilidades:</em> La cuantía impagada es modesta (1.000 €). Las quejas de vecinos por ruidos son hechos de terceros que requieren documentación objetiva antes de demandar por esta causa.</p>
+
+        <p><strong>3. MARCO NORMATIVO APLICABLE</strong><br>— <strong>LAU 29/1994:</strong> Arts. 8.2, 27.2.a), 27.2.c), 27.2.e), 10, 36.<br>— <strong>Código Civil:</strong> Arts. 1100 y 1108 (mora e intereses), 1124 (resolución), 1137 (solidaridad), 1203 (novación modificativa), 1255 (autonomía de la voluntad), 1973 (interrupción prescripción).<br>— <strong>LPH 49/1960:</strong> Arts. 7.2 y 9 (actividades molestas).<br>— <strong>LEC 1/2000:</strong> Arts. 250.1.1.º y 249.1.6.º (desahucio y resolución); art. 394 (costas).<br>— <strong>Normativa complementaria:</strong> LO 4/2015 (Seguridad Ciudadana); Ordenanza de Convivencia del Ayuntamiento de Madrid (2017); Ley 12/2023 (DA 11.ª LAU, límites de actualización de renta).</p>
+
+        <p><strong>4. ANÁLISIS JURISPRUDENCIAL RELEVANTE</strong><br><strong>a) Resolución por impago.</strong> Doctrina consolidada del TS: el impago de cualquier mensualidad habilita la resolución ex art. 27.2.a) LAU, sin necesidad de reiteración (STS 1.ª, 13 de marzo de 2003). Mantenida consistentemente por las AP de Madrid.<br><strong>b) Subarriendo no consentido conforme a los pactos.</strong> La AP Madrid, Sección 21.ª, ha reiterado que la autorización condicionada no equivale a autorización incondicionada: el incumplimiento de los requisitos pactados activa el art. 27.2.c) LAU (compatible con STS 1.ª de 22 de diciembre de 1992).<br><strong>c) Actividades molestas.</strong> La jurisprudencia menor exige acreditación objetiva (denuncia policial, acta notarial, informe de comunidad). <em>ADVERTENCIA: este es el punto más débil. Documentarlo mejor antes de interponer demanda por esta causa.</em></p>
+
+        <p><strong>5. RIESGOS JURÍDICOS Y MITIGACIÓN</strong><br><strong>Riesgo 1:</strong> Que el arrendatario pague antes del plazo y alegue extinción de la causa resolutoria. — <em>Mitigado:</em> el requerimiento acumula tres causas independientes; el pago no elimina los incumplimientos sobre subarriendo y ruidos.<br><strong>Riesgo 2:</strong> Que aleguen comunicación verbal o no fehaciente del subarrendatario. — <em>Mitigado:</em> el Anexo exige comunicación «previa y por escrito»; la carga probatoria recae sobre el arrendatario.<br><strong>Riesgo 3:</strong> Quejas de vecinos no suficientemente documentadas. — <em>Mitigado:</em> el requerimiento se limita a exigir el cese; la causa resolutoria por ruidos se reserva para la eventual demanda con prueba acreditada.<br><strong>Riesgo 4:</strong> Posible contraataque por incumplimiento del arrendador. — Vigilar si existe reclamación pendiente (conservación, habitabilidad) antes de demandar.</p>
+
+        <p><strong>6. ANÁLISIS NEGOCIADOR Y REACCIÓN PREVISIBLE</strong><br><em>Objetivo real del Arrendador:</em> cobro de la deuda, regularización del subarriendo y cese de molestias. En segunda fase, si persisten los incumplimientos, resolución y recuperación de la posesión.<br><em>Reacción previsible:</em> (a) cumplimiento íntegro en el plazo — objetivo conseguido sin coste procesal; (b) incumplimiento o cumplimiento parcial — el Arrendador tendrá acción de resolución documentada con burofax que acredita mora desde fecha cierta.<br><em>Tono empleado:</em> «Muy firme / ultimátum». Justificación: la acumulación de tres incumplimientos simultáneos no aconseja tono conciliador. Plazo de cinco días hábiles: deliberadamente corto para generar urgencia sin ser irrazonable.</p>
+
+        <p><strong>7. CANAL DE ENVÍO RECOMENDADO</strong><br>Burofax con acuse de recibo y certificación de contenido (Correos). Efectos: (i) acredita fehacientemente fecha de remisión y contenido; (ii) constituye en mora ex art. 1100 CC; (iii) interrumpe la prescripción (art. 1973 CC); (iv) fija el dies a quo del plazo de cinco días. Se recomienda dirigirlo al domicilio contractual (Calle Paniagua 712) y también al inmueble arrendado (Avda. de España 706, Madrid 28099).</p>
+
+        <p><strong>8. DOCUMENTACIÓN A ADJUNTAR AL ENVÍO</strong><br>1.º Copia simple del Contrato de Arrendamiento (1 de abril de 2025).<br>2.º Copia simple del Anexo Modificativo (firmado por todas las partes).<br>3.º En su caso, justificante bancario del último cargo de gastos de comunidad.</p>
+
+        <p><strong>9. HOJA DE RUTA SI EL DESTINATARIO NO CUMPLE</strong><br><strong>Si ignora el requerimiento:</strong> Demanda de juicio verbal de desahucio (art. 250.1.1.º LEC) acumulando reclamación de rentas. Tiempo estimado en Madrid: 4-8 meses.<br><strong>Si paga pero no regulariza el subarriendo:</strong> Subsiste causa resolutoria autónoma (art. 27.2.c LAU). Considerar segundo requerimiento exclusivo antes de demandar.<br><strong>Si propone solución parcial:</strong> No aceptar pago sin obtener simultáneamente la comunicación escrita del subarrendatario y compromiso fehaciente de cese de fiestas.<br><strong>Si contraataca con reclamación cruzada:</strong> Evaluar si existe reclamación previa no atendida (exceptio non adimpleti contractus, art. 1124 CC / art. 21 LAU).</p>
+
+        <p><strong>10. OBSERVACIONES ADICIONALES</strong><br>a) El Anexo Modificativo no tiene fecha en el campo «[●] de [●] de 2026». Debe completarse antes del envío del burofax.<br>b) La fianza depositada (2.000 €) cubre sobradamente la deuda actual (1.000 €). No conviene imputarla unilateralmente sin resolución contractual previa.<br>c) En juicio, demandar a ambos arrendatarios conjuntamente para evitar excepciones de litisconsorcio pasivo necesario.<br>d) Verificar que la fianza legal está depositada ante el organismo autonómico competente (IVIMA / Agencia de Vivienda Social de la Comunidad de Madrid).</p>
+
+        <p style="font-size:.75rem;color:var(--text-lt);margin-top:16px;border-top:1px solid var(--border);padding-top:10px;"><em>Madrid, a 1 de abril de 2026 — D. Juan García García, Abogado ICAM n.º 123.456</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--text-lt);margin-top:14px;text-align:center;">Todos los datos son ficticios y han sido generados exclusivamente con fines ilustrativos.</p>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="modalMuestraDictamen" onclick="closeModalOutside(event,'modalMuestraDictamen')" role="dialog" aria-modal="true">
+  <div class="modal-box modal-box-wide">
+    <button class="modal-close" onclick="closeModal('modalMuestraDictamen')" aria-label="Cerrar">&times;</button>
+    <h3>Muestra real — Dictamen Jurídico</h3>
+    <p style="font-size:.83rem;color:var(--text-lt);margin-bottom:16px;">Ejemplo real anonimizado. Encargo → dictamen jurídico completo. Todos los datos son ficticios.</p>
+
+    <div class="muestra-tabs">
+      <button class="muestra-tab active" onclick="switchMuestraTabD(0)">📋 Encargo</button>
+      <button class="muestra-tab" onclick="switchMuestraTabD(1)">⚖️ Dictamen jurídico</button>
+    </div>
+
+    <!-- PESTAÑA 1: ENCARGO -->
+    <div class="muestra-panel active" id="muestraPanelD0">
+      <div class="muestra-block"><div class="muestra-label">Servicio</div><div class="muestra-value">Dictamen Jurídico</div></div>
+      <div class="muestra-block"><div class="muestra-label">Letrado</div><div class="muestra-value">D. Juan García García — ICAM nº 123.456</div></div>
+      <div class="muestra-block"><div class="muestra-label">Rama principal</div><div class="muestra-value">Derecho Civil — Contratos</div></div>
+      <div class="muestra-block"><div class="muestra-label">Segunda rama</div><div class="muestra-value">Derecho Civil — Obligaciones y responsabilidad</div></div>
+      <div class="muestra-block"><div class="muestra-label">Asunto</div><div class="muestra-value">Dictamen sobre acciones a entablar ante determinados incumplimientos contractuales</div></div>
+      <div class="muestra-block"><div class="muestra-label">Posición del cliente</div><div class="muestra-value">Parte actora / reclamante</div></div>
+      <div class="muestra-block"><div class="muestra-label">Estado</div><div class="muestra-value">Requerimiento o burofax enviado, sin respuesta</div></div>
+      <div class="muestra-block"><div class="muestra-label">Cuestión sometida a dictamen</div><div class="muestra-value">Se pretende obtener una visión clara de la situación para adoptar la mejor decisión por parte del propietario de la vivienda.</div></div>
+      <div class="muestra-block"><div class="muestra-label">Relación de hechos</div><div class="muestra-value">Las partes suscribieron un contrato de arrendamiento y posteriormente un anexo modificando determinados aspectos. Los arrendatarios incumplieron diversas obligaciones: impago de rentas y gastos de comunidad, celebración de fiestas hasta altas horas de la madrugada y no comunicación de los datos del subarrendatario. Se envió burofax requiriendo el cumplimiento de todas estas obligaciones y los arrendatarios no han contestado ni han abonado cantidad alguna. Se necesita conocer la mejor estrategia a seguir.</div></div>
+    </div>
+
+    <!-- PESTAÑA 2: DICTAMEN -->
+    <div class="muestra-panel" id="muestraPanelD1">
+      <div class="muestra-doc-content">
+        <div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--gold);">
+          <p style="font-size:.78rem;color:var(--text-lt);margin:0;">IURE REDACTA | D. Juan García García — Abogado ICAM n.º 123.456</p>
+          <h4 style="margin:8px 0 4px;">DICTAMEN JURÍDICO</h4>
+          <p style="font-size:.82rem;margin:0;">Incumplimientos contractuales en arrendamiento de vivienda</p>
+          <p style="font-size:.80rem;color:var(--text-md);margin:4px 0;">D. Martín Martín Martín (Arrendador) <em>contra</em> D. José José José y Dña. María García García (Arrendatarios)</p>
+          <p style="font-size:.78rem;color:var(--text-lt);margin:0;">Ref.: IR-D-2026-587339 | Madrid, 1 de abril de 2026 | CONFIDENCIAL</p>
+        </div>
+
+        <p><strong>I. OBJETO DEL DICTAMEN</strong><br>El presente Dictamen se emite por encargo de D. Martín Martín Martín, en su condición de arrendador del inmueble sito en la Avenida de España n.º 706, Madrid 28099, a fin de analizar la viabilidad y la estrategia óptima de las acciones legales a ejercitar frente a los arrendatarios ante los incumplimientos contractuales constatados. Se analizan cuatro bloques: (1) subarriendo sin comunicación previa; (2) impago de renta y gastos de comunidad; (3) actividades molestas; y (4) la estrategia procesal recomendada.</p>
+
+        <p><strong>II. ANTECEDENTES DE HECHO</strong><br><strong>II.1. Documentación contractual.</strong> Con fecha 1 de abril de 2025, las partes suscribieron un contrato de arrendamiento de vivienda con renta mensual de 1.000,00 €. Posteriormente, el Anexo Modificativo introdujo: (i) reducción de la renta a 900,00 €; (ii) ampliación del plazo a 10 años; (iii) autorización condicionada de subarriendo parcial de una habitación, sujeta a comunicación previa escrita de los datos del subarrendatario; (iv) traslado de los gastos de comunidad (100,00 €/mes) a los Arrendatarios; y (v) incorporación solidaria de Dña. María García García.<br><br><strong>II.2. Incumplimientos constatados.</strong> (a) Subarriendo sin comunicación previa — contravención de la cláusula 3.2 del Anexo. (b) Impago de renta y gastos de comunidad: 1.000,00 € (900 € + 100 €). (c) Actividades molestas — fiestas hasta altas horas de la madrugada con quejas vecinales. (d) Falta de respuesta al burofax de 1 de abril de 2026, con certificación de contenido y acuse de recibo, otorgando plazo de cinco días hábiles.</p>
+
+        <p><strong>III. CUESTIONES JURÍDICAS A RESOLVER</strong><br>A: ¿Constituye el subarriendo sin comunicación previa causa de resolución? · B: ¿Es el impago de una mensualidad causa de resolución en las circunstancias concurrentes? · C: ¿Habilitan las actividades molestas la resolución y/o las acciones de la Comunidad de Propietarios? · D: ¿Cuál es la estrategia procesal óptima? · E: ¿Puede el Arrendador bloquear la enervación? · F: ¿Qué riesgos específicos presenta cada línea de acción?</p>
+
+        <p><strong>IV. ANÁLISIS JURÍDICO</strong></p>
+        <p><strong>IV.1. Marco normativo.</strong> Art. 8.2 LAU (subarriendo parcial). Art. 27.2 LAU: causas de resolución — a) falta de pago, c) subarriendo inconsentido, e) actividades molestas. Art. 22.4 LEC (enervación del desahucio). Arts. 1137 y 1144 CC (solidaridad de deudores). Art. 7.2 LPH (actividades molestas y acción de cesación).</p>
+        <p><strong>IV.2. Subarriendo sin comunicación previa (Cuestión A).</strong> La autorización del Arrendador queda ineficaz en tanto no se cumplan las condiciones suspensivas de la cláusula 3.2 del Anexo. En consecuencia, el subarriendo equivale materialmente a un subarriendo sin autorización válida, fundando la resolución ex art. 27.2.c) LAU. Riesgo: que el tribunal valore el incumplimiento como meramente formal (falta de comunicación) y aplique el principio de proporcionalidad del art. 1124 CC (criterio de la STS de 13 de diciembre de 2007).</p>
+        <p><strong>IV.3. Impago de renta y gastos de comunidad (Cuestión B).</strong> El art. 27.2.a) LAU tipifica el impago como causa de resolución de pleno derecho. Doctrina clásica del TS: el impago de una sola mensualidad constituye causa de resolución (SSTS 19.12.2008, 26.03.2009, 20.10.2009, 30.10.2009, 09.09.2011, 18.03.2014, 27.03.2014 y 23.05.2014). La STS n.º 1065/2024, de 23 de julio (ECLI:ES:TS:2024:4244) matiza que en circunstancias verdaderamente excepcionales puede no existir resolución; sin embargo, en el caso analizado no concurren dichas circunstancias: relación arrendaticia reciente (desde abril 2025), impago de renta y comunidad simultáneamente, antecedentes de impago que motivaron el Anexo, actitud sistemáticamente incumplidora y falta de respuesta al requerimiento fehaciente. <strong>Esta es la causa de mayor fortaleza procesal.</strong></p>
+        <p><strong>IV.4. Actividades molestas (Cuestión C).</strong> El art. 27.2.e) LAU permite la resolución por actividades molestas que traspasen los límites del inmueble, con cierta continuidad y excediendo lo socialmente admisible (STS 8.03.1999; STS 13.12.2007). Debilidad probatoria: las quejas verbales son insuficientes. Precisa: actas de comunidad, denuncias policiales, mediciones acústicas o comunicaciones escritas de vecinos. Adicionalmente, el art. 7.2 LPH faculta a la Comunidad de Propietarios para ejercitar la acción de cesación.</p>
+        <p><strong>IV.5. Estrategia procesal óptima (Cuestión D).</strong><br>
+        <strong>Opción A — Demanda de desahucio por impago acumulando las demás causas</strong> (RECOMENDADA): Transcurridos 30 días desde la recepción del burofax, interponer demanda de desahucio por falta de pago (art. 27.2.a LAU), acumulando reclamación de cantidad, subarriendo informal y actividades molestas, con petición expresa de no enervación (art. 22.4 LEC). <em>Ventajas:</em> causa más sólida, tramitación más ágil, bloqueo de enervación. <em>Inconvenientes:</em> importe impagado modesto (una mensualidad).<br>
+        <strong>Opción B — Esperar acumulación de impagos</strong>: Aguardar dos o tres mensualidades para reforzar la solidez del caso. <em>Inconveniente:</em> el Arrendador asume el perjuicio económico acumulado.<br>
+        <strong>Opción C — Negociación extrajudicial</strong>: Ofrecer condonación parcial a cambio de entrega voluntaria. No recomendada como primera vía dado que los Arrendatarios no han respondido al burofax.</p>
+        <p><strong>IV.6. Bloqueo de la enervación (Cuestión E).</strong> El burofax de 1/04/2026, con acuse de recibo y certificación de contenido, constituye requerimiento fehaciente ex art. 22.4 LEC. Siempre que la demanda se interponga transcurridos al menos 30 días naturales desde la recepción (después del 2 de mayo de 2026) y el pago no se haya efectuado, los Arrendatarios <strong>no podrán enervar el desahucio</strong>.</p>
+        <p><strong>IV.7. Riesgos específicos (Cuestión F).</strong> Riesgo 1: STS 1065/2024 — impago de una sola mensualidad; mitigado acumulando causas y esperando nuevas mensualidades si el plazo lo permite. Riesgo 2: carga de la prueba en actividades molestas — documentar antes de demandar. Riesgo 3: pasividad del Arrendador ante la Comunidad de Propietarios — la demanda de desahucio en curso excluye esta responsabilidad. Riesgo 4: Ley 12/2023 para grandes tenedores — no aplicable (el Arrendador es persona física con un único inmueble). Riesgo 5: duración del proceso en Madrid: 4-8 meses desde presentación hasta lanzamiento.</p>
+
+        <p><strong>V. PLAZOS RELEVANTES</strong><br>— Acción de resolución: no existe plazo de caducidad; la prescripción se interrumpió con el burofax de 1/04/2026 (art. 1973 CC).<br>— Reclamación de rentas: 5 años conforme al art. 1966.3.º CC desde el vencimiento de cada mensualidad.<br>— Acción de cesación LPH: sin plazo de caducidad específico mientras persista la actividad molesta.</p>
+
+        <p><strong>VI. CONCLUSIONES Y RECOMENDACIONES</strong></p>
+        <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:.80rem;margin-bottom:12px;">
+          <div style="background:var(--navy);color:#fff;padding:8px 12px;font-weight:700;font-size:.78rem;">CONCLUSIONES</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>1.</strong> La causa resolutoria más sólida es el <strong>impago de renta y gastos de comunidad</strong> (art. 27.2.a LAU).</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>2.</strong> Se recomienda <strong>acumular las tres causas</strong> en la demanda: impago, subarriendo informal y actividades molestas.</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>3.</strong> El burofax de 1/04/2026 <strong>bloquea la enervación</strong>. La demanda debe presentarse después del 2 de mayo de 2026.</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>4.</strong> Antes de demandar, obtener acta de comunidad y denuncias vecinales para acreditar las <strong>actividades molestas</strong>.</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>5.</strong> Demandar a <strong>ambos arrendatarios conjuntamente</strong> (solidaridad pasiva, art. 1137 CC) e incluir petición de identificación del subarrendatario.</div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border);"><strong>6.</strong> El Arrendador <strong>no es gran tenedor</strong>: no le aplican las obligaciones reforzadas de la Ley 12/2023.</div>
+          <div style="padding:8px 12px;"><strong>7.</strong> La fianza (2.000 €) cubre la deuda actual, pero <strong>no imputar anticipadamente</strong> sin título que lo justifique.</div>
+        </div>
+
+        <p><strong>VII. ADVERTENCIA Y LÍMITES DEL DICTAMEN</strong><br>El presente Dictamen ha sido elaborado a la vista de la documentación aportada y con base en la legislación y jurisprudencia vigentes a 1 de abril de 2026. Tiene carácter consultivo y no sustituye a la representación letrada en el proceso judicial. Las conclusiones deberán ser verificadas y adaptadas por el letrado responsable.</p>
+
+        <div style="margin-top:16px;padding:12px 14px;background:#f0f4ff;border-radius:6px;font-size:.79rem;">
+          <strong>ANEXO — FUENTES CONSULTADAS</strong><br>
+          <em>Legislación:</em> LAU 29/1994 (arts. 8.2, 27.2, 22.4 LEC); CC (arts. 1100, 1101, 1108, 1124, 1137, 1144, 1203, 1255, 1973); LEC 1/2000; LPH 49/1960 (arts. 7.2 y 9); Ley 12/2023; RDL 7/2019.<br>
+          <em>Jurisprudencia:</em> STS n.º 1065/2024 (ECLI:ES:TS:2024:4244); SSTS 137/2014, 180/2014 y 291/2014; STS 729/2010; STS 8.03.1999; STS 13.12.2007; STS 22.09.2015; SAP Madrid Sec. 19.ª n.º 515/2007.
+        </div>
+
+        <p style="text-align:right;font-size:.82rem;margin-top:16px;"><em>D. Juan García García — Abogado ICAM n.º 123.456<br>Madrid, 1 de abril de 2026</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--text-lt);margin-top:14px;text-align:center;">Todos los datos son ficticios y han sido generados exclusivamente con fines ilustrativos.</p>
+  </div>
+</div>
+
+
 <!-- ══ MODAL SUSCRIPCION ══ -->
 <div class="modal-overlay" id="modalSuscripcion" onclick="closeModalOutside(event,'modalSuscripcion')" role="dialog" aria-modal="true" aria-labelledby="modalSuscTit">
   <div class="modal-box">
@@ -978,7 +1253,7 @@ function switchService(svc){
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Revisión necesaria por especialista</span>
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> RGPD · LOPDGDD · CET</span>
       </div>
-      <button class="btn-muestra" onclick="openModal('modalMuestra')">
+      <button class="btn-muestra" onclick="openModal('modalMuestraEscritos')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Ver muestra de resultado
       </button>
@@ -1240,7 +1515,7 @@ function switchService(svc){
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Revisión necesaria por especialista</span>
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> RGPD · LOPDGDD · CET</span>
       </div>
-      <button class="btn-muestra" onclick="openModal('modalMuestra')">
+      <button class="btn-muestra" onclick="openModal('modalMuestraContratos')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Ver muestra de resultado
       </button>
@@ -1528,7 +1803,7 @@ function switchService(svc){
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Revisión necesaria por especialista</span>
         <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> RGPD · LOPDGDD · CET</span>
       </div>
-      <button class="btn-muestra" onclick="openModal('modalMuestra')">
+      <button class="btn-muestra" onclick="openModal('modalMuestraRequerimientos')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Ver muestra de resultado
       </button>
@@ -2015,7 +2290,7 @@ function switchService(svc){
               <span class="doc-cat-name">Documentación gráfica</span>
               <div class="doc-cat-desc">Fotografías, capturas de pantalla, planos, croquis…</div>
             </div>
-            <div style="display:flex;align-items:center;gap:7px;"><span class="doc-cat-badge" id="dbadge-dgrafica">✓</span><svg class="doc-cat-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div style="display:flex;align-items:center;gap:7px;"><span class="doc-cat-badge" id="dbadge-grafica">✓</span><svg class="doc-cat-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
           </button>
           <div class="doc-category-body">
             <div class="notice" style="margin-bottom:10px;">Las imágenes y archivos gráficos se incluirán en el expediente Drive y serán tenidos en cuenta en el dictamen.</div>
@@ -2999,7 +3274,15 @@ function renderDictFileList(svc, cat){
   const filtered=state[svc].files.filter(x=>x.category===cat);
   listEl.innerHTML=filtered.map(f=>`<div class="file-item"><span class="file-item-name">${esc(f.file.name)}<span class="file-item-size"> ${fmtBytes(f.file.size)}</span></span><button type="button" class="file-item-remove" onclick="removeDictFile('${svc}','${cat}','${esc(f.file.name)}')">✕</button></div>`).join('');
   const badge=document.getElementById(svc+'badge-'+cat); if(badge) badge.style.display=filtered.length?'inline':'none';
-  document.getElementById(svc+'cat-'+cat)?.querySelector('.doc-category-header')?.classList.toggle('has-files',filtered.length>0);
+  // Auto-abrir la categoría cuando tiene archivos para que el usuario lo vea
+  const catEl=document.getElementById(svc+'cat-'+cat);
+  if(catEl){
+    catEl.querySelector('.doc-category-header')?.classList.toggle('has-files',filtered.length>0);
+    if(filtered.length>0 && !catEl.classList.contains('open')){
+      catEl.classList.add('open');
+      catEl.querySelector('.doc-category-header')?.setAttribute('aria-expanded','true');
+    }
+  }
 }
 function removeDictFile(svc, cat, name){
   state[svc].files=state[svc].files.filter(f=>!(f.category===cat&&f.file.name===name));
@@ -3676,6 +3959,27 @@ function rndRef(){ return String(Math.floor(Math.random()*900000)+100000); }
 function updateCounter(el,id,max){ const n=el.value.length,c=document.getElementById(id); if(!c)return; c.textContent=n.toLocaleString('es-ES')+' / '+max.toLocaleString('es-ES'); c.classList.toggle('warn',n>max*.85); }
 function toggleFaq(btn){ const it=btn.closest('.faq-item'),open=it.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');}); if(!open){it.classList.add('open');btn.setAttribute('aria-expanded','true');} }
 function abrirModalLimiteArchivos(){ openModal('modalLimiteArchivos'); }
+function switchMuestraTabD(idx){
+  document.querySelectorAll('#modalMuestraDictamen .muestra-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  ['muestraPanelD0','muestraPanelD1'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('active',i===idx);
+  });
+}
+function switchMuestraTabR(idx){
+  document.querySelectorAll('#modalMuestraRequerimientos .muestra-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  ['muestraPanelR0','muestraPanelR1','muestraPanelR2'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('active',i===idx);
+  });
+}
+function switchMuestraTabC(idx){
+  document.querySelectorAll('#modalMuestraContratos .muestra-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  ['muestraPanelC0','muestraPanelC1','muestraPanelC2'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('active',i===idx);
+  });
+}
 function switchMuestraTab(idx){
   document.querySelectorAll('.muestra-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
   document.querySelectorAll('.muestra-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
