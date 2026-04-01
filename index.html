@@ -3175,6 +3175,33 @@ function validateLetrado(prefix){
   return true;
 }
 
+/* ── VALIDACIÓN DE PAGO ─────────────────────────── */
+function validarPago(svc){
+  const precioFinal = codigoAplicado[svc] ? codigoAplicado[svc].precioFinal : PRECIOS[svc];
+  if(precioFinal === 0) return true; // código gratuito aplicado — OK
+  const metodo = pagoMetodo[svc] || 'card';
+  if(metodo === 'card'){
+    alert('Para continuar debe seleccionar el método de pago por transferencia bancaria.
+
+El pago con tarjeta estará disponible próximamente.
+
+Puede seleccionarlo justo encima de este botón.');
+    return false;
+  }
+  if(metodo === 'transfer'){
+    return window.confirm(
+      '¿Confirma que ha realizado o va a realizar la transferencia bancaria?
+
+' +
+      'Importe: €' + precioFinal + '
+
+' +
+      'Su encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.'
+    );
+  }
+  return true;
+}
+
 /* ── COLLECT LETRADO DATA ────────────────────────── */
 function collectLetradoData(prefix){
   return {
@@ -3219,6 +3246,7 @@ function eNext(cur){
   }
   if(cur===3){
     if(!validateLetrado('e')) return;
+    if(!validarPago('e')) return;
     buildEResumen();
   }
   if(cur===3) buildLetradoBlock('e'); // ensure built
@@ -3235,7 +3263,7 @@ function cNext(cur){
   if(cur===2){
     // Parte A y Parte B: opcionales — si vacíos, el sistema los buscará en la documentación aportada o se dejarán en blanco para que el letrado los complete
   }
-  if(cur===3){if(!validateLetrado('c')) return; buildCResumen();}
+  if(cur===3){if(!validateLetrado('c')) return; if(!validarPago('c')) return; buildCResumen();}
   showPanelOf('cp',4,cur+1);
   if(cur===2) buildLetradoBlock('c');
 }
@@ -3249,7 +3277,7 @@ function rNext(cur){
   if(cur===2){
     // Remitente, destinatario y domicilio: opcionales — el sistema los buscará en la documentación aportada o se dejarán en blanco para que el letrado los complete
   }
-  if(cur===3){if(!validateLetrado('r')) return; buildRResumen();}
+  if(cur===3){if(!validateLetrado('r')) return; if(!validarPago('r')) return; buildRResumen();}
   showPanelOf('rp',4,cur+1);
   if(cur===2) buildLetradoBlock('r');
 }
@@ -3265,6 +3293,7 @@ function dNext(cur){
   }
   if(cur===3){
     if(!validateLetrado('d')) return;
+    if(!validarPago('d')) return;
     buildDResumen();
   }
   showPanelOf('dp',4,cur+1);
@@ -3545,19 +3574,6 @@ document.getElementById('lexForm-r').addEventListener('submit',async function(e)
 });
 
 async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
-  // ── VALIDACIÓN DE PAGO ─────────────────────────────────
-  const precioFinal = codigoAplicado[svc] ? codigoAplicado[svc].precioFinal : PRECIOS[svc];
-  if(precioFinal > 0){
-    const metodo = pagoMetodo[svc] || 'card';
-    if(metodo === 'card'){
-      alert('Para finalizar el encargo debe realizar el pago.\n\nActualmente el pago con tarjeta está en proceso de configuración. Por favor, contacte con nosotros en iureredacta@gmail.com para tramitar su encargo o seleccione el método de pago por transferencia.');
-      return;
-    }
-    if(metodo === 'transfer'){
-      const ok = window.confirm('¿Confirma que ha realizado la transferencia bancaria por importe de €' + precioFinal + '?\n\nSu encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.');
-      if(!ok) return;
-    }
-  }
   const btn=document.getElementById(btnId); btn.disabled=true; btn.textContent='Generando PDF de acuse…';
   const d=collectFn(); state[svc].data=d;
   await marcarCodigoUsado(svc);
