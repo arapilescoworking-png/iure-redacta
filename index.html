@@ -3172,28 +3172,6 @@ function validateLetrado(prefix){
     if(!document.getElementById(prefix+'FacMunicipio')?.value.trim()){alert('Datos de factura: indique el municipio.');return false;}
     if(!document.getElementById(prefix+'FacProvincia')?.value.trim()){alert('Datos de factura: indique la provincia.');return false;}
   }
-  // ── VALIDACIÓN DE PAGO (OBLIGATORIA) ──────────────────
-  const svcKey = prefix === 'e' ? 'e' : prefix === 'c' ? 'c' : prefix === 'r' ? 'r' : 'd';
-  const precioFinal = codigoAplicado[svcKey] ? codigoAplicado[svcKey].precioFinal : PRECIOS[svcKey];
-  if(precioFinal > 0){
-    // Hay importe a pagar — verificar que se ha seleccionado método de pago
-    const metodo = pagoMetodo[svcKey] || 'card';
-    if(metodo === 'card'){
-      // Sin pasarela integrada aún — bloquear envío
-      alert('Para finalizar el encargo debe realizar el pago.
-
-Actualmente el pago con tarjeta está en configuración. Por favor, contacte con nosotros en iureredacta@gmail.com para tramitar su encargo.');
-      return false;
-    }
-    if(metodo === 'transfer'){
-      // Transferencia: el usuario debe confirmar que la ha realizado
-      const confirm = window.confirm('¿Confirma que ha realizado la transferencia bancaria por importe de €' + precioFinal + '?
-
-Su encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.');
-      if(!confirm) return false;
-    }
-  }
-  // Si precioFinal === 0 (código gratuito aplicado) → permitir envío
   return true;
 }
 
@@ -3567,6 +3545,19 @@ document.getElementById('lexForm-r').addEventListener('submit',async function(e)
 });
 
 async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
+  // ── VALIDACIÓN DE PAGO ─────────────────────────────────
+  const precioFinal = codigoAplicado[svc] ? codigoAplicado[svc].precioFinal : PRECIOS[svc];
+  if(precioFinal > 0){
+    const metodo = pagoMetodo[svc] || 'card';
+    if(metodo === 'card'){
+      alert('Para finalizar el encargo debe realizar el pago.\n\nActualmente el pago con tarjeta está en proceso de configuración. Por favor, contacte con nosotros en iureredacta@gmail.com para tramitar su encargo o seleccione el método de pago por transferencia.');
+      return;
+    }
+    if(metodo === 'transfer'){
+      const ok = window.confirm('¿Confirma que ha realizado la transferencia bancaria por importe de €' + precioFinal + '?\n\nSu encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.');
+      if(!ok) return;
+    }
+  }
   const btn=document.getElementById(btnId); btn.disabled=true; btn.textContent='Generando PDF de acuse…';
   const d=collectFn(); state[svc].data=d;
   await marcarCodigoUsado(svc);
