@@ -183,19 +183,19 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
-body{font-family:var(--ff-body);background:var(--cream);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;padding-top:calc(var(--h-promo) + var(--h-nav));}
+body{font-family:var(--ff-body);background:var(--cream);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;padding-top:calc(var(--h-promo) + var(--h-nav));min-width:0;}
 a{color:var(--navy);text-decoration:none;transition:color .2s;}
 a:hover{color:var(--gold-dk);}
 .container{max-width:1280px;margin:0 auto;padding:0 16px;}
 
 /* PROMO BAR */
-.promo-bar{background:#111E40;color:var(--gold-lt);text-align:center;padding:9px 24px;font-size:.82rem;font-weight:600;letter-spacing:.05em;position:fixed;top:0;left:0;right:0;z-index:101;height:var(--h-promo);overflow:hidden;white-space:nowrap;}
+.promo-bar{background:#111E40;color:var(--gold-lt);text-align:center;padding:9px 24px;font-size:.82rem;font-weight:600;letter-spacing:.05em;position:fixed;top:0;left:0;right:0;z-index:201;height:var(--h-promo);overflow:hidden;white-space:nowrap;}
 .promo-bar a{color:var(--white);font-weight:700;text-decoration:underline;}
 .promo-full{display:inline;}
 .promo-mobile{display:none;}
 
 /* HEADER */
-header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:100;background:#ffffff;border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);}
+header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:200;background:#ffffff;border-bottom:2px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.12);}
 .nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:var(--h-nav);padding:0 16px;}
 .logo-main{font-family:var(--ff-disp);font-size:1.45rem;font-weight:700;color:var(--navy);letter-spacing:.04em;}
 .logo-main span{color:var(--gold-dk);}
@@ -207,7 +207,7 @@ header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:100;background:#
 .nav-cta:hover{background:var(--gold-dk)!important;}
 
 /* SERVICE TABS — bloque fijo al inicio de la página */
-.service-selector{background:#1B2D5E;padding:0 0 0 0;overflow:visible;}
+.service-selector{background:#1B2D5E;padding:0 0 0 0;overflow:visible;position:relative;z-index:1;}
 .service-selector-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;padding:36px 16px 0;align-items:flex-end;}
 .svc-tab{
   flex:1;
@@ -574,6 +574,7 @@ footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24
 @media(max-width:768px){
   .nav-links{display:none;}
   .logo-main{font-size:1.2rem;}
+  :root{--h-promo:32px;--h-nav:56px;}
   .promo-full{display:none;}
   .promo-mobile{display:inline;}
   .promo-bar{font-size:.78rem;padding:6px 12px;height:var(--h-promo);overflow:hidden;white-space:nowrap;}
