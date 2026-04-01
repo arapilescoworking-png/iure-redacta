@@ -941,6 +941,17 @@ function abrirClaudePanel(folderId){
       <div class="claude-step-title"><span class="claude-step-num">1</span>Descarga los archivos del expediente</div>
       <p style="font-size:.78rem;color:var(--text-md);margin-bottom:8px;">Descarga estos archivos para adjuntarlos a Claude:</p>
       <div class="claude-files">${filesHTML}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-copy" onclick="descargarTodos()" style="background:var(--navy);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Abrir todos los archivos
+        </button>
+        <a href="${exp.urlDocs||exp.urlExpediente}" target="_blank" class="btn-copy" style="background:#1a5e35;text-decoration:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Abrir carpeta en Drive
+        </a>
+      </div>
+      <p style="font-size:.72rem;color:var(--text-lt);margin-top:6px;">💡 En Drive puedes seleccionar todos los archivos y descargarlos en un .zip de una sola vez.</p>
     </div>
     <div class="claude-step">
       <div class="claude-step-title"><span class="claude-step-num">2</span>Copia el prompt y pégalo en Claude</div>
@@ -1013,6 +1024,16 @@ INSTRUCCIONES ADICIONALES:
   }
 
   return prompt;
+}
+
+function descargarTodos(){
+  // Recoger todos los enlaces del panel
+  const links = document.querySelectorAll('#claudePanelBody .claude-file-link');
+  if(!links.length){ showToast('No hay archivos para abrir.','err'); return; }
+  links.forEach((link, i) => {
+    setTimeout(() => { window.open(link.href, '_blank'); }, i * 400);
+  });
+  showToast('Abriendo ' + links.length + ' archivo(s)…','ok');
 }
 
 function copiarPrompt(){
