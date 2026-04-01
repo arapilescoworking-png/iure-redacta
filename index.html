@@ -189,11 +189,13 @@ a:hover{color:var(--gold-dk);}
 .container{max-width:1280px;margin:0 auto;padding:0 16px;}
 
 /* PROMO BAR */
-.promo-bar{background:var(--navy-dk);color:var(--gold-lt);text-align:center;padding:9px 24px;font-size:.82rem;font-weight:600;letter-spacing:.05em;position:fixed;top:0;left:0;right:0;z-index:101;height:var(--h-promo);}
+.promo-bar{background:#111E40;color:var(--gold-lt);text-align:center;padding:9px 24px;font-size:.82rem;font-weight:600;letter-spacing:.05em;position:fixed;top:0;left:0;right:0;z-index:101;height:var(--h-promo);overflow:hidden;white-space:nowrap;}
 .promo-bar a{color:var(--white);font-weight:700;text-decoration:underline;}
+.promo-full{display:inline;}
+.promo-mobile{display:none;}
 
 /* HEADER */
-header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:100;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);}
+header{position:fixed;top:var(--h-promo);left:0;right:0;z-index:100;background:#ffffff;border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);}
 .nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:var(--h-nav);padding:0 16px;}
 .logo-main{font-family:var(--ff-disp);font-size:1.45rem;font-weight:700;color:var(--navy);letter-spacing:.04em;}
 .logo-main span{color:var(--gold-dk);}
@@ -482,7 +484,7 @@ textarea{resize:vertical;min-height:100px;line-height:1.7;}
 .data-info-box p{font-size:.82rem;color:var(--text-md);line-height:1.8;margin-bottom:6px;}
 
 /* FAQ */
-.faq{padding:72px 24px;background:var(--cream);border-top:1px solid var(--border);}
+.faq{padding:72px 24px;background:var(--cream);border-top:1px solid var(--border);position:relative;z-index:0;}
 .faq-inner{max-width:720px;margin:0 auto;}
 .faq-header{text-align:center;margin-bottom:40px;}
 .faq-item{border-bottom:1px solid var(--border-md);}
@@ -572,7 +574,9 @@ footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24
 @media(max-width:768px){
   .nav-links{display:none;}
   .logo-main{font-size:1.2rem;}
-  .promo-bar{font-size:.72rem;padding:7px 12px;}
+  .promo-full{display:none;}
+  .promo-mobile{display:inline;}
+  .promo-bar{font-size:.78rem;padding:6px 12px;height:var(--h-promo);overflow:hidden;white-space:nowrap;}
   .service-selector-inner{padding:10px 4px 0;gap:2px;}
   .svc-tab{padding:10px 4px 10px;min-height:70px;gap:4px;border-radius:6px 6px 0 0;}
   .svc-tab svg{width:22px;height:22px;}
@@ -731,8 +735,8 @@ function switchService(svc){
 </div>
 
 <div class="promo-bar">
-  ⚖️ <strong>ENTREGA EN 24–48 H HÁBILES</strong> · Escritos, contratos, requerimientos y dictámenes jurídicos asistidos por IA · Si dispone de un <strong>código de descuento</strong>, introdúzcalo en el formulario &nbsp;·&nbsp;
-  <a href="#formulario">Iniciar encargo →</a>
+  <span class="promo-full">⚖️ <strong>ENTREGA EN 24–48 H HÁBILES</strong> · Escritos, contratos, requerimientos y dictámenes jurídicos asistidos por IA · Si dispone de un <strong>código de descuento</strong>, introdúzcalo en el formulario &nbsp;·&nbsp; <a href="#formulario">Iniciar encargo →</a></span>
+  <span class="promo-mobile">⚖️ <strong>ENTREGA EN 24–48 H HÁBILES</strong></span>
 </div>
 
 <header>
