@@ -944,14 +944,14 @@ function abrirClaudePanel(folderId){
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn-copy" onclick="descargarTodos()" style="background:var(--navy);">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          Descargar todos los archivos
+          Abrir todos en Drive
         </button>
         <a href="${exp.urlDocs}" target="_blank" class="btn-copy" style="background:#1a5e35;text-decoration:none;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
           Ver carpeta Documentos en Drive
         </a>
       </div>
-      <p style="font-size:.72rem;color:var(--text-lt);margin-top:6px;">💡 Los archivos se descargarán en su carpeta de Descargas. Si el navegador bloquea las descargas múltiples, pulse "Permitir" cuando lo solicite.</p>
+      <p style="font-size:.72rem;color:var(--text-lt);margin-top:6px;">💡 Se abrirán todos los archivos en Drive. En cada pestaña pulse el botón ⬇️ para descargarlos. Alternativamente, abra la carpeta en Drive y descárguelos como ZIP seleccionando todos.</p>
     </div>
     <div class="claude-step">
       <div class="claude-step-title"><span class="claude-step-num">2</span>Copia el prompt y pégalo en Claude</div>
@@ -980,11 +980,22 @@ function abrirClaudePanel(folderId){
 
 function buildPrompt(exp, svcNombre, instruccion){
   const svcCode = exp.ref ? exp.ref.split('-')[1] : 'E';
+  // Instrucción de skill según tipo de servicio
+  const skillInstruccion = {
+    E: 'Activa la skill "escritos-juridicos-es" junto con "busqueda-de-jurisprudencia", "busqueda-de-legislacion" y "organizacion-documental".',
+    C: 'Activa la skill "redaccion-de-contratos" junto con "busqueda-de-legislacion".',
+    R: 'Activa la skill "requerimientos" junto con "busqueda-de-legislacion".',
+    D: 'Activa la skill "dictamen-juridico" junto con "busqueda-de-jurisprudencia" y "busqueda-de-legislacion".'
+  }[svcCode] || '';
+
   let prompt = `ENCARGO IURE REDACTA — ${svcNombre}
 Referencia: ${exp.ref}
 Letrado responsable: ${exp.letrado || '—'} <${exp.email || '—'}>
 Fecha del encargo: ${exp.timestamp ? new Date(exp.timestamp).toLocaleString('es-ES') : '—'}
 
+════════════════════════════════════════════════════════
+SKILL A UTILIZAR:
+${skillInstruccion}
 ════════════════════════════════════════════════════════
 
 INSTRUCCIÓN PRINCIPAL:
@@ -1034,36 +1045,13 @@ INSTRUCCIONES ADICIONALES:
 
 function descargarTodos(){
   const archivos = window._claudeArchivos || [];
-  if(!archivos.length){ showToast('No hay archivos para descargar.','err'); return; }
-
-  // Convertir URL de Drive view a URL de descarga directa
-  // https://drive.google.com/file/d/FILE_ID/view -> https://drive.google.com/uc?export=download&id=FILE_ID
-  let descargados = 0;
+  if(!archivos.length){ showToast('No hay archivos para abrir.','err'); return; }
+  // Los archivos de Drive son privados — se abren en el navegador (con sesión Google)
+  // Desde cada pestaña usar Ctrl+S o el botón de descarga de Drive
   archivos.forEach((arch, i) => {
-    setTimeout(() => {
-      let url = arch.url || '';
-      // Extraer FILE_ID de la URL de Drive
-      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if(match) {
-        const fileId = match[1];
-        const downloadUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-        a.download = arch.nombre || ('archivo_' + (i+1));
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        descargados++;
-      } else {
-        // URL no es de Drive, abrir en pestaña
-        window.open(url, '_blank');
-        descargados++;
-      }
-    }, i * 800); // 800ms entre descargas para evitar bloqueos del navegador
+    setTimeout(() => { window.open(arch.url, '_blank'); }, i * 600);
   });
-
-  showToast('Descargando ' + archivos.length + ' archivo(s)… Revise su carpeta de Descargas.','ok');
+  showToast('Abriendo ' + archivos.length + ' archivo(s) en Drive. Use el botón ⬇️ de Drive para descargar cada uno.','ok');
 }
 
 function copiarPrompt(){
