@@ -944,7 +944,7 @@ function abrirClaudePanel(folderId){
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn-copy" onclick="descargarTodos()" style="background:var(--navy);">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          Abrir todos en Drive
+          Descargar todos los documentos
         </button>
         <a href="${exp.urlDocs}" target="_blank" class="btn-copy" style="background:#1a5e35;text-decoration:none;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
@@ -970,9 +970,10 @@ function abrirClaudePanel(folderId){
   `;
 
   // Guardar lista de archivos para descarga
+  // Solo documentos del cliente para descarga (no la ficha de encargo)
   window._claudeArchivos = [];
-  if(urlEncargo) window._claudeArchivos.push({ nombre: 'ENCARGO_' + exp.ref + '.pdf', url: urlEncargo });
   archivosCliente.forEach(f => window._claudeArchivos.push(f));
+  window._claudeUrlDocs = exp.urlDocs || exp.urlExpediente || '';
   window._claudeRef = exp.ref;
 
   document.getElementById('claudePanel').classList.add('visible');
@@ -1045,13 +1046,27 @@ INSTRUCCIONES ADICIONALES:
 
 function descargarTodos(){
   const archivos = window._claudeArchivos || [];
-  if(!archivos.length){ showToast('No hay archivos para abrir.','err'); return; }
-  // Los archivos de Drive son privados — se abren en el navegador (con sesión Google)
-  // Desde cada pestaña usar Ctrl+S o el botón de descarga de Drive
+  if(!archivos.length){
+    // Si no hay documentos adjuntos del cliente, abrir la carpeta
+    if(window._claudeUrlDocs){ window.open(window._claudeUrlDocs,'_blank'); }
+    else { showToast('El cliente no adjuntó documentos en este expediente.','err'); }
+    return;
+  }
+  // Abrir cada documento del cliente en nueva pestaña
+  // (Drive usa la sesión de Google del navegador para la descarga)
   archivos.forEach((arch, i) => {
-    setTimeout(() => { window.open(arch.url, '_blank'); }, i * 600);
+    setTimeout(() => {
+      // Construir URL de descarga directa de Google Drive
+      const match = (arch.url||'').match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if(match){
+        // URL de descarga que funciona con sesión activa de Google
+        window.open('https://drive.google.com/uc?export=download&id=' + match[1], '_blank');
+      } else {
+        window.open(arch.url, '_blank');
+      }
+    }, i * 700);
   });
-  showToast('Abriendo ' + archivos.length + ' archivo(s) en Drive. Use el botón ⬇️ de Drive para descargar cada uno.','ok');
+  showToast('Descargando ' + archivos.length + ' documento(s)… Revise su carpeta de Descargas.','ok');
 }
 
 function copiarPrompt(){
