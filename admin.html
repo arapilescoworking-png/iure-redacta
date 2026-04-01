@@ -400,14 +400,25 @@ function logout(){
 // ── API CALL ─────────────────────────────────────────────
 async function apiCall(payload){
   payload.password = ADMIN_PASS;
-  // Apps Script requiere el payload como parámetro de URL para evitar problemas de redirección CORS
-  const url = APPS_SCRIPT_URL + '?payload=' + encodeURIComponent(JSON.stringify(payload));
+  const payloadStr = JSON.stringify(payload);
+  console.log('[apiCall] action:', payload.action, '| payload:', payloadStr.substring(0,200));
+  const url = APPS_SCRIPT_URL + '?payload=' + encodeURIComponent(payloadStr);
   try {
     const resp = await fetch(url, { method:'GET', redirect:'follow' });
     const text = await resp.text();
-    try { return JSON.parse(text); }
-    catch(e){ return { ok: false, error: text }; }
+    console.log('[apiCall] response status:', resp.status, '| text:', text.substring(0,300));
+    try { 
+      const parsed = JSON.parse(text);
+      if(!parsed.ok) showToast('Error del servidor: ' + (parsed.error||'sin detalle'), 'err');
+      return parsed;
+    }
+    catch(e){ 
+      showToast('Respuesta inesperada del servidor. Ver consola.', 'err');
+      return { ok: false, error: text }; 
+    }
   } catch(e) {
+    console.error('[apiCall] fetch error:', e);
+    showToast('Error de conexión: ' + e.message, 'err');
     return { ok: false, error: e.message };
   }
 }
@@ -704,7 +715,9 @@ function confirmarEnvio(folderId){
     'Enviar documento al cliente',
     `Se enviará el documento a <strong>${email}</strong> y se programará el borrado automático de Drive en 24 horas.<br><br>Esta acción no se puede deshacer.`,
     async ()=>{
+      console.log('[enviarAlCliente] sending to:', email, 'ref:', ref);
       const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
+      console.log('[enviarAlCliente] result:', res);
       if(res.ok){
         showToast('Documento enviado. Borrado programado en 24h.','ok');
         // Actualizar semáforo sin recargar toda la lista
@@ -749,8 +762,13 @@ function confirmarEliminar(folderId, ref){
     `¿Está seguro de que desea eliminar el expediente <strong>${ref}</strong> de Drive? Esta acción moverá la carpeta a la papelera.`,
     async ()=>{
       const res = await apiCall({ action:'eliminarExpediente', folderId });
-      if(res.ok){ showToast('Expediente eliminado.','ok'); setTimeout(()=>cargarExpedientes(),1000); }
-      else showToast('Error: '+res.error,'err');
+      console.log('[eliminar] result:', res);
+      if(res.ok){ 
+        showToast('Expediente eliminado.','ok'); 
+        setTimeout(()=>cargarExpedientes(),1000); 
+      } else { 
+        showToast('Error al eliminar: '+(res.error||'sin detalle'),'err'); 
+      }
     }
   );
 }
