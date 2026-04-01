@@ -639,12 +639,32 @@ async function subirDocumento(folderId, ref){
   status.textContent = '✅ Subido correctamente. Ya puede pulsar Enviar al cliente.';
   showToast('Documento subido a Drive.','ok');
   btn.disabled = false;
-  // Actualizar el botón de enviar para que esté activo
-  const card = document.getElementById('card-'+folderId);
-  if(card){
-    const btnEnviar = card.querySelector('.btn-enviar');
-    if(btnEnviar){ btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar al cliente'; }
-  }
+  // Recargar solo este expediente para mostrar los archivos subidos
+  await refrescarExpediente(folderId);
+}
+
+async function refrescarExpediente(folderId){
+  try {
+    const res = await apiCall({ action: 'listarExpedientes' });
+    if(!res.ok) return;
+    const nuevos = res.expedientes || [];
+    // Actualizar expedientes globales
+    nuevos.forEach(e => { expData[e.folderId] = e; });
+    expedientes = nuevos;
+    actualizarStats();
+    // Actualizar solo la tarjeta afectada sin cerrarla
+    const exp = nuevos.find(e => e.folderId === folderId);
+    if(!exp) return;
+    const card = document.getElementById('card-'+folderId);
+    if(!card) return;
+    const wasOpen = card.classList.contains('open');
+    // Re-renderizar la tarjeta
+    const tmp = document.createElement('div');
+    tmp.innerHTML = renderCard(exp);
+    const newCard = tmp.firstElementChild;
+    if(wasOpen) newCard.classList.add('open');
+    card.replaceWith(newCard);
+  } catch(e) { console.warn('refrescarExpediente error:', e); }
 }
 
 function fileToB64(file){
