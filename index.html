@@ -2760,21 +2760,26 @@ async function validarCodigo(svc) {
     return;
   }
 
-  // 3. ¿Airtable configurado? Buscar código de uso único
-  if(AIRTABLE_API_KEY && AIRTABLE_BASE_ID){
+  // 3. Verificar código de un solo uso contra el Apps Script
+  if(DRIVE_WEBAPP_URL && !DRIVE_WEBAPP_URL.includes('PEGAR')){
     try{
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE}?filterByFormula={codigo}="${codigo}"`;
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` } });
+      statusEl.textContent = 'Verificando con el servidor…';
+      const payloadCheck = { action:'verificarCodigo', codigo, password:'1212' };
+      const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payloadCheck));
+      const res = await fetch(url, { method:'GET', redirect:'follow' });
       const data = await res.json();
-      if(data.records && data.records.length > 0){
-        const rec = data.records[0];
-        if(rec.fields.usado){
-          statusEl.textContent = '❌ Este código ya ha sido utilizado.';
+      if(data.ok && data.valido){
+        if(data.agotado){
+          statusEl.textContent = '❌ Este código ya ha sido utilizado el número máximo de veces.';
+          statusEl.className = 'codigo-status error';
+        } else if(data.caducado){
+          statusEl.textContent = '❌ Este código ha caducado.';
           statusEl.className = 'codigo-status error';
         } else {
-          // Guardar record ID para marcar al enviar
-          codigoAplicado[svc] = { codigo, tipo:'gratuito', airtableId: rec.id };
-          aplicarDescuento(svc, codigo, 'ACCESO GRATUITO', 0, precioBase);
+          codigoAplicado[svc] = { codigo, tipo:'uso-unico', descuento: data.descuento||100 };
+          const precioFinal = data.descuento===100 ? 0 : Math.round(precioBase * (1 - data.descuento/100));
+          const label = data.descuento===100 ? 'ACCESO GRATUITO (código de prueba)' : data.descuento+'% DESCUENTO';
+          aplicarDescuento(svc, codigo, label, precioFinal, precioBase);
         }
       } else {
         statusEl.textContent = '❌ Código no reconocido o inválido.';
@@ -2783,6 +2788,7 @@ async function validarCodigo(svc) {
     } catch(err){
       statusEl.textContent = '⚠️ No se pudo verificar el código. Inténtelo de nuevo.';
       statusEl.className = 'codigo-status error';
+      console.warn('Error verificando código:', err);
     }
     return;
   }
@@ -2821,21 +2827,16 @@ function aplicarDescuento(svc, codigo, label, precioFinal, precioBase){
 /* ── MARCAR CÓDIGO DE UN USO AL ENVIAR ────────────── */
 async function marcarCodigoUsado(svc){
   const cod = codigoAplicado[svc];
-  if(!cod || cod.tipo !== 'gratuito') return;
+  if(!cod) return;
 
-  // Local
-  const usados = JSON.parse(localStorage.getItem('iure_used_codes') || '[]');
-  if(!usados.includes(cod.codigo)){ usados.push(cod.codigo); localStorage.setItem('iure_used_codes', JSON.stringify(usados)); }
-
-  // Airtable
-  if(AIRTABLE_API_KEY && cod.airtableId){
+  // Notificar al Apps Script que se ha usado el código
+  if(cod.tipo === 'uso-unico' && DRIVE_WEBAPP_URL && !DRIVE_WEBAPP_URL.includes('PEGAR')){
     try{
-      await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE}/${cod.airtableId}`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fields: { usado: true, fecha_uso: new Date().toISOString().split('T')[0] } })
-      });
-    } catch(e){ console.warn('No se pudo marcar código en Airtable:', e); }
+      const payloadUso = { action:'registrarUsoCodigo', codigo: cod.codigo, password:'1212' };
+      const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payloadUso));
+      await fetch(url, { method:'GET', redirect:'follow' });
+      console.log('Uso de código registrado en servidor:', cod.codigo);
+    } catch(e){ console.warn('No se pudo registrar uso del código:', e); }
   }
 }
 
@@ -3627,7 +3628,7 @@ async function uploadToDrive(svc, d, acusePDFb64){
   // PASO 1: Crear expediente SIN enviar emails todavía
   progressEl.innerHTML='<div class="upload-progress-wrap"><div class="upload-progress-label">Registrando encargo…</div><div class="upload-progress-bar"><div class="upload-progress-fill" id="'+progressId+'Fill" style="width:15%"></div></div></div>';
   // Incluir PDF de acuse en base64 para guardarlo en Drive
-  const payloadPaso1={action:'crearExpediente',ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:metaArchivos,datos,acusePDFb64:acusePDFb64||null};
+  const payloadPaso1={action:'crearExpediente',ref:d.ref,servicio:d.servicio,tipo:d.tipoEscrito||d.tipoContrato||d.tipo||'',letrado:d.letrado,timestamp:d.timestamp,archivos:metaArchivos,datos,acusePDFb64:acusePDFb64||null,facturacion:d.facturacion||null};
   submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadPaso1));
 
   // PASO 2: Subir archivos uno a uno
@@ -3655,7 +3656,7 @@ async function uploadToDrive(svc, d, acusePDFb64){
 
   // PASO 3: Enviar emails ahora que todo está subido
   const fillEl2=document.getElementById(progressId+'Fill');if(fillEl2)fillEl2.style.width='95%';
-  const payloadPaso3={action:'enviarEmails',ref:d.ref,letrado:d.letrado,servicio:d.servicio,archivosOk,archivosError};
+  const payloadPaso3={action:'enviarEmails',ref:d.ref,letrado:d.letrado,servicio:d.servicio,archivosOk,archivosError,facturacion:d.facturacion||null};
   submitViaHiddenForm(DRIVE_WEBAPP_URL, JSON.stringify(payloadPaso3));
   await new Promise(r=>setTimeout(r,1000));
 

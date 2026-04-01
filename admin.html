@@ -236,6 +236,30 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 .empty-title{font-size:1rem;font-weight:700;color:var(--text-md);}
 .empty-sub{font-size:.82rem;color:var(--text-lt);margin-top:4px;}
 
+/* PANEL CÓDIGOS */
+.codigos-panel{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:24px;}
+.codigos-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.codigos-header h3{font-size:.95rem;font-weight:700;color:var(--navy);margin:0;}
+.codigos-form{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;background:var(--cream);padding:14px;border-radius:var(--radius);}
+.codigos-form .field-mini{display:flex;flex-direction:column;gap:4px;}
+.codigos-form label{font-size:.70rem;font-weight:700;color:var(--text-lt);text-transform:uppercase;letter-spacing:.08em;}
+.codigos-form input,.codigos-form select{border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;font-size:.82rem;font-family:var(--ff-ui);outline:none;width:auto;}
+.btn-gen{background:var(--navy);color:#fff;border:none;border-radius:var(--radius);padding:8px 18px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--ff-ui);white-space:nowrap;}
+.btn-gen:hover{background:var(--gold);}
+.codigo-table{width:100%;border-collapse:collapse;font-size:.81rem;}
+.codigo-table th{background:var(--cream);color:var(--text-lt);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.codigo-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.codigo-table tr:last-child td{border-bottom:none;}
+.codigo-val{font-family:monospace;font-weight:700;color:var(--navy);background:rgba(27,45,94,.06);padding:2px 7px;border-radius:4px;}
+.badge-activo{background:#e8f9ee;color:#1a5e35;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:20px;}
+.badge-agotado{background:#fdf3f2;color:#c0392b;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:20px;}
+.badge-caducado{background:#f5f5f5;color:#888;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:20px;}
+.btn-del-cod{background:none;border:none;color:var(--red);cursor:pointer;font-size:.80rem;font-weight:700;padding:2px 6px;}
+.btn-del-cod:hover{color:#fff;background:var(--red);border-radius:4px;}
+.gen-result{background:#e8f9ee;border:1px solid var(--green);border-radius:var(--radius);padding:12px 16px;margin-top:12px;display:none;}
+.gen-result.visible{display:block;}
+.gen-codigo-big{font-family:monospace;font-size:1.3rem;font-weight:800;color:var(--navy);letter-spacing:.1em;}
+
 /* FACTURA */
 .fac-badge{display:inline-flex;align-items:center;gap:5px;font-size:.70rem;font-weight:700;padding:3px 9px;border-radius:20px;background:#fff3cd;color:#856404;border:1px solid #ffc107;}
 .fac-badge.enviada{background:#d4edda;color:#155724;border-color:#28a745;}
@@ -364,6 +388,7 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 <header class="admin-header">
   <div class="admin-logo">IURE <span>REDACTA</span> <small>Backoffice</small></div>
   <div class="header-right">
+    <button class="btn-refresh" onclick="toggleCodigos()" id="btnToggleCodigos">🎫 Códigos</button>
     <button class="btn-refresh" onclick="cargarExpedientes()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
@@ -427,6 +452,58 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 </main>
 
 <!-- TOAST -->
+<!-- PANEL GESTIÓN DE CÓDIGOS -->
+<div class="codigos-panel" id="codigosPanel" style="display:none;">
+  <div class="codigos-header">
+    <h3>🎫 Códigos de un solo uso</h3>
+    <button class="btn-refresh" onclick="cargarCodigos()">Actualizar lista</button>
+  </div>
+  <div class="codigos-form">
+    <div class="field-mini">
+      <label>Descripción</label>
+      <input type="text" id="codDesc" placeholder="Ej: Prueba letrado García" style="width:200px;"/>
+    </div>
+    <div class="field-mini">
+      <label>Usos máximos</label>
+      <select id="codUsos">
+        <option value="1">1 uso</option>
+        <option value="2">2 usos</option>
+        <option value="5">5 usos</option>
+        <option value="10">10 usos</option>
+      </select>
+    </div>
+    <div class="field-mini">
+      <label>Válido por</label>
+      <select id="codDias">
+        <option value="7">7 días</option>
+        <option value="15">15 días</option>
+        <option value="30" selected>30 días</option>
+        <option value="60">60 días</option>
+        <option value="90">90 días</option>
+      </select>
+    </div>
+    <div class="field-mini">
+      <label>Descuento</label>
+      <select id="codDescuento">
+        <option value="100">100% (gratuito)</option>
+        <option value="75">75%</option>
+        <option value="50">50%</option>
+      </select>
+    </div>
+    <button class="btn-gen" onclick="generarCodigo()">✨ Generar código</button>
+  </div>
+  <div class="gen-result" id="genResult">
+    <div style="font-size:.80rem;color:var(--text-md);margin-bottom:6px;">Código generado — compártalo con el letrado:</div>
+    <div class="gen-codigo-big" id="genCodigoText">—</div>
+    <div style="font-size:.75rem;color:var(--text-lt);margin-top:6px;" id="genCodigoInfo"></div>
+    <button class="btn-copy" onclick="copiarCodigo()" style="margin-top:8px;">📋 Copiar código</button>
+  </div>
+  <table class="codigo-table" id="codigosTable">
+    <thead><tr><th>Código</th><th>Descripción</th><th>Usos</th><th>Descuento</th><th>Caduca</th><th>Estado</th><th></th></tr></thead>
+    <tbody id="codigosBody"><tr><td colspan="7" style="text-align:center;color:var(--text-lt);padding:20px;">Cargando…</td></tr></tbody>
+  </table>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- CONFIRM MODAL -->
@@ -490,6 +567,62 @@ function logout(){
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('loginPass').value = '';
   expedientes = [];
+}
+
+// ── GESTIÓN DE CÓDIGOS ───────────────────────────────────
+function toggleCodigos(){
+  const panel = document.getElementById('codigosPanel');
+  const visible = panel.style.display !== 'none';
+  panel.style.display = visible ? 'none' : 'block';
+  if(!visible) cargarCodigos();
+}
+
+async function generarCodigo(){
+  const desc = document.getElementById('codDesc').value.trim() || 'Código de prueba';
+  const usos = document.getElementById('codUsos').value;
+  const dias  = document.getElementById('codDias').value;
+  const dto   = document.getElementById('codDescuento').value;
+  const res = await apiCall({ action:'generarCodigo', descripcion:desc, usos, dias, descuento:dto });
+  if(res.ok){
+    document.getElementById('genCodigoText').textContent = res.codigo;
+    const cad = new Date(res.caducidad).toLocaleDateString('es-ES');
+    document.getElementById('genCodigoInfo').textContent = 'Válido hasta: ' + cad + ' · ' + usos + ' uso(s) · ' + dto + '% descuento';
+    document.getElementById('genResult').classList.add('visible');
+    showToast('Código generado: ' + res.codigo,'ok');
+    cargarCodigos();
+  } else { showToast('Error: '+(res.error||'sin detalle'),'err'); }
+}
+
+async function cargarCodigos(){
+  const res = await apiCall({ action:'listarCodigos' });
+  if(!res.ok){ document.getElementById('codigosBody').innerHTML='<tr><td colspan="7" style="color:var(--red);">Error cargando códigos.</td></tr>'; return; }
+  const lista = res.codigos || [];
+  if(!lista.length){ document.getElementById('codigosBody').innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-lt);padding:16px;">No hay códigos generados.</td></tr>'; return; }
+  document.getElementById('codigosBody').innerHTML = lista.map(c=>{
+    const estado = c.agotado ? '<span class="badge-agotado">Agotado</span>' : c.caducado ? '<span class="badge-caducado">Caducado</span>' : '<span class="badge-activo">Activo</span>';
+    const cad = new Date(c.caducidad).toLocaleDateString('es-ES');
+    return `<tr>
+      <td><span class="codigo-val">${c.codigo}</span></td>
+      <td>${esc(c.descripcion)}</td>
+      <td>${c.usados}/${c.usos}</td>
+      <td>${c.descuento||100}%</td>
+      <td>${cad}</td>
+      <td>${estado}</td>
+      <td><button class="btn-del-cod" onclick="eliminarCodigo('${c.codigo}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function eliminarCodigo(codigo){
+  if(!confirm('¿Eliminar el código ' + codigo + '?')) return;
+  const res = await apiCall({ action:'eliminarCodigo', codigo });
+  if(res.ok){ showToast('Código eliminado.','ok'); cargarCodigos(); }
+  else showToast('Error: '+(res.error||'sin detalle'),'err');
+}
+
+function copiarCodigo(){
+  const cod = document.getElementById('genCodigoText').textContent;
+  navigator.clipboard.writeText(cod).then(()=>showToast('Código copiado: '+cod,'ok'));
 }
 
 // ── DISPATCHER GLOBAL DE ACCIONES ────────────────────────
