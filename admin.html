@@ -236,6 +236,14 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 .empty-title{font-size:1rem;font-weight:700;color:var(--text-md);}
 .empty-sub{font-size:.82rem;color:var(--text-lt);margin-top:4px;}
 
+/* FACTURA */
+.fac-badge{display:inline-flex;align-items:center;gap:5px;font-size:.70rem;font-weight:700;padding:3px 9px;border-radius:20px;background:#fff3cd;color:#856404;border:1px solid #ffc107;}
+.fac-badge.enviada{background:#d4edda;color:#155724;border-color:#28a745;}
+.btn-factura{background:#fff3cd;color:#856404;border:2px solid #ffc107;border-radius:var(--radius);padding:9px 16px;font-size:.80rem;font-weight:700;cursor:pointer;font-family:var(--ff-ui);transition:all .2s;display:flex;align-items:center;gap:6px;}
+.btn-factura:hover{background:#ffc107;color:#212529;}
+.btn-factura.enviada{background:#d4edda;color:#155724;border-color:#28a745;cursor:default;}
+.factura-alert{background:#fff3cd;border:1px solid #ffc107;border-radius:var(--radius);padding:10px 14px;font-size:.81rem;color:#856404;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+
 /* PANEL CLAUDE */
 .claude-panel{
   display:none;position:fixed;inset:0;z-index:8000;
@@ -492,6 +500,7 @@ window._accion = function(tipo, folderId, extra) {
   if(tipo === 'estado')  { confirmarEstado(folderId, extra); return; }
   if(tipo === 'eliminar'){ confirmarEliminar(folderId, extra); return; }
   if(tipo === 'claude')  { abrirClaudePanel(folderId); return; }
+  if(tipo === 'factura') { marcarFacturaEnviada(folderId); return; }
 };
 
 // ── API CALL ─────────────────────────────────────────────
@@ -647,6 +656,7 @@ function renderCard(exp){
       <div class="exp-badges">
         <span class="exp-badge ${docsCount>0?'docs':'nodocs'}">${docsCount>0?'📎 '+docsCount+' doc'+(docsCount!==1?'s':''):'Sin adjuntos'}</span>
         ${resCount>0?`<span class="exp-badge resultado">✅ Resultado listo</span>`:''}
+        ${exp.tieneFac?`<span class="fac-badge ${exp.facturaEnviada?'enviada':''}">💰 ${exp.facturaEnviada?'Factura enviada':'Factura pendiente'}</span>`:''}
       </div>
       <span class="exp-estado-label">${estadoLabel}</span>
       <span class="exp-chevron">›</span>
@@ -726,13 +736,24 @@ function renderDetail(exp){
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
+      ${exp.tieneFac ? `
+      <div class="factura-alert">
+        💰 <span>Este expediente requiere factura. ${exp.facturaEnviada ? '<strong>Factura ya enviada ✅</strong>' : '<strong>Envíe la factura antes de remitir el documento al cliente.</strong>'}</span>
+      </div>
+      <button class="btn-factura ${exp.facturaEnviada?'enviada':''}" onclick="window._accion('factura','${exp.folderId}')" ${exp.facturaEnviada?'disabled':''}>
+        💰 ${exp.facturaEnviada ? 'Factura enviada ✅' : 'Marcar factura como enviada'}
+      </button>
+      ` : ''}
       <button class="btn-enviar" style="background:var(--gold);color:var(--navy);" onclick="window._accion('claude','${exp.folderId}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Preparar encargo para Claude
       </button>
-      <button class="btn-enviar" ${exp.estado==='verde'?'disabled':''} onclick="window._accion('enviar','${exp.folderId}')">
+      <button class="btn-enviar"
+        ${(exp.estado==='verde' || (exp.tieneFac && !exp.facturaEnviada)) ? 'disabled' : ''}
+        onclick="window._accion('enviar','${exp.folderId}')"
+        title="${exp.tieneFac && !exp.facturaEnviada ? 'Debe marcar la factura como enviada antes de remitir el documento' : ''}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        ${exp.estado==='verde'?'Ya enviado':'Enviar al cliente'}
+        ${exp.estado==='verde'?'Ya enviado':(exp.tieneFac&&!exp.facturaEnviada?'Pendiente de factura':'Enviar al cliente')}
       </button>
       <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','amarillo')">Marcar: Pendiente envío 🟡</button>
       <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','rojo')">Marcar: Sin iniciar 🔴</button>
@@ -1078,6 +1099,20 @@ function copiarPrompt(){
     btn.textContent = '✅ Copiado';
     setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar prompt'; }, 2000);
   }).catch(()=>{ showToast('Error al copiar. Selecciona el texto manualmente.','err'); });
+}
+
+async function marcarFacturaEnviada(folderId){
+  const exp = expData[folderId];
+  if(!confirm('¿Confirmar que la factura ha sido enviada al cliente?\n\nExpediente: ' + (exp?exp.ref:folderId))) return;
+  const res = await apiCall({ action:'marcarFacturaEnviada', folderId, ref: exp?exp.ref:'' });
+  if(res.ok){
+    showToast('Factura marcada como enviada. Ya puede enviar el documento al cliente.','ok');
+    // Actualizar UI sin recargar
+    if(exp){ exp.facturaEnviada = true; expData[folderId] = exp; }
+    await refrescarExpediente(folderId);
+  } else {
+    showToast('Error: '+(res.error||'sin detalle'),'err');
+  }
 }
 
 function cerrarClaudePanel(){
