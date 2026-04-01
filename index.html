@@ -3603,7 +3603,7 @@ async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
   btn.textContent='Enviando…';
   await sendEmail(d);
   // 4. Guardar contacto en Gmail Contacts (yureredacta@gmail.com)
-  await guardarContactoGmail(d.letrado.nombre, d.letrado.email, d.letrado.numColegiacion, d.letrado.colegio);
+  await guardarContactoGmail(d.letrado.nombre, d.letrado.email, d.letrado.numColegiacion, d.letrado.colegio, d.letrado.telefono||'');
   // 4. Panel de éxito
   document.getElementById(refId).textContent=d.ref;
   document.getElementById(testId).textContent=buildTestText(d);
@@ -4073,12 +4073,13 @@ function aceptarCookies(){
 }
 
 /* ── GUARDAR CONTACTO EN GMAIL (via Apps Script) ──── */
-async function guardarContactoGmail(nombre, email, numColegiacion, colegio){
+async function guardarContactoGmail(nombre, email, numColegiacion, colegio, telefono){
   if(!nombre || !email) return;
   if(!DRIVE_WEBAPP_URL || DRIVE_WEBAPP_URL.includes('PEGAR')) return;
   try {
     const payload = { action:'addContact', nombre, email,
-      numColegiacion: numColegiacion||'', colegio: colegio||'' };
+      numColegiacion: numColegiacion||'', colegio: colegio||'',
+      telefono: telefono||'' };
     const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payload));
     await fetch(url, { method:'GET', redirect:'follow' });
     console.log('Contacto guardado en Gmail:', nombre, email);
