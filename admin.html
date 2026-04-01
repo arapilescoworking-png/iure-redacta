@@ -400,12 +400,31 @@ function logout(){
 // ── API CALL ─────────────────────────────────────────────
 async function apiCall(payload){
   payload.password = ADMIN_PASS;
+  // Apps Script requiere el payload como parámetro de URL para evitar problemas de redirección CORS
+  const url = APPS_SCRIPT_URL + '?payload=' + encodeURIComponent(JSON.stringify(payload));
+  try {
+    const resp = await fetch(url, { method:'GET', redirect:'follow' });
+    const text = await resp.text();
+    try { return JSON.parse(text); }
+    catch(e){ return { ok: false, error: text }; }
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+// Para subida de archivos (base64 grande) usamos POST con form
+async function apiCallPost(payload){
+  payload.password = ADMIN_PASS;
   const form = new FormData();
   form.append('payload', JSON.stringify(payload));
-  const resp = await fetch(APPS_SCRIPT_URL, { method:'POST', body: form });
-  const text = await resp.text();
-  try { return JSON.parse(text); }
-  catch(e){ return { ok: false, error: text }; }
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, { method:'POST', body: form, redirect:'follow' });
+    const text = await resp.text();
+    try { return JSON.parse(text); }
+    catch(e){ return { ok: false, error: text }; }
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
 }
 
 // ── CARGAR EXPEDIENTES ───────────────────────────────────
@@ -628,7 +647,7 @@ async function subirDocumento(folderId, ref){
     const file = input.files[i];
     status.textContent = `Subiendo ${i+1}/${input.files.length}: ${file.name}…`;
     const b64 = await fileToB64(file);
-    const res = await apiCall({
+    const res = await apiCallPost({
       action:'subirDocumentoFinal',
       folderId, nombre: file.name,
       mimeType: file.type||'application/octet-stream',
