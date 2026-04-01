@@ -397,6 +397,15 @@ function logout(){
   expedientes = [];
 }
 
+// ── DISPATCHER GLOBAL DE ACCIONES ────────────────────────
+window._accion = function(tipo, folderId, extra) {
+  console.log('[_accion]', tipo, folderId, extra);
+  if(tipo === 'subir')   { subirDocumento(folderId, extra); return; }
+  if(tipo === 'enviar')  { confirmarEnvio(folderId); return; }
+  if(tipo === 'estado')  { confirmarEstado(folderId, extra); return; }
+  if(tipo === 'eliminar'){ confirmarEliminar(folderId, extra); return; }
+};
+
 // ── API CALL ─────────────────────────────────────────────
 async function apiCall(payload){
   payload.password = ADMIN_PASS;
@@ -624,20 +633,18 @@ function renderDetail(exp){
       <div class="upload-input-row">
         <input type="file" class="upload-file-input" id="file-${exp.folderId}" multiple
           accept=".pdf,.doc,.docx,.txt"/>
-        <button class="btn-upload" data-folderid="${exp.folderId}" data-ref="${esc(exp.ref)}" onclick="subirDocumento(this.dataset.folderid, this.dataset.ref)">Subir</button>
+        <button class="btn-upload" onclick="window._accion('subir','${exp.folderId}','${esc(exp.ref)}')">Subir</button>
       </div>
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
-      <button class="btn-enviar" data-folderid="${exp.folderId}"
-        onclick="confirmarEnvio(this.dataset.folderid)"
-        ${exp.estado==='verde'?'disabled':''}>
+      <button class="btn-enviar" ${exp.estado==='verde'?'disabled':''} onclick="window._accion('enviar','${exp.folderId}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ${exp.estado==='verde'?'Ya enviado':'Enviar al cliente'}
       </button>
-      <button class="btn-estado" data-folderid="${exp.folderId}" onclick="confirmarEstado(this.dataset.folderid,'amarillo')">Marcar: Pendiente envío 🟡</button>
-      <button class="btn-estado" data-folderid="${exp.folderId}" onclick="confirmarEstado(this.dataset.folderid,'rojo')">Marcar: Sin iniciar 🔴</button>
-      <button class="btn-eliminar" data-folderid="${exp.folderId}" data-ref="${esc(exp.ref)}" onclick="confirmarEliminar(this.dataset.folderid, this.dataset.ref)">🗑️ Eliminar expediente</button>
+      <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','amarillo')">Marcar: Pendiente envío 🟡</button>
+      <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','rojo')">Marcar: Sin iniciar 🔴</button>
+      <button class="btn-eliminar" onclick="window._accion('eliminar','${exp.folderId}','${esc(exp.ref)}')">🗑️ Eliminar expediente</button>
     </div>
   </div>`;
 }
@@ -650,9 +657,10 @@ function toggleCard(folderId){
 
 // ── SUBIR DOCUMENTO ──────────────────────────────────────
 async function subirDocumento(folderId, ref){
+  console.log('[subirDocumento] folderId:', folderId, 'ref:', ref);
   const input = document.getElementById('file-'+folderId);
   const status = document.getElementById('upstatus-'+folderId);
-  if(!input.files.length){ showToast('Seleccione al menos un archivo.','err'); return; }
+  if(!input || !input.files.length){ showToast('Seleccione al menos un archivo.','err'); return; }
   const btn = input.nextElementSibling;
   btn.disabled = true;
   for(let i=0; i<input.files.length; i++){
