@@ -378,6 +378,7 @@ const ADMIN_PASS = 'IURE2026ADMIN';
 let expedientes = [];
 let filtroActual = 'todos';
 let confirmCb = null;
+const expData = {}; // mapa folderId -> datos completos del expediente
 
 // ── LOGIN ────────────────────────────────────────────────
 function doLogin(){
@@ -492,6 +493,8 @@ function renderExpedientes(){
 }
 
 function renderCard(exp){
+  // Guardar datos completos en mapa para evitar problemas con atributos HTML
+  expData[exp.folderId] = exp;
   const svcColor = { 'E':'#1B2D5E','C':'#1a5e35','R':'#7b3d00','D':'#4a1a6e' };
   const svcLabel = exp.ref ? exp.ref.split('-')[1] : '?';
   const svcNames = { E:'Escritos', C:'Contratos', R:'Requerimientos', D:'Dictamen' };
@@ -596,7 +599,7 @@ function renderDetail(exp){
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
-      <button class="btn-enviar" onclick="confirmarEnvio('${exp.folderId}','${esc(exp.ref)}','${esc(exp.email)}','${esc(exp.letrado)}','${esc(exp.servicio)}')"
+      <button class="btn-enviar" onclick="confirmarEnvio('${exp.folderId}')"
         ${exp.estado==='verde'?'disabled':''}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ${exp.estado==='verde'?'Ya enviado':'Enviar al cliente'}
@@ -633,10 +636,15 @@ async function subirDocumento(folderId, ref){
     });
     if(!res.ok){ showToast('Error: '+res.error,'err'); btn.disabled=false; return; }
   }
-  status.textContent = '✅ Subido correctamente.';
+  status.textContent = '✅ Subido correctamente. Ya puede pulsar Enviar al cliente.';
   showToast('Documento subido a Drive.','ok');
   btn.disabled = false;
-  setTimeout(()=>cargarExpedientes(), 1500);
+  // Actualizar el botón de enviar para que esté activo
+  const card = document.getElementById('card-'+folderId);
+  if(card){
+    const btnEnviar = card.querySelector('.btn-enviar');
+    if(btnEnviar){ btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar al cliente'; }
+  }
 }
 
 function fileToB64(file){
@@ -649,7 +657,10 @@ function fileToB64(file){
 }
 
 // ── ENVIAR AL CLIENTE ────────────────────────────────────
-function confirmarEnvio(folderId, ref, email, letrado, servicio){
+function confirmarEnvio(folderId){
+  const exp = expData[folderId];
+  if(!exp){ showToast('Error: datos del expediente no encontrados.','err'); return; }
+  const { ref, email, letrado, servicio } = exp;
   showConfirm(
     'Enviar documento al cliente',
     `Se enviará el documento a <strong>${email}</strong> y se programará el borrado automático de Drive en 24 horas.<br><br>Esta acción no se puede deshacer.`,
@@ -657,9 +668,21 @@ function confirmarEnvio(folderId, ref, email, letrado, servicio){
       const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
       if(res.ok){
         showToast('Documento enviado. Borrado programado en 24h.','ok');
-        setTimeout(()=>cargarExpedientes(), 1500);
+        // Actualizar semáforo sin recargar toda la lista
+        const card = document.getElementById('card-'+folderId);
+        if(card){
+          card.className = card.className.replace(/rojo|amarillo|verde/g,'verde');
+          const sem = card.querySelector('.semaforo');
+          if(sem) sem.className = 'semaforo verde';
+          const label = card.querySelector('.exp-estado-label');
+          if(label) label.textContent = 'Enviado';
+          const btnEnviar = card.querySelector('.btn-enviar');
+          if(btnEnviar){ btnEnviar.disabled=true; btnEnviar.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Ya enviado'; }
+          if(exp) exp.estado='verde';
+        }
+        actualizarStats();
       } else {
-        showToast('Error: '+res.error,'err');
+        showToast('Error al enviar: '+res.error,'err');
       }
     },
     'green'
