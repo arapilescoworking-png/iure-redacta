@@ -3172,6 +3172,28 @@ function validateLetrado(prefix){
     if(!document.getElementById(prefix+'FacMunicipio')?.value.trim()){alert('Datos de factura: indique el municipio.');return false;}
     if(!document.getElementById(prefix+'FacProvincia')?.value.trim()){alert('Datos de factura: indique la provincia.');return false;}
   }
+  // ── VALIDACIÓN DE PAGO (OBLIGATORIA) ──────────────────
+  const svcKey = prefix === 'e' ? 'e' : prefix === 'c' ? 'c' : prefix === 'r' ? 'r' : 'd';
+  const precioFinal = codigoAplicado[svcKey] ? codigoAplicado[svcKey].precioFinal : PRECIOS[svcKey];
+  if(precioFinal > 0){
+    // Hay importe a pagar — verificar que se ha seleccionado método de pago
+    const metodo = pagoMetodo[svcKey] || 'card';
+    if(metodo === 'card'){
+      // Sin pasarela integrada aún — bloquear envío
+      alert('Para finalizar el encargo debe realizar el pago.
+
+Actualmente el pago con tarjeta está en configuración. Por favor, contacte con nosotros en iureredacta@gmail.com para tramitar su encargo.');
+      return false;
+    }
+    if(metodo === 'transfer'){
+      // Transferencia: el usuario debe confirmar que la ha realizado
+      const confirm = window.confirm('¿Confirma que ha realizado la transferencia bancaria por importe de €' + precioFinal + '?
+
+Su encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.');
+      if(!confirm) return false;
+    }
+  }
+  // Si precioFinal === 0 (código gratuito aplicado) → permitir envío
   return true;
 }
 
