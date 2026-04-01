@@ -2826,18 +2826,9 @@ function aplicarDescuento(svc, codigo, label, precioFinal, precioBase){
 
 /* ── MARCAR CÓDIGO DE UN USO AL ENVIAR ────────────── */
 async function marcarCodigoUsado(svc){
-  const cod = codigoAplicado[svc];
-  if(!cod) return;
-
-  // Notificar al Apps Script que se ha usado el código
-  if(cod.tipo === 'uso-unico' && DRIVE_WEBAPP_URL && !DRIVE_WEBAPP_URL.includes('PEGAR')){
-    try{
-      const payloadUso = { action:'registrarUsoCodigo', codigo: cod.codigo, password:'1212' };
-      const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payloadUso));
-      await fetch(url, { method:'GET', redirect:'follow' });
-      console.log('Uso de código registrado en servidor:', cod.codigo);
-    } catch(e){ console.warn('No se pudo registrar uso del código:', e); }
-  }
+  // El uso ya se registró de forma atómica al validar el código.
+  // Esta función se mantiene por compatibilidad pero ya no necesita hacer nada.
+  return;
 }
 
 /* ── SELECTOR MÉTODO DE PAGO ──────────────────────── */

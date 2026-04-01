@@ -869,24 +869,19 @@ function renderDetail(exp){
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
-      ${exp.tieneFac ? `
-      <div class="factura-alert">
-        💰 <span>Este expediente requiere factura. ${exp.facturaEnviada ? '<strong>Factura ya enviada ✅</strong>' : '<strong>Envíe la factura antes de remitir el documento al cliente.</strong>'}</span>
-      </div>
-      <button class="btn-factura ${exp.facturaEnviada?'enviada':''}" onclick="window._accion('factura','${exp.folderId}')" ${exp.facturaEnviada?'disabled':''}>
-        💰 ${exp.facturaEnviada ? 'Factura enviada ✅' : 'Marcar factura como enviada'}
-      </button>
-      ` : ''}
+      ${exp.tieneFac ? (exp.facturaEnviada
+        ? '<div class="factura-alert" style="background:#d4edda;border-color:#28a745;"><span style="color:#155724;">✅ <strong>Factura ya enviada.</strong> Puede enviar el documento al cliente.</span></div><button class="btn-factura enviada" disabled>✅ Factura enviada</button>'
+        : '<div class="factura-alert">💰 <span><strong>Factura pendiente de envío.</strong> Envíe la factura al cliente antes de remitir el documento.</span></div><button class="btn-factura" onclick=\'window._accion("factura","${exp.folderId}")\'  >💰 Marcar factura como enviada</button>'
+      ) : ''}
       <button class="btn-enviar" style="background:var(--gold);color:var(--navy);" onclick="window._accion('claude','${exp.folderId}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Preparar encargo para Claude
       </button>
       <button class="btn-enviar"
-        ${(exp.estado==='verde' || (exp.tieneFac && !exp.facturaEnviada)) ? 'disabled' : ''}
         onclick="window._accion('enviar','${exp.folderId}')"
-        title="${exp.tieneFac && !exp.facturaEnviada ? 'Debe marcar la factura como enviada antes de remitir el documento' : ''}">
+        ${(exp.estado==='verde' || (exp.tieneFac && !exp.facturaEnviada)) ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        ${exp.estado==='verde'?'Ya enviado':(exp.tieneFac&&!exp.facturaEnviada?'Pendiente de factura':'Enviar al cliente')}
+        ${exp.estado==='verde' ? 'Ya enviado' : (exp.tieneFac && !exp.facturaEnviada ? '⛔ Pendiente de factura' : 'Enviar al cliente')}
       </button>
       <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','amarillo')">Marcar: Pendiente envío 🟡</button>
       <button class="btn-estado" onclick="window._accion('estado','${exp.folderId}','rojo')">Marcar: Sin iniciar 🔴</button>
@@ -972,6 +967,11 @@ async function confirmarEnvio(folderId){
   const servicio = exp.servicio || '';
 
   console.log('[confirmarEnvio] folderId:', folderId, 'email:', emailEnvio, 'ref:', ref);
+  // Guardia de seguridad: bloquear si factura pendiente
+  if(exp.tieneFac && !exp.facturaEnviada){
+    showToast('⛔ Debe marcar la factura como enviada antes de remitir el documento.','err');
+    return;
+  }
 
   const confirmMsg = '¿Enviar el documento al letrado?\n\nRef: ' + ref +
     '\nEmail: ' + (emailEnvio || '(el sistema buscará el email en Drive)') +
