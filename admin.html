@@ -236,6 +236,70 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 .empty-title{font-size:1rem;font-weight:700;color:var(--text-md);}
 .empty-sub{font-size:.82rem;color:var(--text-lt);margin-top:4px;}
 
+/* PANEL CLAUDE */
+.claude-panel{
+  display:none;position:fixed;inset:0;z-index:8000;
+  background:rgba(17,30,64,.85);align-items:center;justify-content:center;
+  padding:20px;
+}
+.claude-panel.visible{display:flex;}
+.claude-box{
+  background:#fff;border-radius:16px;width:100%;max-width:780px;max-height:90vh;
+  display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.4);
+  overflow:hidden;
+}
+.claude-header{
+  background:var(--navy-dk);color:#fff;padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.claude-header h3{font-size:1rem;font-weight:700;margin:0;}
+.claude-header p{font-size:.78rem;color:rgba(255,255,255,.6);margin:2px 0 0;}
+.claude-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1;}
+.claude-body{flex:1;overflow-y:auto;padding:20px 24px;}
+.claude-step{
+  background:var(--cream);border-radius:10px;padding:16px 18px;
+  margin-bottom:14px;border-left:4px solid var(--navy);
+}
+.claude-step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;background:var(--navy);color:#fff;
+  border-radius:50%;font-size:.72rem;font-weight:800;margin-right:8px;flex-shrink:0;
+}
+.claude-step-title{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;}
+.claude-files{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.claude-file-link{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  text-decoration:none;color:var(--navy);font-size:.81rem;font-weight:500;transition:background .15s;
+}
+.claude-file-link:hover{background:#e8f4fd;}
+.claude-prompt-box{
+  background:#1a1a2e;color:#e8e8f0;border-radius:var(--radius);
+  padding:14px 16px;font-size:.78rem;font-family:monospace;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto;
+  margin-top:8px;border:1px solid rgba(255,255,255,.1);
+}
+.btn-copy{
+  background:var(--navy);color:#fff;border:none;border-radius:var(--radius);
+  padding:9px 18px;font-size:.80rem;font-weight:700;cursor:pointer;
+  font-family:var(--ff-ui);transition:background .2s;margin-top:10px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-copy:hover{background:var(--gold);}
+.btn-copy.copied{background:var(--green);}
+.btn-abrir-claude{
+  background:linear-gradient(135deg,#c17f24,#e8a838);color:#fff;
+  border:none;border-radius:var(--radius);padding:12px 24px;
+  font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--ff-ui);
+  display:inline-flex;align-items:center;gap:8px;transition:opacity .2s;
+  margin-top:4px;
+}
+.btn-abrir-claude:hover{opacity:.9;}
+.claude-footer{
+  padding:16px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-shrink:0;background:#fafaf8;
+}
+
 /* TOAST */
 .toast{
   position:fixed;bottom:24px;right:24px;z-index:9999;
@@ -369,6 +433,29 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
   </div>
 </div>
 
+<!-- PANEL PREPARAR ENCARGO CLAUDE -->
+<div class="claude-panel" id="claudePanel">
+  <div class="claude-box">
+    <div class="claude-header">
+      <div>
+        <h3>⚡ Preparar encargo para Claude</h3>
+        <p id="claudePanelRef">Ref: —</p>
+      </div>
+      <button class="claude-close" onclick="cerrarClaudePanel()">×</button>
+    </div>
+    <div class="claude-body" id="claudePanelBody">
+      <!-- Se genera dinámicamente -->
+    </div>
+    <div class="claude-footer">
+      <a href="https://claude.ai/new" target="_blank" class="btn-abrir-claude">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Abrir Claude en nueva pestaña
+      </a>
+      <span style="font-size:.75rem;color:var(--text-lt);">Copia el prompt → pégalo en Claude → adjunta los archivos → ejecuta</span>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── CONFIG ──────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0Kaz0wQOAQ74Af8O6DPPDwR1dfYWWHOjInu3h3Qedjv16NOlKrkb1h5JW4svdmuRaVg/exec';
@@ -404,6 +491,7 @@ window._accion = function(tipo, folderId, extra) {
   if(tipo === 'enviar')  { confirmarEnvio(folderId); return; }
   if(tipo === 'estado')  { confirmarEstado(folderId, extra); return; }
   if(tipo === 'eliminar'){ confirmarEliminar(folderId, extra); return; }
+  if(tipo === 'claude')  { abrirClaudePanel(folderId); return; }
 };
 
 // ── API CALL ─────────────────────────────────────────────
@@ -638,6 +726,10 @@ function renderDetail(exp){
       <div class="upload-status" id="upstatus-${exp.folderId}"></div>
     </div>
     <div class="action-btns">
+      <button class="btn-enviar" style="background:var(--gold);color:var(--navy);" onclick="window._accion('claude','${exp.folderId}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Preparar encargo para Claude
+      </button>
       <button class="btn-enviar" ${exp.estado==='verde'?'disabled':''} onclick="window._accion('enviar','${exp.folderId}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ${exp.estado==='verde'?'Ya enviado':'Enviar al cliente'}
@@ -719,16 +811,31 @@ function fileToB64(file){
 async function confirmarEnvio(folderId){
   const exp = expData[folderId];
   if(!exp){ showToast('Error: datos del expediente no encontrados.','err'); return; }
-  const { ref, email, letrado, servicio } = exp;
-  console.log('[confirmarEnvio] folderId:', folderId, 'email:', email, 'ref:', ref);
-  // Si no hay email disponible, el Apps Script lo buscará en STATUS.json del expediente
-  if(!email){ email = ''; }
-  if(!confirm('¿Enviar el documento al letrado?\n\nRef: ' + ref + '\nEmail: ' + email + '\n\nSe programará el borrado de Drive en 24 horas.')) return;
+  // Usar let para poder reasignar si está vacío
+  let emailEnvio = exp.email || '';
+  let letradoEnvio = exp.letrado || '';
+  const ref = exp.ref || '';
+  const servicio = exp.servicio || '';
+
+  console.log('[confirmarEnvio] folderId:', folderId, 'email:', emailEnvio, 'ref:', ref);
+
+  const confirmMsg = '¿Enviar el documento al letrado?\n\nRef: ' + ref +
+    '\nEmail: ' + (emailEnvio || '(el sistema buscará el email en Drive)') +
+    '\n\nSe programará el borrado de Drive en 24 horas.';
+  if(!confirm(confirmMsg)) return;
+
   showToast('Enviando documento…','ok');
-  const res = await apiCall({ action:'enviarAlCliente', folderId, ref, email, letrado, servicio });
+  // Pasamos folderId siempre — el Apps Script buscará el email en Drive si viene vacío
+  const res = await apiCall({
+    action:'enviarAlCliente',
+    folderId, ref,
+    email: emailEnvio,
+    letrado: letradoEnvio,
+    servicio
+  });
   console.log('[enviarAlCliente] result:', res);
   if(res.ok){
-    showToast('Documento enviado. Borrado programado en 24 horas.','ok');
+    showToast('Documento enviado al letrado. Borrado programado en 24 horas.','ok');
     const card = document.getElementById('card-'+folderId);
     if(card){
       card.className = card.className.replace(/rojo|amarillo|verde/g,'verde');
@@ -738,7 +845,7 @@ async function confirmarEnvio(folderId){
       if(lbl) lbl.textContent = 'Enviado';
       const btnE = card.querySelector('.btn-enviar');
       if(btnE){ btnE.disabled=true; btnE.textContent='Ya enviado'; }
-      if(exp) exp.estado='verde';
+      exp.estado = 'verde';
     }
     actualizarStats();
   } else {
@@ -776,6 +883,151 @@ async function confirmarEliminar(folderId, ref){
     showToast('Error al eliminar: '+(res.error||'sin detalle'),'err');
   }
 
+}
+
+// ── PANEL CLAUDE ─────────────────────────────────────────
+const svcNombres = {
+  E:'Escritos Jurídicos', C:'Contratos',
+  R:'Requerimientos y Burofax', D:'Dictamen Jurídico'
+};
+const svcSkills = {
+  E:'escritos-juridicos-es + busqueda-de-jurisprudencia + busqueda-de-legislacion + organizacion-documental',
+  C:'redaccion-de-contratos + busqueda-de-legislacion',
+  R:'requerimientos + busqueda-de-legislacion',
+  D:'dictamen-juridico + busqueda-de-jurisprudencia + busqueda-de-legislacion'
+};
+const svcInstruccion = {
+  E:'Redacta el escrito jurídico completo (demanda, recurso, querella o el tipo indicado) con fundamentos de derecho, jurisprudencia verificada y suplico. Genera también el análisis estratégico del caso en documento separado.',
+  C:'Redacta el contrato completo con todas las cláusulas necesarias según el derecho español aplicable. Genera también el memorándum estratégico con análisis de riesgos para el cliente.',
+  R:'Redacta el requerimiento o burofax completo, con fundamentos jurídicos, plazos y reserva de acciones. Genera también el memorándum estratégico de la comunicación.',
+  D:'Emite el dictamen jurídico completo con análisis de las cuestiones planteadas, legislación aplicable, jurisprudencia relevante y conclusiones y recomendaciones.'
+};
+
+function abrirClaudePanel(folderId){
+  const exp = expData[folderId];
+  if(!exp){ showToast('Datos del expediente no encontrados.','err'); return; }
+
+  const svcCode = exp.ref ? exp.ref.split('-')[1] : 'E';
+  const svcNombre = svcNombres[svcCode] || exp.servicio || 'Servicio jurídico';
+  const skills = svcSkills[svcCode] || 'escritos-juridicos-es';
+  const instruccion = svcInstruccion[svcCode] || 'Genera el documento jurídico solicitado.';
+
+  document.getElementById('claudePanelRef').textContent = 'Ref: ' + exp.ref + ' — ' + svcNombre;
+
+  // Construir prompt completo
+  const prompt = buildPrompt(exp, svcNombre, instruccion);
+
+  // Construir contenido del panel
+  const archivosCliente = exp.archivosCliente || [];
+  const urlEncargo = exp.urlEncargo || '';
+
+  let filesHTML = '';
+  if(urlEncargo){
+    filesHTML += `<a href="${urlEncargo}" target="_blank" class="claude-file-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      📋 PDF de encargo (IR-${exp.ref})
+    </a>`;
+  }
+  archivosCliente.forEach(f=>{
+    filesHTML += `<a href="${f.url}" target="_blank" class="claude-file-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      📎 ${f.nombre}
+    </a>`;
+  });
+  if(!filesHTML) filesHTML = '<p style="font-size:.80rem;color:var(--text-lt);font-style:italic;">El cliente no adjuntó documentos.</p>';
+
+  document.getElementById('claudePanelBody').innerHTML = `
+    <div class="claude-step">
+      <div class="claude-step-title"><span class="claude-step-num">1</span>Descarga los archivos del expediente</div>
+      <p style="font-size:.78rem;color:var(--text-md);margin-bottom:8px;">Descarga estos archivos para adjuntarlos a Claude:</p>
+      <div class="claude-files">${filesHTML}</div>
+    </div>
+    <div class="claude-step">
+      <div class="claude-step-title"><span class="claude-step-num">2</span>Copia el prompt y pégalo en Claude</div>
+      <p style="font-size:.78rem;color:var(--text-md);margin-bottom:4px;">Skills a activar: <strong>${skills}</strong></p>
+      <div class="claude-prompt-box" id="promptBox">${esc(prompt)}</div>
+      <button class="btn-copy" onclick="copiarPrompt()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copiar prompt
+      </button>
+    </div>
+    <div class="claude-step" style="border-left-color:var(--gold);">
+      <div class="claude-step-title"><span class="claude-step-num" style="background:var(--gold);color:var(--navy);">3</span>Adjunta los archivos descargados en Claude y ejecuta</div>
+      <p style="font-size:.78rem;color:var(--text-md);">Abre Claude en nueva pestaña → pega el prompt → adjunta los archivos → pulsa Enter.</p>
+      <p style="font-size:.78rem;color:var(--text-md);margin-top:6px;">Cuando Claude genere el documento, súbelo aquí desde el botón <strong>"Subir documento generado"</strong> y luego pulsa <strong>"Enviar al cliente"</strong>.</p>
+    </div>
+  `;
+
+  document.getElementById('claudePanel').classList.add('visible');
+}
+
+function buildPrompt(exp, svcNombre, instruccion){
+  const svcCode = exp.ref ? exp.ref.split('-')[1] : 'E';
+  let prompt = `ENCARGO IURE REDACTA — ${svcNombre}
+Referencia: ${exp.ref}
+Letrado responsable: ${exp.letrado || '—'} <${exp.email || '—'}>
+Fecha del encargo: ${exp.timestamp ? new Date(exp.timestamp).toLocaleString('es-ES') : '—'}
+
+════════════════════════════════════════════════════════
+
+INSTRUCCIÓN PRINCIPAL:
+${instruccion}
+
+════════════════════════════════════════════════════════
+
+DATOS DEL ENCARGO:
+`;
+
+  // Add all available data from exp
+  if(exp.servicio) prompt += `Servicio: ${exp.servicio}\n`;
+
+  // Add archived files info
+  const archivos = exp.archivosCliente || [];
+  if(archivos.length > 0){
+    prompt += `\nDOCUMENTOS APORTADOS POR EL CLIENTE (adjuntos a este mensaje):\n`;
+    archivos.forEach((f,i) => { prompt += `  ${i+1}. ${f.nombre}\n`; });
+  } else {
+    prompt += `\nDocumentos aportados: ninguno\n`;
+  }
+
+  prompt += `\n════════════════════════════════════════════════════════
+
+INSTRUCCIONES ADICIONALES:
+- Revisa el PDF de encargo adjunto para obtener todos los detalles del caso (hechos, pretensiones, partes, etc.)
+- Aplica la legislación española vigente y jurisprudencia verificada
+- El documento debe estar listo para ser revisado, adaptado y suscrito por el letrado
+- Incluye aviso al pie: "Borrador generado con asistencia de IA. Debe ser revisado y suscrito por letrado en ejercicio. Ref: ${exp.ref}"
+`;
+
+  if(svcCode === 'E'){
+    prompt += `- Genera también un análisis estratégico del caso en documento separado\n`;
+    prompt += `- Cita la referencia del encargo en el encabezado del escrito\n`;
+  } else if(svcCode === 'C'){
+    prompt += `- Genera también el memorándum estratégico con análisis de riesgos\n`;
+  } else if(svcCode === 'R'){
+    prompt += `- Indica el canal de envío recomendado (burofax con certificación de contenido)\n`;
+    prompt += `- Genera también el memorándum estratégico\n`;
+  } else if(svcCode === 'D'){
+    prompt += `- Estructura el dictamen con: objeto, hechos, cuestiones jurídicas, análisis, conclusiones y fuentes\n`;
+    prompt += `- Cita la referencia exacta de jurisprudencia (ECLI o repertorio) verificada\n`;
+  }
+
+  return prompt;
+}
+
+function copiarPrompt(){
+  const box = document.getElementById('promptBox');
+  if(!box) return;
+  navigator.clipboard.writeText(box.textContent).then(()=>{
+    const btn = document.querySelector('.btn-copy');
+    btn.classList.add('copied');
+    btn.textContent = '✅ Copiado';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar prompt'; }, 2000);
+  }).catch(()=>{ showToast('Error al copiar. Selecciona el texto manualmente.','err'); });
+}
+
+function cerrarClaudePanel(){
+  document.getElementById('claudePanel').classList.remove('visible');
 }
 
 // ── HELPERS ──────────────────────────────────────────────
