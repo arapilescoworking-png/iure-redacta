@@ -613,6 +613,35 @@ footer{background:var(--navy-dk);color:rgba(255,255,255,.6);padding:48px 24px 24
   .data-info{padding:0 12px 32px;}
 }
 
+/* ── MODAL MUESTRA ──────────────────────────────── */
+.modal-box-wide{max-width:900px;width:95vw;}
+.muestra-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px;}
+.muestra-col{display:flex;flex-direction:column;gap:10px;}
+.muestra-col-title{font-family:var(--ff-disp);font-size:.9rem;font-weight:700;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:6px;margin-bottom:4px;}
+.muestra-block{background:var(--cream);border-radius:6px;padding:10px 12px;}
+.muestra-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dk);margin-bottom:3px;}
+.muestra-value{font-size:.82rem;color:var(--text);line-height:1.5;}
+.muestra-doc-header{background:var(--navy);color:#fff;font-family:var(--ff-disp);font-size:.8rem;font-weight:700;text-align:center;padding:10px 12px;border-radius:6px;letter-spacing:.04em;}
+.muestra-doc-section{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-top:8px;margin-bottom:2px;}
+.muestra-doc-text{font-size:.80rem;color:var(--text);line-height:1.65;background:var(--cream);border-left:3px solid var(--gold);padding:10px 12px;border-radius:0 6px 6px 0;}
+.muestra-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.muestra-tag{font-size:.70rem;background:rgba(27,45,94,.08);color:var(--navy);border:1px solid rgba(27,45,94,.18);border-radius:20px;padding:3px 9px;}
+.muestra-estrategico{background:#f0f4ff;border:1px solid rgba(27,45,94,.2);border-radius:8px;padding:12px 14px;margin-top:8px;}
+.muestra-estrategico-title{font-size:.72rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.muestra-estrategico-row{display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-md);padding:3px 0;border-bottom:1px solid rgba(27,45,94,.08);}
+.muestra-alta{color:var(--green);font-weight:700;}
+.muestra-tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:16px;}
+.muestra-tab{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:10px 18px;font-family:var(--ff-body);font-size:.83rem;font-weight:600;color:var(--text-lt);cursor:pointer;transition:all .2s;}
+.muestra-tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+.muestra-tab:hover{color:var(--navy);}
+.muestra-panel{display:none;max-height:65vh;overflow-y:auto;padding-right:4px;}
+.muestra-panel.active{display:block;}
+.muestra-doc-content{font-size:.82rem;line-height:1.75;color:var(--text);}
+.muestra-doc-content p{margin-bottom:10px;}
+.muestra-doc-content strong{color:var(--navy);}
+@media(max-width:768px){.muestra-tab{padding:8px 10px;font-size:.75rem;}.muestra-panel{max-height:55vh;}}
+@media(max-width:768px){.muestra-grid{grid-template-columns:1fr;}}
+
 /* ── UPLOAD PROGRESS BAR ────────────────────────── */
 .upload-progress-wrap{padding:10px 0;text-align:center;}
 .upload-progress-label{font-size:.82rem;color:var(--navy);margin-bottom:8px;font-weight:600;}
@@ -704,15 +733,128 @@ function switchService(svc){
 
 <!-- ══ MODAL MUESTRA RESULTADO (Próximamente) ══ -->
 <div class="modal-overlay" id="modalMuestra" onclick="closeModalOutside(event,'modalMuestra')" role="dialog" aria-modal="true" aria-labelledby="modalMuestraTit">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('modalMuestra')" aria-label="Cerrar">×</button>
-    <h3 id="modalMuestraTit">📄 Muestra del resultado</h3>
-    <p>En breve publicaremos ejemplos reales de escritos, contratos y requerimientos generados con IURE REDACTA, convenientemente anonimizados.</p>
-    <div style="background:var(--cream);border:2px dashed var(--border-md);border-radius:var(--radius-lg);padding:32px 24px;text-align:center;margin:18px 0;">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dk)" stroke-width="1.5" style="margin-bottom:12px;opacity:.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <p style="color:var(--text-lt);font-size:.88rem;margin:0;"><strong>Muestra en preparación</strong><br>Próximamente disponible con datos anonimizados.</p>
+  <div class="modal-box modal-box-wide">
+    <button class="modal-close" onclick="closeModal('modalMuestra')" aria-label="Cerrar">&times;</button>
+    <h3 id="modalMuestraTit">Muestra real — Escritos Jurídicos</h3>
+    <p style="font-size:.83rem;color:var(--text-lt);margin-bottom:16px;">Ejemplo real anonimizado. Encargo → demanda completa → análisis estratégico. Todos los datos son ficticios.</p>
+
+    <!-- Pestañas -->
+    <div class="muestra-tabs">
+      <button class="muestra-tab active" onclick="switchMuestraTab(0)">📋 Encargo</button>
+      <button class="muestra-tab" onclick="switchMuestraTab(1)">⚖️ Demanda</button>
+      <button class="muestra-tab" onclick="switchMuestraTab(2)">🔍 Análisis estratégico</button>
     </div>
-    <p style="font-size:.82rem;color:var(--text-lt);">Para solicitar una muestra por correo, contacte con <a href="/cdn-cgi/l/email-protection#127b6760776077767371667352757f737b7e3c717d7f"><span class="__cf_email__" data-cfemail="ec85999e899e89888d8f988dac8b818d8580c28f8381">[email&#160;protected]</span></a>.</p>
+
+    <!-- PESTAÑA 1: ENCARGO -->
+    <div class="muestra-panel active" id="muestraPanel0">
+      <div class="muestra-block"><div class="muestra-label">Tipo de escrito</div><div class="muestra-value">Demanda civil — Juicio Verbal de Desahucio por Falta de Pago con acumulación de reclamación de rentas adeudadas</div></div>
+      <div class="muestra-block"><div class="muestra-label">Posición procesal</div><div class="muestra-value">Demandante / Parte actora</div></div>
+      <div class="muestra-block"><div class="muestra-label">Juzgado</div><div class="muestra-value">Juzgado de Primera Instancia de Madrid que por turno de reparto corresponda</div></div>
+      <div class="muestra-block"><div class="muestra-label">Letrado</div><div class="muestra-value">D. Juan García García — ICAM nº 123.456</div></div>
+      <div class="muestra-block"><div class="muestra-label">Parte representada</div><div class="muestra-value">D. Martín Martín Martín — DNI 555 555 J — Avenida de las Ciudades 220, 28592, Madrid</div></div>
+      <div class="muestra-block"><div class="muestra-label">Procurador</div><div class="muestra-value">D. Agapito López López — nº colegiación 28/5488441</div></div>
+      <div class="muestra-block"><div class="muestra-label">Relación de hechos</div><div class="muestra-value">Se trata de un contrato de arrendamiento que se adjunta en el que la parte arrendataria lleva tres mensualidades sin pagar. En concreto las tres últimas mensualidades vencidas a razón de €1.000 cada una de ellas. Han existido diversas reclamaciones extrajudiciales que se adjuntan, por lo que no es preciso iniciar demanda de conciliación. Debes realizar una demanda de desahucio por falta de pago, acumulando la reclamación de las rentas adeudadas. El arrendatario amenazó con solicitar la declaración de vulnerabilidad, más no ha acreditado cumplir ninguno de los requisitos para que ello proceda.</div></div>
+      <div class="muestra-block"><div class="muestra-label">Pretensiones</div><div class="muestra-value">Se solicitará la resolución del contrato por falta de pago, así como el desahucio correspondiente y la condena al pago de las rentas adeudadas.</div></div>
+      <div class="muestra-block"><div class="muestra-label">Documentos aportados</div><div class="muestra-value">Contrato de arrendamiento de vivienda de fecha 1 de abril de 2025 entre D. Martín Martín Martín (arrendador) y D. José José José (arrendatario), sobre vivienda en Avenida de España nº 706, Madrid 28099.</div></div>
+    </div>
+
+    <!-- PESTAÑA 2: DEMANDA -->
+    <div class="muestra-panel" id="muestraPanel1">
+      <div class="muestra-doc-content">
+        <p style="text-align:center;font-size:.78rem;color:var(--text-lt);margin-bottom:12px;"><em>Ref.: IR-E-2026-577166 | D. Martín Martín Martín c. D. José José José | Desahucio falta pago<br>Letrado: D. Juan García García (ICAM nº 123.456) | Procurador: D. Agapito López López (nº 28/5488441)</em></p>
+        <h4 style="text-align:center;margin-bottom:4px;">Procedimiento: Juicio Verbal — Desahucio por Falta de Pago y Reclamación de Rentas Adeudadas</h4>
+        <p style="text-align:center;font-size:.82rem;color:var(--text-md);margin-bottom:16px;">Juzgado de Primera Instancia de Madrid que por turno de reparto corresponda</p>
+        <h4 style="text-align:center;margin-bottom:16px;">DEMANDA DE DESAHUCIO POR FALTA DE PAGO DE RENTA Y RECLAMACIÓN DE RENTAS ADEUDADAS</h4>
+
+        <p>Don Agapito López López, Procurador de los Tribunales, nº de colegiación 28/5488441, en nombre y representación de Don Martín Martín Martín, con DNI 555 555 J y domicilio en Avenida de las Ciudades 220, 28592, Madrid, en virtud del poder que acompaño y será debidamente reseñado, y bajo la dirección letrada de Don Juan García García, Letrado del Ilustre Colegio de Abogados de Madrid (ICAM), nº de colegiación 123.456, ante el Juzgado comparezco y DIGO:</p>
+        <p>Que, en la representación que ostento, por medio del presente escrito interpongo <strong>DEMANDA DE JUICIO VERBAL DE DESAHUCIO POR FALTA DE PAGO DE RENTA</strong> con acumulación de la acción de <strong>RECLAMACIÓN DE RENTAS ADEUDADAS</strong>, al amparo de lo dispuesto en el artículo 250.1.1.º de la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil (LEC), frente a Don José José José, con DNI 666 666 H, con domicilio en la Calle Paniagua número 712, Madrid.</p>
+
+        <p><strong>HECHOS</strong></p>
+        <p><strong>PRIMERO. — IDENTIFICACIÓN DE LAS PARTES Y TÍTULO LEGITIMADOR</strong><br>Don Martín Martín Martín, DNI 555 555 J, es propietario de la vivienda sita en la Avenida de España número 706, Madrid 28099, de 90 metros cuadrados de superficie útil, inscrita en el Registro de la Propiedad nº 8 de Madrid. La condición de propietario se acredita mediante el propio contrato de arrendamiento aportado como DOC NÚM. 2.</p>
+        <p><strong>SEGUNDO. — CONTRATO DE ARRENDAMIENTO</strong><br>Con fecha 1 de abril de 2025, el actor suscribió con el demandado CONTRATO DE ARRENDAMIENTO DE VIVIENDA (DOC NÚM. 2) sobre la finca referida, con renta de 1.000 € mensuales, fianza de 1.000 € y garantía adicional de 1.000 €, con sumisión expresa a los Juzgados y Tribunales de Madrid.</p>
+        <p><strong>TERCERO. — FALTA DE PAGO DE LA RENTA</strong><br>El arrendatario Don José José José ha dejado de satisfacer la renta pactada durante tres mensualidades consecutivas, a razón de 1.000 € cada una. Las cantidades adeudadas ascienden a un total de <strong>3.000 € (TRES MIL EUROS)</strong>. [PENDIENTE: Identificar las mensualidades exactas impagadas y aportar extracto bancario como DOC NÚM. 3].</p>
+        <p><strong>CUARTO. — RECLAMACIONES EXTRAJUDICIALES PREVIAS</strong><br>Con anterioridad a la presentación de la presente demanda, el arrendador efectuó diversas reclamaciones extrajudiciales al arrendatario instándole al pago, sin resultado (DOCS NÚMS. 3 y siguientes). [PENDIENTE: Incorporar burofaxes con acuses de recibo].</p>
+        <p><strong>QUINTO. — VULNERABILIDAD ALEGADA POR EL ARRENDATARIO</strong><br>El arrendatario ha amenazado verbalmente con instar el incidente de vulnerabilidad previsto en el art. 441.5 LEC y en el Real Decreto-ley 2/2026, de 3 de febrero. Sin embargo, no ha aportado ni acreditado documento alguno de los servicios sociales que avale la concurrencia de los requisitos legales exigidos. El actor es persona física y pequeño propietario, no ostenta la condición de gran tenedor conforme al art. 3.k) de la Ley 12/2023. [PENDIENTE: Certificación registral como DOC NÚM. 4].</p>
+
+        <p><strong>FUNDAMENTOS DE DERECHO</strong></p>
+        <p><strong>I. — COMPETENCIA Y PROCEDIMIENTO</strong><br>I.a Competencia objetiva y funcional: art. 85 LOPJ y art. 45 LEC.<br>I.b Competencia territorial: art. 52.1.7.º LEC — juzgado del lugar donde está sita la finca (Avenida de España 706, Madrid). Reforzada por sumisión expresa (Cláusula Décima del contrato).<br>I.c Procedimiento: juicio verbal conforme al <strong>art. 250.1.1.º LEC</strong>.</p>
+        <p><strong>II. — RESOLUCIÓN DEL CONTRATO POR FALTA DE PAGO Y DESAHUCIO</strong><br>II.a El arrendador está legitimado conforme al <strong>artículo 27.2.a) LAU</strong>: <em>"el arrendador podrá resolver de pleno derecho el contrato por: a) La falta de pago de la renta"</em>. II.b El <strong>artículo 1.124 CC</strong> establece la facultad resolutoria implícita. El <strong>artículo 1.569 CC</strong> legitima el desahucio por falta de pago del precio convenido.</p>
+        <p><strong>III. — RECLAMACIÓN DE RENTAS ADEUDADAS. ACUMULACIÓN DE ACCIONES</strong><br>Al amparo del <strong>artículo 437.4.3.ª LEC</strong>, se acumula la acción de reclamación de las rentas vencidas e impagadas (3.000 €).</p>
+        <p><strong>IV. — REQUISITOS DE ADMISIBILIDAD. ARTÍCULO 439.6 LEC</strong><br>En cumplimiento del art. 439.6 LEC, se hace constar: a) El inmueble constituye vivienda habitual del arrendatario. b) El demandante NO ostenta la condición de gran tenedor (art. 3.k) Ley 12/2023). Conforme a la STC 26/2025, la declaración de inconstitucionalidad de los arts. 439.6.c) y 7 LEC elimina la obligación de conciliación previa.</p>
+        <p><strong>V. — SUSPENSIÓN EXTRAORDINARIA. REAL DECRETO-LEY 2/2026</strong><br>El RDL 2/2026 prorroga la suspensión de lanzamientos hasta el 31 de diciembre de 2026. No obstante, dicha suspensión no resulta de aplicación a arrendadores particulares titulares de dos o menos viviendas, siendo el actor pequeño propietario.</p>
+        <p><strong>VI. — ENERVACIÓN</strong><br>Conforme al art. 22.4 LEC, procederá la enervación si el arrendatario abona la totalidad de las cantidades adeudadas (3.000 €) en el plazo de diez días desde la notificación del requerimiento.</p>
+        <p><strong>VII. — INTERESES</strong><br>Al amparo del art. 576 LEC e intereses moratorios del art. 1.108 CC desde el vencimiento de cada mensualidad.</p>
+        <p><strong>VIII. — COSTAS</strong><br>Conforme al art. 394 LEC, se interesa la imposición de las costas al demandado.</p>
+
+        <p><strong>OTROSÍES</strong></p>
+        <p><strong>PRIMER OTROSÍ. — DOCUMENTAL:</strong> DOC NÚM. 1: Resolución de encargo IR-E-2026-577166. DOC NÚM. 2: Contrato de arrendamiento. DOC NÚM. 3: [PENDIENTE: Acreditación de mensualidades impagadas]. DOC NÚM. 4 y ss.: [PENDIENTE: Reclamaciones extrajudiciales y certificación registral].</p>
+        <p><strong>SEGUNDO OTROSÍ. — LANZAMIENTO:</strong> Al amparo del art. 549.3 LEC, se solicita que en la resolución que ponga fin al procedimiento se fije el día y hora exactos para la práctica del lanzamiento.</p>
+        <p><strong>TERCER OTROSÍ. — CONDONACIÓN CONDICIONADA AL DESALOJO VOLUNTARIO (OPCIONAL):</strong> [A criterio del letrado: condonación de parte de la deuda condicionada al desalojo voluntario en 15 días].</p>
+        <p><strong>CUARTO OTROSÍ. — SUBSANACIÓN:</strong> Al amparo del art. 231 LEC, esta parte manifiesta su voluntad de corregir cualquier defecto de carácter procesal.</p>
+
+        <p><strong>SUPLICO</strong></p>
+        <p>AL JUZGADO SUPLICO que, teniendo por presentada esta demanda, dicte sentencia por la que: <strong>1.</strong> Declare resuelto el contrato de arrendamiento por falta de pago. <strong>2.</strong> Condene al demandado a abandonar la vivienda sita en la Avenida de España número 706, Madrid 28099, con apercibimiento de lanzamiento en la fecha señalada. <strong>3.</strong> Condene al pago de <strong>3.000 € (TRES MIL EUROS)</strong> más intereses legales y procesales hasta el completo pago. <strong>4.</strong> Condene al pago de las costas procesales.</p>
+        <p style="text-align:right;font-size:.82rem;margin-top:16px;"><em>Es justicia que respetuosamente se pide en Madrid, a 1 de abril de 2026.<br><br>Firmado: Don Juan García García — Letrado, ICAM nº 123.456 | Don Agapito López López — Procurador nº 28/5488441</em></p>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: ANÁLISIS ESTRATÉGICO -->
+    <div class="muestra-panel" id="muestraPanel2">
+      <div class="muestra-doc-content">
+        <p style="text-align:center;font-size:.78rem;color:var(--text-lt);margin-bottom:4px;"><em>DOCUMENTO DE TRABAJO INTERNO — CONFIDENCIAL</em></p>
+        <h4 style="text-align:center;margin-bottom:4px;">Análisis Estratégico del Caso</h4>
+        <p style="text-align:center;font-size:.82rem;color:var(--text-md);margin-bottom:16px;"><em>Ref.: IR-E-2026-577166 | Asunto: Desahucio por falta de pago + reclamación de rentas<br>Actor: D. Martín Martín Martín | Demandado: D. José José José | Letrado: D. Juan García García — ICAM nº 123.456</em></p>
+
+        <p><strong>1. RESUMEN EJECUTIVO DEL CASO</strong><br>Procedimiento de desahucio por falta de pago de tres mensualidades de renta (3.000 €) derivado de un contrato de arrendamiento de vivienda habitual celebrado el 1 de abril de 2025. Se acumula la acción de reclamación de rentas adeudadas. <strong>Viabilidad estimada: ALTA.</strong> El impago de tres mensualidades es causa resolutoria inequívoca conforme al art. 27.2.a) LAU. Los únicos riesgos procesales relevantes son la eventual acreditación de vulnerabilidad por el arrendatario y la necesidad de completar la documentación indicada.</p>
+
+        <p><strong>2. HECHOS ACREDITADOS Y CONTROVERTIDOS</strong><br><em>Hechos acreditados:</em> Existencia y vigencia del contrato de arrendamiento (DOC NÚM. 2). Renta pactada de 1.000 €/mes. Destino del inmueble como vivienda habitual. Reclamaciones extrajudiciales previas realizadas por el actor.<br><em>Hechos pendientes de acreditar:</em> (a) Mensualidades exactas impagadas con fecha de vencimiento — pendiente extracto bancario (DOC NÚM. 3). (b) Contenido íntegro de reclamaciones extrajudiciales y acuses de recibo. (c) Condición de pequeño propietario del actor — certificación registral (DOC NÚM. 4). (d) Ausencia de declaración de vulnerabilidad del arrendatario por servicios sociales.</p>
+
+        <p><strong>3. TESIS JURÍDICA PRINCIPAL Y SUBSIDIARIA</strong><br><em>Principal:</em> Resolución del contrato por falta de pago ex art. 27.2.a) LAU con desahucio y condena al pago de 3.000 € más intereses. Esta tesis es sólida, directa y sin dificultad probatoria relevante.<br><em>Subsidiaria:</em> No se prevén tesis subsidiarias necesarias dado el carácter objetivo del incumplimiento. Si el arrendatario alegara pago, corresponde a él la carga probatoria conforme al art. 217 LEC.</p>
+
+        <p><strong>4. LEGISLACIÓN VERIFICADA APLICABLE</strong><br>
+        — <strong>Ley 29/1994 (LAU)</strong> — Arts. 27.1, 27.2.a), 9, 17. Vigente.<br>
+        — <strong>Ley 1/2000 (LEC)</strong> — Arts. 45, 52.1.7.º, 250.1.1.º, 437.3, 437.4.3.ª, 439.6, 440, 441.5, 576, 394. Modificada por Ley 12/2023 y LO 1/2025.<br>
+        — <strong>Código Civil (CC)</strong> — Arts. 1.108, 1.124, 1.569. Vigente.<br>
+        — <strong>Ley 12/2023, de 24 de mayo</strong> — Art. 3.k) (concepto de gran tenedor). Vigente.<br>
+        — <strong>Real Decreto-ley 2/2026, de 3 de febrero</strong> — Prorroga suspensión lanzamientos hasta 31/12/2026; excepción para propietarios con 2 o menos viviendas.<br>
+        — <strong>STC 26/2025, de 29 de enero</strong> — Declara inconstitucionales y nulos los arts. 439.6.c) y 7 LEC: elimina requisitos de conciliación y vulnerabilidad como presupuesto de admisibilidad para grandes tenedores.<br>
+        <em>ADVERTENCIA: La Ley 12/2023 no ha sido declarada inconstitucional en su totalidad. Sigue vigente el deber de todos los demandantes de acreditar si el inmueble es vivienda habitual y si el actor es o no gran tenedor (art. 439.6.a) y b) LEC).</em></p>
+
+        <p><strong>5. JURISPRUDENCIA RELEVANTE</strong><br>
+        — STS Sala 1.ª, de 30 de diciembre de 2015 (SP/SENT/837189): es posible el desahucio por impago de cualquier cantidad asumida por el arrendatario, incluyendo cuotas de comunidad o tributos. Relevante para reforzar el alcance del art. 27.2.a) LAU.<br>
+        — Doctrina jurisprudencial consolidada del TS (Sala 1.ª): la carga de la prueba del pago corresponde al arrendatario conforme al art. 217.2 LEC, al ser el pago un hecho extintivo de la obligación.<br>
+        <em>ADVERTENCIA: No se cita jurisprudencia adicional sin verificación en CENDOJ. El letrado deberá verificar y, si estima conveniente, localizar sentencias adicionales en CENDOJ (poderjudicial.es/CENDOJ).</em></p>
+
+        <p><strong>6. PLAN DE PRUEBA</strong><br>
+        <em>Documental:</em> DOC NÚM. 2 (contrato). DOC NÚM. 3 (acreditación impago). DOCS 4 y ss. (reclamaciones extrajudiciales y certificación registral). La prueba documental es suficiente para acreditar los hechos esenciales.<br>
+        <em>Testifical:</em> En principio no precisa. Solo sería relevante si el arrendatario alegara pago o impugnara las notificaciones.<br>
+        <em>Otros:</em> No se prevé prueba pericial.</p>
+
+        <p><strong>7. CUANTÍA DEL PROCEDIMIENTO</strong><br>Acción de desahucio: cuantía determinada por la renta anual (1.000 € × 12 = 12.000 €), conforme al art. 251.10.ª LEC. Acción de reclamación de rentas: 3.000 €. Total orientativo: 15.000 €.</p>
+
+        <p><strong>8. COMPETENCIA TERRITORIAL</strong><br>El contrato contiene sumisión expresa a los Juzgados y Tribunales de Madrid (Cláusula Décima), concordante con el art. 52.1.7.º LEC. La demanda debe presentarse en el juzgado de primera instancia de Madrid que por turno de reparto corresponda.</p>
+
+        <p><strong>9. RIESGOS</strong><br>
+        <strong>9.1 Riesgo de costas:</strong> Bajo. Dada la viabilidad alta y la claridad del incumplimiento, la condena en costas al demandado es probable.<br>
+        <strong>9.2 Riesgo de reconvención:</strong> No admisible en juicio verbal (art. 438.1 LEC).<br>
+        <strong>9.3 Vulnerabilidad del arrendatario:</strong> RIESGO MODERADO. Si los servicios sociales confirman la situación, el lanzamiento puede suspenderse hasta un mes. No obstante, la suspensión no afecta a la resolución contractual ni a la condena al pago de rentas. El actor es pequeño propietario, por lo que el RDL 2/2026 no le impone la suspensión automática.<br>
+        <strong>9.4 Enervación:</strong> RIESGO BAJO-MODERADO. Si el arrendatario paga la totalidad de las rentas en el plazo de 10 días desde el requerimiento, el procedimiento de desahucio puede enervar.<br>
+        <strong>9.5 Documentación pendiente:</strong> RIESGO RELEVANTE. La demanda no puede presentarse hasta que se aporten: extracto bancario (DOC NÚM. 3), reclamaciones extrajudiciales con acuses de recibo, y certificación registral del actor.<br>
+        <strong>9.6 Requisito de mediación (LO 1/2025):</strong> RIESGO A VERIFICAR. La LO 1/2025 ha introducido el deber de acreditar el intento de MASC como requisito procesal. El letrado debe verificar si resulta aplicable al juicio verbal de desahucio y acreditar el intento previo.</p>
+
+        <p><strong>10. RECOMENDACIONES ESTRATÉGICAS</strong><br>
+        — Antes de presentar la demanda, completar la documentación indicada como PENDIENTE (mensualidades, reclamaciones y certificación registral).<br>
+        — Solicitar al cliente certificación registral de sus inmuebles para acreditar la condición de pequeño propietario (no gran tenedor).<br>
+        — Valorar la inclusión del 3.er Otrosí (condonación condicionada al desalojo voluntario en 15 días) si el cliente está dispuesto a perdonar parte de la deuda a cambio de recuperar antes la posesión.<br>
+        — Verificar si la LO 1/2025 exige acreditar intento de MASC para la admisión de la demanda verbal de desahucio en 2026.<br>
+        — Frente a la eventual alegación de vulnerabilidad: preparar documentación que acredite la situación económica del actor.<br>
+        — El impago de tres mensualidades es suficiente y claro. No conviene demorar la presentación más allá de lo estrictamente necesario para completar los documentos pendientes.</p>
+
+        <p style="font-size:.75rem;color:var(--text-lt);margin-top:16px;border-top:1px solid var(--border);padding-top:10px;"><em>NOTA DE CONFIDENCIALIDAD: El presente documento es de uso exclusivo del letrado responsable. No está destinado a ser entregado al cliente ni aportado al procedimiento.</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--text-lt);margin-top:14px;text-align:center;">Todos los datos son ficticios y han sido generados exclusivamente con fines ilustrativos.</p>
   </div>
 </div>
 
@@ -3534,6 +3676,10 @@ function rndRef(){ return String(Math.floor(Math.random()*900000)+100000); }
 function updateCounter(el,id,max){ const n=el.value.length,c=document.getElementById(id); if(!c)return; c.textContent=n.toLocaleString('es-ES')+' / '+max.toLocaleString('es-ES'); c.classList.toggle('warn',n>max*.85); }
 function toggleFaq(btn){ const it=btn.closest('.faq-item'),open=it.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');}); if(!open){it.classList.add('open');btn.setAttribute('aria-expanded','true');} }
 function abrirModalLimiteArchivos(){ openModal('modalLimiteArchivos'); }
+function switchMuestraTab(idx){
+  document.querySelectorAll('.muestra-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.muestra-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+}
 function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
 function closeModalOutside(e,id){ if(e.target===document.getElementById(id)) closeModal(id); }
