@@ -4060,18 +4060,7 @@ function aceptarCookies(){
 }
 
 /* ── GUARDAR CONTACTO EN GMAIL (via Apps Script) ──── */
-async function guardarContactoGmail(nombre, email, numColegiacion, colegio, telefono){
-  if(!nombre || !email) return;
-  if(!DRIVE_WEBAPP_URL || DRIVE_WEBAPP_URL.includes('PEGAR')) return;
-  try {
-    const payload = { action:'addContact', nombre, email,
-      numColegiacion: numColegiacion||'', colegio: colegio||'',
-      telefono: telefono||'' };
-    const url = DRIVE_WEBAPP_URL + '?payload=' + encodeURIComponent(JSON.stringify(payload));
-    await fetch(url, { method:'GET', redirect:'follow' });
-    console.log('Contacto guardado en Gmail:', nombre, email);
-  } catch(e){ console.warn('No se pudo guardar contacto:', e); }
-}
+
 
 /* ── EXPORTAR LOGO SVG como favicon inline ──────────── */
 // El logo SVG está inline en el header; aquí se añade como favicon
