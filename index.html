@@ -3440,8 +3440,16 @@ function collectDData(){
 }
 
 /* ── DICTAMEN SUBMIT HANDLER ─────────────────────── */
-document.getElementById('lexForm-d').addEventListener('submit',async function(e){
-  e.preventDefault(); await handleSubmit('d', collectDData, 'dSuccess','dRefNum','dTestData','dBtnSubmit');
+// Dictamen submit - bound after bindSubmit definition
+document.getElementById('lexForm-d') && document.getElementById('lexForm-d').addEventListener('submit', function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  handleSubmit('d', collectDData, 'dSuccess','dRefNum','dTestData','dBtnSubmit').catch(function(err){
+    console.error('handleSubmit dictamen error:', err);
+    var btn = document.getElementById('dBtnSubmit');
+    if(btn){ btn.disabled=false; btn.textContent='Enviar solicitud'; }
+  });
+  return false;
 });
 
 /* ── DICTAMEN WORD DOWNLOAD ──────────────────────── */
@@ -3595,15 +3603,24 @@ function collectRData(){
 }
 
 /* ── SUBMIT HANDLERS ─────────────────────────────── */
-document.getElementById('lexForm-e').addEventListener('submit',async function(e){
-  e.preventDefault(); await handleSubmit('e', collectEData, 'eSuccess','eRefNum','eTestData','eBtnSubmit');
-});
-document.getElementById('lexForm-c').addEventListener('submit',async function(e){
-  e.preventDefault(); await handleSubmit('c', collectCData, 'cSuccess','cRefNum','cTestData','cBtnSubmit');
-});
-document.getElementById('lexForm-r').addEventListener('submit',async function(e){
-  e.preventDefault(); await handleSubmit('r', collectRData, 'rSuccess','rRefNum','rTestData','rBtnSubmit');
-});
+function bindSubmit(formId, svc, collectFn, successId, refId, testId, btnId){
+  var form = document.getElementById(formId);
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    // Safari fix: wrapping async in regular function
+    handleSubmit(svc, collectFn, successId, refId, testId, btnId).catch(function(err){
+      console.error('handleSubmit error:', err);
+      var btn = document.getElementById(btnId);
+      if(btn){ btn.disabled=false; btn.textContent='Enviar solicitud'; }
+    });
+    return false;
+  });
+}
+bindSubmit('lexForm-e','e',collectEData,'eSuccess','eRefNum','eTestData','eBtnSubmit');
+bindSubmit('lexForm-c','c',collectCData,'cSuccess','cRefNum','cTestData','cBtnSubmit');
+bindSubmit('lexForm-r','r',collectRData,'rSuccess','rRefNum','rTestData','rBtnSubmit');
 
 async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
   const btn=document.getElementById(btnId); btn.disabled=true; btn.textContent='Generando PDF de acuse…';
@@ -3614,7 +3631,21 @@ async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
   let acusePDFb64 = null;
   try{
     const pdfDoc=await generateAcusePDF(d);
-    if(pdfDoc) pdfDoc.save(`IureRedacta_ACUSE_${d.ref}.pdf`);
+    if(pdfDoc){
+      // En iOS/Safari, pdfDoc.save() abre el PDF en el navegador interrumpiendo el flujo.
+      // Usamos output('blob') + URL temporal para evitarlo.
+      try {
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if(isIOS || isSafari){
+          // En iOS guardamos el b64 para Drive pero no intentamos descargar
+          // El usuario puede descargarlo desde el panel de éxito
+          console.log('iOS/Safari detectado: PDF no se descarga automáticamente');
+        } else {
+          pdfDoc.save(`IureRedacta_ACUSE_${d.ref}.pdf`);
+        }
+      } catch(ePDF){ console.warn('Error guardando PDF:', ePDF); }
+    }
   }catch(err){console.error('PDF acuse error:',err);}
   // 1b. PDF Encargo (resumen del caso) — capturar en base64 para Drive
   try{
