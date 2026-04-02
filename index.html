@@ -722,24 +722,25 @@ function aceptarCookies(){
   if(b){b.style.transition='opacity .4s';b.style.opacity='0';setTimeout(()=>b.style.display='none',400);}
 }
 function switchService(svc){
+  // Resetear TODAS las pestañas antes de cambiar
+  const svcMap={escritos:'e',contratos:'c',requerimientos:'r',dictamen:'d'};
+  const panelMap={e:'ep',c:'cp',r:'rp',d:'dp'};
+  Object.keys(svcMap).forEach(function(t){
+    const pref=svcMap[t];
+    const sp=document.getElementById(pref+'Success');
+    if(sp) sp.classList.remove('active');
+    const pp=panelMap[pref];
+    if(pp) showPanelOf(pp,4,1);
+    const btn=document.getElementById(pref+'BtnSubmit');
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar solicitud';}
+  });
+  // Activar la pestaña seleccionada
   ['escritos','contratos','requerimientos','dictamen'].forEach(t=>{
     const tab=document.getElementById('tab-'+t);
     const page=document.getElementById('service-'+t);
     if(tab) tab.classList.toggle('active',t===svc);
     if(page) page.classList.toggle('active',t===svc);
   });
-  // Resetear formulario al cambiar de pestaña
-  const svcMap={escritos:'e',contratos:'c',requerimientos:'r',dictamen:'d'};
-  const prefix=svcMap[svc];
-  if(prefix){
-    const sp=document.getElementById(prefix+'Success');
-    if(sp) sp.classList.remove('active');
-    const panelMap={e:'ep',c:'cp',r:'rp',d:'dp'};
-    const pp=panelMap[prefix];
-    if(pp) showPanelOf(pp,4,1);
-    const btn=document.getElementById(prefix+'BtnSubmit');
-    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar solicitud';}
-  }
   const sel=document.getElementById('service-selector');
   if(sel) window.scrollTo({top:sel.offsetTop-100,behavior:'smooth'});
 }
