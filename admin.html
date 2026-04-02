@@ -787,11 +787,13 @@ function renderExpedientes(){
     return;
   }
 
+  const listaValida = lista.filter(e => e && e.folderId && e.ref);
   document.getElementById('expedientesList').innerHTML =
-    `<div class="expedientes-list">${lista.map(renderCard).join('')}</div>`;
+    `<div class="expedientes-list">${listaValida.map(renderCard).join('')}</div>`;
 }
 
 function renderCard(exp){
+  if(!exp || !exp.folderId) return '';
   // Guardar datos completos en mapa para evitar problemas con atributos HTML
   expData[exp.folderId] = exp;
   const svcColor = { 'E':'#1B2D5E','C':'#1a5e35','R':'#7b3d00','D':'#4a1a6e' };
