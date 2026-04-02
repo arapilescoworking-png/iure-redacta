@@ -440,8 +440,8 @@ textarea{resize:vertical;min-height:100px;line-height:1.7;}
 .btn{padding:10px 24px;border-radius:var(--radius);font-family:var(--ff-body);font-size:.79rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:2px solid transparent;transition:all .22s;display:inline-flex;align-items:center;gap:8px;}
 .btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy);}
 .btn-primary:hover{background:var(--navy-lt);}
-.btn-secondary{background:transparent;color:var(--navy);border-color:var(--border-md);}
-.btn-secondary:hover{border-color:var(--navy);}
+.btn-secondary{background:#f0f4f8;color:var(--navy);border-color:var(--navy);font-weight:600;}
+.btn-secondary:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
 .btn:disabled{opacity:.45;cursor:not-allowed;}
 
 /* RESUMEN */
@@ -747,6 +747,14 @@ function switchService(svc){
 </script>
 </head>
 <body>
+<script>
+// Interceptar botón atrás del navegador para evitar pérdida de datos del formulario
+history.pushState(null, null, location.href);
+window.addEventListener('popstate', function() {
+  history.pushState(null, null, location.href);
+  alert('Para volver al paso anterior use el botón "\u2190 Volver" del formulario. El botón atrás del navegador borra los datos introducidos.');
+});
+</script>
 
 <!-- ══ COOKIE BANNER (LSSI-CE / RGPD — solo cookies técnicas) ══ -->
 <div id="cookie-banner" role="alert" aria-live="polite">
