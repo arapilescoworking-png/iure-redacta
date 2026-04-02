@@ -3181,23 +3181,11 @@ function validarPago(svc){
   if(precioFinal === 0) return true; // código gratuito aplicado — OK
   const metodo = pagoMetodo[svc] || 'card';
   if(metodo === 'card'){
-    alert('Para continuar debe seleccionar el método de pago por transferencia bancaria.
-
-El pago con tarjeta estará disponible próximamente.
-
-Puede seleccionarlo justo encima de este botón.');
+    alert('Para continuar seleccione el método de pago por transferencia bancaria. El pago con tarjeta estará disponible próximamente.');
     return false;
   }
   if(metodo === 'transfer'){
-    return window.confirm(
-      '¿Confirma que ha realizado o va a realizar la transferencia bancaria?
-
-' +
-      'Importe: €' + precioFinal + '
-
-' +
-      'Su encargo quedará registrado. Procederemos en cuanto verifiquemos el ingreso.'
-    );
+    return window.confirm('¿Confirma que va a realizar la transferencia de €' + precioFinal + '? Su encargo quedará registrado y procederemos al verificar el ingreso.');
   }
   return true;
 }
