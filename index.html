@@ -2934,6 +2934,19 @@ function switchService(svc){
     document.getElementById('tab-'+t).classList.toggle('active',t===svc);
     document.getElementById('service-'+t).classList.toggle('active',t===svc);
   });
+  // Resetear el panel de éxito al cambiar de pestaña
+  const svcMap = {escritos:'e', contratos:'c', requerimientos:'r', dictamen:'d'};
+  const prefix = svcMap[svc];
+  if(prefix){
+    const successPanel = document.getElementById(prefix+'Success');
+    if(successPanel) successPanel.classList.remove('active');
+    // Volver al primer paso del formulario
+    const panelPrefix = {e:'ep', c:'cp', r:'rp', d:'dp'}[prefix];
+    if(panelPrefix) showPanelOf(panelPrefix, 4, 1);
+    // Rehabilitar el botón de envío
+    const btn = document.getElementById(prefix+'BtnSubmit');
+    if(btn){ btn.disabled = false; btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar solicitud'; }
+  }
   window.scrollTo({top:document.getElementById('service-selector').offsetTop - 100,behavior:'smooth'});
 }
 
