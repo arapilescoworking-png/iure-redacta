@@ -3590,8 +3590,7 @@ async function handleSubmit(svc, collectFn, successId, refId, testId, btnId){
   // 3. Email
   btn.textContent='Enviando…';
   await sendEmail(d);
-  // 4. Guardar contacto en Gmail Contacts (yureredacta@gmail.com)
-  await guardarContactoGmail(d.letrado.nombre, d.letrado.email, d.letrado.numColegiacion, d.letrado.colegio, d.letrado.telefono||'');
+  // El contacto del letrado se guarda automáticamente en el Apps Script al crear el expediente
   // 4. Panel de éxito
   document.getElementById(refId).textContent=d.ref;
   document.getElementById(testId).textContent=buildTestText(d);
