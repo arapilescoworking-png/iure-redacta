@@ -367,6 +367,17 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
   .exp-header{flex-wrap:wrap;gap:8px;}
   .exp-letrado{width:100%;}
 }
+/* ── CAMBIAR CONTRASEÑA ─────────────────────────── */
+.pass-section{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin:24px auto;max-width:900px;}
+.pass-section h3{margin:0 0 16px;font-size:1rem;color:var(--navy);display:flex;align-items:center;gap:8px;}
+.pass-grid{display:grid;gap:14px;max-width:500px;}
+.pass-label{font-size:.82rem;color:#666;display:block;margin-bottom:4px;}
+.pass-input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;box-sizing:border-box;font-family:inherit;}
+.pass-input:focus{outline:none;border-color:var(--navy);}
+.pass-strength{font-size:.78rem;margin-top:4px;min-height:18px;}
+.pass-strength.weak{color:#e74c3c;}
+.pass-strength.medium{color:#f39c12;}
+.pass-strength.strong{color:#27ae60;}
 </style>
 </head>
 <body>
@@ -538,6 +549,29 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
       </a>
       <span style="font-size:.75rem;color:var(--text-lt);">Copia el prompt → pégalo en Claude → adjunta los archivos → ejecuta</span>
     </div>
+  </div>
+</div>
+
+<div class="pass-section">
+  <h3>🔒 Cambiar contraseña del panel</h3>
+  <div class="pass-grid">
+    <div>
+      <label class="pass-label">Contraseña actual</label>
+      <input type="password" id="passActual" class="pass-input" placeholder="Contraseña actual" autocomplete="current-password"/>
+    </div>
+    <div>
+      <label class="pass-label">Nueva contraseña (mínimo 8 caracteres)</label>
+      <input type="password" id="passNueva" class="pass-input" placeholder="Nueva contraseña" autocomplete="new-password" oninput="checkPassStrength()"/>
+      <div class="pass-strength" id="passStrength"></div>
+    </div>
+    <div>
+      <label class="pass-label">Confirmar nueva contraseña</label>
+      <input type="password" id="passConfirm" class="pass-input" placeholder="Repite la nueva contraseña" autocomplete="new-password"/>
+    </div>
+    <div>
+      <button onclick="cambiarPassword()" style="background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:.9rem;">💾 Actualizar contraseña</button>
+    </div>
+    <div id="passMensaje" style="font-size:.85rem;min-height:20px;"></div>
   </div>
 </div>
 
@@ -1090,7 +1124,15 @@ function abrirClaudePanel(folderId){
   const exp = expData[folderId];
   if(!exp){ showToast('Datos del expediente no encontrados.','err'); return; }
 
-  const svcCode = exp.ref ? exp.ref.split('-')[1] : 'E';
+  // Extraer código de servicio de la ref (IR-C-... → C) con fallback por servicio
+  var svcCode = exp.ref ? exp.ref.split('-')[1] : '';
+  if(!svcCode || !svcNombres[svcCode]){
+    const svc = (exp.servicio||'').toLowerCase();
+    if(svc.includes('contrato')) svcCode = 'C';
+    else if(svc.includes('requerimiento') || svc.includes('burofax')) svcCode = 'R';
+    else if(svc.includes('dictamen')) svcCode = 'D';
+    else svcCode = 'E';
+  }
   const svcNombre = svcNombres[svcCode] || exp.servicio || 'Servicio jurídico';
   const skills = svcSkills[svcCode] || 'escritos-juridicos-es';
   const instruccion = svcInstruccion[svcCode] || 'Genera el documento jurídico solicitado.';
@@ -1163,7 +1205,14 @@ function abrirClaudePanel(folderId){
 }
 
 function buildPrompt(exp, svcNombre, instruccion){
-  const svcCode = exp.ref ? exp.ref.split('-')[1] : 'E';
+  var svcCode = exp.ref ? exp.ref.split('-')[1] : '';
+  if(!svcCode || !['E','C','R','D'].includes(svcCode)){
+    const svc = (exp.servicio||'').toLowerCase();
+    if(svc.includes('contrato')) svcCode = 'C';
+    else if(svc.includes('requerimiento') || svc.includes('burofax')) svcCode = 'R';
+    else if(svc.includes('dictamen')) svcCode = 'D';
+    else svcCode = 'E';
+  }
   // Instrucción de skill según tipo de servicio
   const skillInstruccion = {
     E: 'Activa la skill "escritos-juridicos-es" junto con "busqueda-de-jurisprudencia", "busqueda-de-legislacion" y "organizacion-documental".',
@@ -1326,6 +1375,53 @@ function showConfirm(title, msg, cb, okClass=''){
 }
 function confirmCallback(){ closeConfirm(); if(confirmCb) confirmCb(); }
 function closeConfirm(){ document.getElementById('confirmOverlay').classList.remove('visible'); confirmCb=null; }
+
+function checkPassStrength() {
+  var p = document.getElementById('passNueva').value;
+  var el = document.getElementById('passStrength');
+  if (!p) { el.textContent=''; el.className='pass-strength'; return; }
+  var score = 0;
+  if (p.length >= 8)  score++;
+  if (p.length >= 16) score++;
+  if (p.length >= 32) score++;
+  if (/[A-Z]/.test(p)) score++;
+  if (/[a-z]/.test(p)) score++;
+  if (/[0-9]/.test(p)) score++;
+  if (/[^A-Za-z0-9]/.test(p)) score++;
+  if (score <= 3) { el.className='pass-strength weak'; el.textContent='Débil — añade más caracteres, números y símbolos'; }
+  else if (score <= 5) { el.className='pass-strength medium'; el.textContent='Media — añade símbolos y más longitud'; }
+  else { el.className='pass-strength strong'; el.textContent='✅ Fuerte — contraseña segura'; }
+}
+
+async function cambiarPassword() {
+  var actual  = document.getElementById('passActual').value;
+  var nueva   = document.getElementById('passNueva').value;
+  var confirm = document.getElementById('passConfirm').value;
+  var msgEl   = document.getElementById('passMensaje');
+  msgEl.textContent = '';
+  if (!actual || !nueva || !confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Rellena todos los campos.'; return; }
+  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='La nueva contraseña debe tener al menos 8 caracteres.'; return; }
+  if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contraseñas no coinciden.'; return; }
+  msgEl.style.color='#666'; msgEl.textContent='Actualizando...';
+  try {
+    var payload = {action:'cambiarPassword', passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm};
+    var resp = await fetch(APPS_SCRIPT_URL+'?payload='+encodeURIComponent(JSON.stringify(payload)));
+    var data = await resp.json();
+    if (data.ok) {
+      ADMIN_PASS = nueva;
+      msgEl.style.color='#27ae60';
+      msgEl.textContent='✅ Contraseña actualizada. Guárdala en un lugar seguro.';
+      document.getElementById('passActual').value='';
+      document.getElementById('passNueva').value='';
+      document.getElementById('passConfirm').value='';
+      document.getElementById('passStrength').textContent='';
+      document.getElementById('passStrength').className='pass-strength';
+    } else {
+      msgEl.style.color='#e74c3c';
+      msgEl.textContent='❌ '+(data.error||'Error desconocido.');
+    }
+  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='❌ Error de conexión.'; }
+}
 </script>
 </body>
 </html>
