@@ -578,7 +578,7 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
 <script>
 // ── CONFIG ──────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0Kaz0wQOAQ74Af8O6DPPDwR1dfYWWHOjInu3h3Qedjv16NOlKrkb1h5JW4svdmuRaVg/exec';
-const ADMIN_PASS = '1212';
+let ADMIN_PASS = '1212';
 
 // ── STATE ────────────────────────────────────────────────
 let expedientes = [];
@@ -1400,20 +1400,15 @@ async function cambiarPassword() {
   var msgEl   = document.getElementById('passMensaje');
   msgEl.textContent = '';
   if (!actual || !nueva || !confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Rellena todos los campos.'; return; }
-  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='La nueva contrasena debe tener al menos 8 caracteres.'; return; }
+  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='Minimo 8 caracteres.'; return; }
   if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contrasenas no coinciden.'; return; }
   msgEl.style.color='#666'; msgEl.textContent='Actualizando...';
   try {
-    // Usar POST para evitar limite de longitud en URL con contrasenas largas
-    var payload = {action:'cambiarPassword', password:actual, passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm};
-    var form = new FormData();
-    form.append('payload', JSON.stringify(payload));
-    var resp = await fetch(APPS_SCRIPT_URL, {method:'POST', body:form, redirect:'follow'});
-    var data = await resp.json();
-    if (data.ok) {
+    var data = await apiCall({action:'cambiarPassword', passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm});
+    if (data && data.ok) {
       ADMIN_PASS = nueva;
       msgEl.style.color='#27ae60';
-      msgEl.textContent='Contrasena actualizada correctamente. Guardala en un lugar seguro.';
+      msgEl.textContent='Contrasena actualizada. Guardala en un lugar seguro.';
       document.getElementById('passActual').value='';
       document.getElementById('passNueva').value='';
       document.getElementById('passConfirm').value='';
@@ -1421,9 +1416,9 @@ async function cambiarPassword() {
       document.getElementById('passStrength').className='pass-strength';
     } else {
       msgEl.style.color='#e74c3c';
-      msgEl.textContent='Error: '+(data.error||'Error desconocido.');
+      msgEl.textContent='Error: '+((data && data.error)||'Error desconocido.');
     }
-  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='Error de conexion: ' + e.message; }
+  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='Error: ' + e.message; }
 }
 
 
