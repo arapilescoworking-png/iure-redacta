@@ -1404,11 +1404,12 @@ async function cambiarPassword() {
   if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contraseñas no coinciden.'; return; }
   msgEl.style.color='#666'; msgEl.textContent='Actualizando...';
   try {
-    var payload = {action:'cambiarPassword', passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm};
+    var payload = {action:'cambiarPassword', password:actual, passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm};
     var resp = await fetch(APPS_SCRIPT_URL+'?payload='+encodeURIComponent(JSON.stringify(payload)));
     var data = await resp.json();
     if (data.ok) {
       ADMIN_PASS = nueva;
+      // Actualizar también en todas las llamadas futuras
       msgEl.style.color='#27ae60';
       msgEl.textContent='✅ Contraseña actualizada. Guárdala en un lugar seguro.';
       document.getElementById('passActual').value='';
