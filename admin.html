@@ -587,14 +587,25 @@ let confirmCb = null;
 const expData = {}; // mapa folderId -> datos completos del expediente
 
 // ── LOGIN ────────────────────────────────────────────────
-function doLogin(){
+async function doLogin(){
   const pass = document.getElementById('loginPass').value;
-  if(pass === ADMIN_PASS){
-    document.getElementById('loginScreen').style.display = 'none';
-    cargarExpedientes();
-  } else {
+  if(!pass){ document.getElementById('loginErr').style.display='block'; return; }
+  const btn = document.querySelector('.login-btn') || document.querySelector('button[onclick]');
+  // Validar contra Apps Script — unica fuente de verdad
+  try {
+    const url = APPS_SCRIPT_URL + '?payload=' + encodeURIComponent(JSON.stringify({action:'listarExpedientes', password:pass}));
+    const resp = await fetch(url, {method:'GET', redirect:'follow'});
+    const data = await resp.json();
+    if(data.ok){
+      ADMIN_PASS = pass;
+      document.getElementById('loginScreen').style.display = 'none';
+      renderExpedientes(data.expedientes || []);
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginPass').value = '';
+    }
+  } catch(e) {
     document.getElementById('loginErr').style.display = 'block';
-    document.getElementById('loginPass').value = '';
   }
 }
 function logout(){
