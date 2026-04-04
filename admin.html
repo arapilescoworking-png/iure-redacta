@@ -1400,18 +1400,20 @@ async function cambiarPassword() {
   var msgEl   = document.getElementById('passMensaje');
   msgEl.textContent = '';
   if (!actual || !nueva || !confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Rellena todos los campos.'; return; }
-  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='La nueva contraseña debe tener al menos 8 caracteres.'; return; }
-  if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contraseñas no coinciden.'; return; }
+  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='La nueva contrasena debe tener al menos 8 caracteres.'; return; }
+  if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contrasenas no coinciden.'; return; }
   msgEl.style.color='#666'; msgEl.textContent='Actualizando...';
   try {
+    // Usar POST para evitar limite de longitud en URL con contrasenas largas
     var payload = {action:'cambiarPassword', password:actual, passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm};
-    var resp = await fetch(APPS_SCRIPT_URL+'?payload='+encodeURIComponent(JSON.stringify(payload)));
+    var form = new FormData();
+    form.append('payload', JSON.stringify(payload));
+    var resp = await fetch(APPS_SCRIPT_URL, {method:'POST', body:form, redirect:'follow'});
     var data = await resp.json();
     if (data.ok) {
       ADMIN_PASS = nueva;
-      // Actualizar también en todas las llamadas futuras
       msgEl.style.color='#27ae60';
-      msgEl.textContent='✅ Contraseña actualizada. Guárdala en un lugar seguro.';
+      msgEl.textContent='Contrasena actualizada correctamente. Guardala en un lugar seguro.';
       document.getElementById('passActual').value='';
       document.getElementById('passNueva').value='';
       document.getElementById('passConfirm').value='';
@@ -1419,10 +1421,12 @@ async function cambiarPassword() {
       document.getElementById('passStrength').className='pass-strength';
     } else {
       msgEl.style.color='#e74c3c';
-      msgEl.textContent='❌ '+(data.error||'Error desconocido.');
+      msgEl.textContent='Error: '+(data.error||'Error desconocido.');
     }
-  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='❌ Error de conexión.'; }
+  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='Error de conexion: ' + e.message; }
 }
+
+
 </script>
 </body>
 </html>
