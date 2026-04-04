@@ -367,17 +367,6 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
   .exp-header{flex-wrap:wrap;gap:8px;}
   .exp-letrado{width:100%;}
 }
-/* ── CAMBIAR CONTRASEÑA ─────────────────────────── */
-.pass-section{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin:24px auto;max-width:900px;}
-.pass-section h3{margin:0 0 16px;font-size:1rem;color:var(--navy);display:flex;align-items:center;gap:8px;}
-.pass-grid{display:grid;gap:14px;max-width:500px;}
-.pass-label{font-size:.82rem;color:#666;display:block;margin-bottom:4px;}
-.pass-input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;box-sizing:border-box;font-family:inherit;}
-.pass-input:focus{outline:none;border-color:var(--navy);}
-.pass-strength{font-size:.78rem;margin-top:4px;min-height:18px;}
-.pass-strength.weak{color:#e74c3c;}
-.pass-strength.medium{color:#f39c12;}
-.pass-strength.strong{color:#27ae60;}
 </style>
 </head>
 <body>
@@ -552,33 +541,10 @@ body{font-family:var(--ff-ui);background:var(--cream);color:var(--text);min-heig
   </div>
 </div>
 
-<div class="pass-section">
-  <h3>🔒 Cambiar contraseña del panel</h3>
-  <div class="pass-grid">
-    <div>
-      <label class="pass-label">Contraseña actual</label>
-      <input type="password" id="passActual" class="pass-input" placeholder="Contraseña actual" autocomplete="current-password"/>
-    </div>
-    <div>
-      <label class="pass-label">Nueva contraseña (mínimo 8 caracteres)</label>
-      <input type="password" id="passNueva" class="pass-input" placeholder="Nueva contraseña" autocomplete="new-password" oninput="checkPassStrength()"/>
-      <div class="pass-strength" id="passStrength"></div>
-    </div>
-    <div>
-      <label class="pass-label">Confirmar nueva contraseña</label>
-      <input type="password" id="passConfirm" class="pass-input" placeholder="Repite la nueva contraseña" autocomplete="new-password"/>
-    </div>
-    <div>
-      <button onclick="cambiarPassword()" style="background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:.9rem;">💾 Actualizar contraseña</button>
-    </div>
-    <div id="passMensaje" style="font-size:.85rem;min-height:20px;"></div>
-  </div>
-</div>
-
 <script>
 // ── CONFIG ──────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0Kaz0wQOAQ74Af8O6DPPDwR1dfYWWHOjInu3h3Qedjv16NOlKrkb1h5JW4svdmuRaVg/exec';
-let ADMIN_PASS = '1212';
+const ADMIN_PASS = '1212';
 
 // ── STATE ────────────────────────────────────────────────
 let expedientes = [];
@@ -587,30 +553,14 @@ let confirmCb = null;
 const expData = {}; // mapa folderId -> datos completos del expediente
 
 // ── LOGIN ────────────────────────────────────────────────
-async function doLogin(){
+function doLogin(){
   const pass = document.getElementById('loginPass').value;
-  if(!pass){ document.getElementById('loginErr').style.display='block'; return; }
-  const loginBtn = document.querySelector('.login-btn');
-  if(loginBtn){ loginBtn.disabled=true; loginBtn.textContent='Verificando...'; }
-  document.getElementById('loginErr').style.display='none';
-  try {
-    const url = APPS_SCRIPT_URL + '?payload=' + encodeURIComponent(JSON.stringify({action:'listarExpedientes', password:pass}));
-    const resp = await fetch(url, {method:'GET', redirect:'follow'});
-    const data = await resp.json();
-    if(data.ok){
-      ADMIN_PASS = pass;
-      expedientes = data.expedientes || [];
-      document.getElementById('loginScreen').style.display = 'none';
-      renderExpedientes(expedientes);
-    } else {
-      document.getElementById('loginErr').style.display = 'block';
-      document.getElementById('loginPass').value = '';
-    }
-  } catch(e) {
+  if(pass === ADMIN_PASS){
+    document.getElementById('loginScreen').style.display = 'none';
+    cargarExpedientes();
+  } else {
     document.getElementById('loginErr').style.display = 'block';
-    console.error('Login error:', e);
-  } finally {
-    if(loginBtn){ loginBtn.disabled=false; loginBtn.textContent='Acceder'; }
+    document.getElementById('loginPass').value = '';
   }
 }
 function logout(){
@@ -1391,53 +1341,6 @@ function showConfirm(title, msg, cb, okClass=''){
 }
 function confirmCallback(){ closeConfirm(); if(confirmCb) confirmCb(); }
 function closeConfirm(){ document.getElementById('confirmOverlay').classList.remove('visible'); confirmCb=null; }
-
-function checkPassStrength() {
-  var p = document.getElementById('passNueva').value;
-  var el = document.getElementById('passStrength');
-  if (!p) { el.textContent=''; el.className='pass-strength'; return; }
-  var score = 0;
-  if (p.length >= 8)  score++;
-  if (p.length >= 16) score++;
-  if (p.length >= 32) score++;
-  if (/[A-Z]/.test(p)) score++;
-  if (/[a-z]/.test(p)) score++;
-  if (/[0-9]/.test(p)) score++;
-  if (/[^A-Za-z0-9]/.test(p)) score++;
-  if (score <= 3) { el.className='pass-strength weak'; el.textContent='Débil — añade más caracteres, números y símbolos'; }
-  else if (score <= 5) { el.className='pass-strength medium'; el.textContent='Media — añade símbolos y más longitud'; }
-  else { el.className='pass-strength strong'; el.textContent='✅ Fuerte — contraseña segura'; }
-}
-
-async function cambiarPassword() {
-  var actual  = document.getElementById('passActual').value;
-  var nueva   = document.getElementById('passNueva').value;
-  var confirm = document.getElementById('passConfirm').value;
-  var msgEl   = document.getElementById('passMensaje');
-  msgEl.textContent = '';
-  if (!actual || !nueva || !confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Rellena todos los campos.'; return; }
-  if (nueva.length < 8) { msgEl.style.color='#e74c3c'; msgEl.textContent='Minimo 8 caracteres.'; return; }
-  if (nueva !== confirm) { msgEl.style.color='#e74c3c'; msgEl.textContent='Las contrasenas no coinciden.'; return; }
-  msgEl.style.color='#666'; msgEl.textContent='Actualizando...';
-  try {
-    var data = await apiCall({action:'cambiarPassword', passwordActual:actual, passwordNueva:nueva, passwordConfirm:confirm});
-    if (data && data.ok) {
-      ADMIN_PASS = nueva;
-      msgEl.style.color='#27ae60';
-      msgEl.textContent='Contrasena actualizada. Guardala en un lugar seguro.';
-      document.getElementById('passActual').value='';
-      document.getElementById('passNueva').value='';
-      document.getElementById('passConfirm').value='';
-      document.getElementById('passStrength').textContent='';
-      document.getElementById('passStrength').className='pass-strength';
-    } else {
-      msgEl.style.color='#e74c3c';
-      msgEl.textContent='Error: '+((data && data.error)||'Error desconocido.');
-    }
-  } catch(e) { msgEl.style.color='#e74c3c'; msgEl.textContent='Error: ' + e.message; }
-}
-
-
 </script>
 </body>
 </html>
